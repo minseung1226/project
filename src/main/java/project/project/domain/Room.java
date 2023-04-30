@@ -2,6 +2,7 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import project.project.domain.embeded.Address;
+import project.project.domain.enum_type.HouseType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,11 @@ public class Room {
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Photo> photos=new ArrayList<>();
 
-    private int 보증금;
-    private int 월세;
-    private int 전용면적;
-    private String 층수;
-    private String 집종류;
+    private int deposit; //보증금
+    private int monthlyRent; //월세
+    private int area;   //전용면적
+    private String floor;  // 층수
+    @Enumerated(EnumType.STRING)
+    private HouseType houseType; //집종류
 
 }
