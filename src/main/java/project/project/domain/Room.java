@@ -17,11 +17,11 @@ public class Room {
     @Embedded
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "room_info_id")
     private RoomInfo roomInfo;
 
@@ -30,8 +30,8 @@ public class Room {
 
     private int 보증금;
     private int 월세;
-    private int 평수;
+    private int 전용면적;
     private String 층수;
-    private String 집구조;
+    private String 집종류;
 
 }

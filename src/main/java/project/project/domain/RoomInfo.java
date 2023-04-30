@@ -1,9 +1,12 @@
 package project.project.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import project.project.domain.enum_type.MaintenanceList;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class RoomInfo {
@@ -14,12 +17,16 @@ public class RoomInfo {
     private Long id;
 
     private String 방구조;
-    private String 관리비;
-    private String 관리비포함항목;
+    private int maintenance; // 관리비
+
+    @ElementCollection(targetClass=MaintenanceList.class)
+    @Enumerated(EnumType.STRING)
+    private List<MaintenanceList> maintenanceList=new ArrayList<>(); //관리비포함항목
+
     private String 주실방향;
     private String 옵션;
     private String 반려동물여부;
     private String 주차여부;
     private String 엘리베이터여부;
-    private String 입주가능일;
+    private LocalDateTime 입주가능일;
 }
