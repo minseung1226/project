@@ -2,6 +2,7 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.project.domain.converter.EnumListConverter;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(exclude ={"maintenanceList","options"})
 public class RoomInfo {
 
     @Id
@@ -37,7 +39,7 @@ public class RoomInfo {
 
     @Convert(converter = EnumListConverter.class)
     @Enumerated(EnumType.STRING)
-    private List<Option> options; // 옵션
+    private List<Option> options=new ArrayList<>(); // 옵션
     private boolean animal; // 반려동물
     private boolean parking; // 주차 여부
     private boolean ev;      // 엘리베이터 유무

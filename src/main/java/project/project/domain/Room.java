@@ -1,9 +1,7 @@
 package project.project.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
 
@@ -13,6 +11,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(exclude = {"user","roomInfo","photos"})
+@ToString(exclude = {"user","roomInfo","photos"})
 public class Room {
 
     @Id
@@ -57,10 +57,16 @@ public class Room {
         this.houseType = houseType;
     }
 
-    private static Room makeRoom(Address address, User user, RoomInfo roomInfo, List<Photo> photos,
+    public static Room makeRoom(Address address, User user, RoomInfo roomInfo, List<Photo> photos,
                                  String img, int deposit, int monthlyRent, double area, String floor,
                                  HouseType houseType){
-     return new Room(address,user,roomInfo,photos,img,deposit,monthlyRent,area,floor,houseType);
+        Room room = new Room(address, user, roomInfo, photos, img, deposit, monthlyRent, area, floor, houseType);
+
+        for(int i=0;i<room.photos.size();i++){
+            room.photos.get(i).changeRoom(room);
+        }
+
+        return room;
     }
 
 }

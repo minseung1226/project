@@ -9,6 +9,7 @@ import project.project.domain.embeded.Address;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "USERS")
 public class User {
     @Id
     @Column(name = "user_id")
@@ -22,8 +23,13 @@ public class User {
     @Embedded
     private Address address;
 
-
-
-
-
+    public User( String loginId, String name, String pw
+            , String residentNumber, String phone, Address address) {
+        this.loginId = loginId;
+        this.name = name;
+        this.pw = pw;
+        this.residentNumber = residentNumber;
+        this.phone = phone;
+        this.address = address;
+    }
 }
