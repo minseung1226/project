@@ -1,6 +1,8 @@
 package project.project.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.Bearing;
 import project.project.domain.enum_type.MaintenanceList;
 import project.project.domain.enum_type.Option;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class RoomInfo {
 
     @Id
@@ -20,16 +23,16 @@ public class RoomInfo {
 
     @Enumerated(EnumType.STRING)
     private RoomType roomType; //집 종류
-    private int maintenance; // 관리비
+    private double maintenance; // 관리비
 
-    @ElementCollection(targetClass=MaintenanceList.class)
+    @Convert(converter = EnumListConverter.class)
     @Enumerated(EnumType.STRING)
     private List<MaintenanceList> maintenanceList=new ArrayList<>(); //관리비포함항목
 
     @Enumerated(EnumType.STRING)
     private Bearing bearing; // 주실 방향
 
-    @ElementCollection(targetClass = Option.class)
+    @Convert(converter = EnumListConverter.class)
     @Enumerated(EnumType.STRING)
     private List<Option> option; // 옵션
     private boolean animal; // 반려동물

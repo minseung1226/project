@@ -29,9 +29,10 @@ public class Room {
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Photo> photos=new ArrayList<>();
 
+    private String img; // 대표 이미지
     private int deposit; //보증금
     private int monthlyRent; //월세
-    private int area;   //전용면적
+    private double area;   //전용면적
     private String floor;  // 층수
     @Enumerated(EnumType.STRING)
     private HouseType houseType; //집종류
