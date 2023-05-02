@@ -11,8 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(exclude = {"user","roomInfo","photos"})
-@ToString(exclude = {"user","roomInfo","photos"})
+@EqualsAndHashCode(exclude = {"user","roomInfo","photos","address"})
 public class Room {
 
     @Id

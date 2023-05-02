@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -38,7 +41,7 @@ public class RoomTest {
 
         //RoomInfo 생성
         RoomInfo roomInfo = RoomInfo.makeRoomInfo(RoomType.원룸, 7.5, maintenanceLists,
-                Bearing.남향, options, true, false, true, LocalDateTime.now());
+                Bearing.남향, options, true, false, true, LocalDate.now());
 
         //Room 생성
         Address address = new Address("부천시 심곡동 408-7", "308호");
@@ -57,8 +60,14 @@ public class RoomTest {
         em.clear();
 
         Room findRoom = em.find(Room.class, room.getId());
+        RoomInfo findRoomInfo = findRoom.getRoomInfo();
+        User findUser = em.find(User.class, user.getId());
 
-        System.out.println(room==findRoom);
+        //검증
+        assertThat(findRoom).isEqualTo(room);
+        assertThat(findUser).isEqualTo(user);
+        assertThat(findRoomInfo).isEqualTo(roomInfo);
+
 
     }
 

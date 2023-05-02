@@ -2,6 +2,7 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.project.domain.embeded.Address;
@@ -10,6 +11,7 @@ import project.project.domain.embeded.Address;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USERS")
+@EqualsAndHashCode()
 public class User {
     @Id
     @Column(name = "user_id")
