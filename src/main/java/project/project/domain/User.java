@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.project.domain.embeded.Address;
+import project.project.domain.enum_type.UserStatus;
 
 @Entity
 @Getter
@@ -25,13 +26,17 @@ public class User {
     @Embedded
     private Address address;
 
+    @Enumerated
+    private UserStatus userStatus;
+
     public User( String loginId, String name, String pw
-            , String residentNumber, String phone, Address address) {
+            , String residentNumber, String phone, Address address,UserStatus userStatus) {
         this.loginId = loginId;
         this.name = name;
         this.pw = pw;
         this.residentNumber = residentNumber;
         this.phone = phone;
         this.address = address;
+        this.userStatus=userStatus;
     }
 }

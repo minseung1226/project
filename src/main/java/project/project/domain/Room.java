@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
+import project.project.domain.enum_type.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +42,12 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private HouseType houseType; //집종류
 
+    @Enumerated(EnumType.STRING)
+    private Level level;
+
     public Room(Address address, User user, RoomInfo roomInfo, List<Photo> photos
             , String img, int deposit, int monthlyRent, double area, String floor
-            , HouseType houseType) {
+            , HouseType houseType,Level level) {
         this.address = address;
         this.user = user;
         this.roomInfo = roomInfo;
@@ -54,12 +58,13 @@ public class Room {
         this.area = area;
         this.floor = floor;
         this.houseType = houseType;
+        this.level=level;
     }
 
     public static Room makeRoom(Address address, User user, RoomInfo roomInfo, List<Photo> photos,
                                  String img, int deposit, int monthlyRent, double area, String floor,
-                                 HouseType houseType){
-        Room room = new Room(address, user, roomInfo, photos, img, deposit, monthlyRent, area, floor, houseType);
+                                 HouseType houseType,Level level){
+        Room room = new Room(address, user, roomInfo, photos, img, deposit, monthlyRent, area, floor, houseType,level);
 
         for(int i=0;i<room.photos.size();i++){
             room.photos.get(i).changeRoom(room);

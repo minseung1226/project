@@ -23,5 +23,4 @@ public class Wishlist {
     @JoinColumn(name = "room_id")
     private Room room;
 
-
 }
