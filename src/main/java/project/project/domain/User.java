@@ -18,25 +18,28 @@ public class User {
     @Column(name = "user_id")
     @GeneratedValue
     private Long id;
-    private String loginId;
+    private String email;
     private String name;
     private String pw;
-    private String residentNumber;
+    private String birth;
     private String phone;
     @Embedded
     private Address address;
+
+    private String residentNumber;
 
     @Enumerated
     private UserStatus userStatus;
 
     public User( String loginId, String name, String pw
-            , String residentNumber, String phone, Address address,UserStatus userStatus) {
-        this.loginId = loginId;
+            , String birth, String phone, Address address,UserStatus userStatus,String residentNumber) {
+        this.email = loginId;
         this.name = name;
         this.pw = pw;
-        this.residentNumber = residentNumber;
+        this.birth = birth;
         this.phone = phone;
         this.address = address;
         this.userStatus=userStatus;
+        this.residentNumber=residentNumber;
     }
 }

@@ -36,8 +36,8 @@ public class RoomTest {
         options.add(Option.냉장고);
 
         //User 생성
-        User user = new User("alstmd", "강민승", "123", "971226-1912624"
-                , "010-5564-5417", new Address("부천시 심곡동 408-7", "308호"),UserStatus.일반);
+        User user = new User("alstmd", "강민승", "123", "971226"
+                , "010-5564-5417", new Address("부천시 심곡동 408-7", "308호"),UserStatus.일반,"1912624");
 
         //RoomInfo 생성
         RoomInfo roomInfo = RoomInfo.makeRoomInfo(RoomType.원룸, 7.5, maintenanceLists,

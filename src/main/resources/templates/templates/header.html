@@ -11,13 +11,16 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-black">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Home And Room</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ms-auto mb-3 mb-md-0">
                     <li class="nav-item">
-                        <button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">로그인</button>
+                        <button type="button" class="nav-link active" data-bs-toggle="modal"
+                                data-bs-target="#loginModal" data-bs-whatever="@mdo">로그인
+                        </button>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">마이페이지</a>
@@ -35,12 +38,12 @@
         </div>
     </nav>
     <style>
-        .nav-item{
+        .nav-item {
             padding-left: 10px;
         }
     </style>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -50,23 +53,72 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="recipient-name" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="loginEmail" placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="recipient-name1" placeholder="암호">
+                            <input type="password" class="form-control" id="loginPw" placeholder="암호">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="submit" class="form-control btn btn-secondary" value="로그인">
                         </div>
                     </form>
+                    <div class="mb-3 px-3" style="text-align: center">
+                        <a href="#">아이디 찾기 |</a>
+                        <a href="#"> 비밀번호 찾기</a>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-
+                    <div class="px-3">
+                        <button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#joinModal"
+                                data-bs-whatever="@mdo">회원가입
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <div class="modal fade" id="joinModal" tabindex="-1" aria-labelledby="joinModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel2">Join</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body b">
+                    <form>
+                        <div class="mb-3 px-3">
+                            <input type="text" class="form-control" id="name" placeholder="이름">
+                        </div>
+                        <div class="mb-3 px-3">
+                            <input type="text" class="form-control" id="joinEmail" placeholder="이메일 또는 아이디">
+                        </div>
+                        <div class="mb-3 px-3">
+                            <input type="password" class="form-control" id="joinPw"  placeholder="암호">
+                        </div>
+                        <div class="mb-3 px-3">
+                            <input type="password" class="form-control" id="pw2"  placeholder="암호확인">
+                        </div>
+                        <div class="mb-3 px-3">
+                            <input type="submit" class="form-control btn btn-secondary" value="가입">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 두 번째 모달창이 열리기 전에 이전에 열려있던 모달창이 있는지 확인하고 닫습니다.
+        $('#joinModal').on('show.bs.modal', function (e) {
+            if ($('.modal.show').length > 0) {
+                $('.modal.show').modal('hide');
+            }
+        });
+    </script>
 </header>
 
 </body>
