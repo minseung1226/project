@@ -100,7 +100,7 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="이름">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="joinEmail" name="name" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="joinEmail" name="joinEmail" placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="password" class="form-control" id="joinPw"  name="joinPw" placeholder="암호 8자리 이상(문자+숫자+특수기호)">
@@ -122,12 +122,11 @@
     <script>
         function validEmail(email){
             let check=/\S+@\S+\.\S+/;
-            check.test(email);
+            return check.test(email);
         }
         function validPw(pw){
-            let check=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-            let chec2="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$"
-            chec2.test(pw);
+            let check=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
+            return check.test(pw);
         }
 
         $('#join_form').submit(function (e){
@@ -136,10 +135,9 @@
             let err='';
             let name = formData.get('name');
             let joinEmail = formData.get('joinEmail');
-            let joinPw = formData.get('joinPw');
+            let joinPw =formData.get('joinPw');
             let pw2 = formData.get("pw2");
 
-            alert(joinEmail);
             if(name==''){
                 err="이름을 입력해 주세요";
             }
@@ -158,6 +156,7 @@
                 $('#error_div').text(err);
                 return;
             }
+            alert("성공");
             $.ajax({
                 type:'POST',
                 url:'',
