@@ -41,6 +41,10 @@
         .nav-item {
             padding-left: 10px;
         }
+
+        #error_div{
+            display:none;
+        }
     </style>
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
@@ -51,7 +55,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="login_form">
                         <div class="mb-3 px-3">
                             <input type="text" class="form-control" id="loginEmail" placeholder="이메일 또는 아이디">
                         </div>
@@ -87,19 +91,22 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel2">Join</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body b">
-                    <form>
+                <div class="modal-body">
+                    <div class="mb-3 px-3">
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10" id="error_div">안뇽</div>
+                    </div>
+                    <form id="join_form">
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="name" placeholder="이름">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="이름">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="joinEmail" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="joinEmail" name="name" placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="password" class="form-control" id="joinPw"  placeholder="암호">
+                            <input type="password" class="form-control" id="joinPw"  name="joinPw" placeholder="암호 8자리 이상(문자+숫자+특수기호)">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="password" class="form-control" id="pw2"  placeholder="암호확인">
+                            <input type="password" class="form-control" id="pw2"  name="pw2" placeholder="암호확인">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="submit" class="form-control btn btn-secondary" value="가입">
@@ -111,14 +118,82 @@
         </div>
     </div>
 
-<!--    <script>
-        // 두 번째 모달창이 열리기 전에 이전에 열려있던 모달창이 있는지 확인하고 닫습니다.
-        $('#joinModal').on('show.bs.modal', function (e) {
-            if ($('.modal.show').length > 0) {
-                $('.modal.show').modal('hide');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function validEmail(email){
+            let check=/\S+@\S+\.\S+/;
+            check.test(email);
+        }
+        function validPw(pw){
+            let check=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+            let chec2="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$"
+            chec2.test(pw);
+        }
+
+        $('#join_form').submit(function (e){
+            e.preventDefault();
+            const formData=new FormData(this);
+            let err='';
+            let name = formData.get('name');
+            let joinEmail = formData.get('joinEmail');
+            let joinPw = formData.get('joinPw');
+            let pw2 = formData.get("pw2");
+
+            alert(joinEmail);
+            if(name==''){
+                err="이름을 입력해 주세요";
             }
-        });
-    </script>-->
+            else if(!validEmail(joinEmail)){
+                err="올바른 이메일 형식을 입력해주세요";
+            }
+            else if(!validPw(joinPw)){
+                err="비밀번호의 형식이 틀렸습니다.";
+            }
+            else if(joinPw!=pw2){
+                err="비밀번호가 일치하지 않습니다.";
+            }
+
+            if(err!=''){
+                $('#error_div').show();
+                $('#error_div').text(err);
+                return;
+            }
+            $.ajax({
+                type:'POST',
+                url:'',
+                data:formData,
+                dataType:'json',
+                processData: false,
+                contentType:false
+            })
+                .done(function (data){
+
+                })
+                .fail(function (error){
+
+                })
+        })
+
+        $('login_form').submit(function (e){
+            e.preventDefault();
+            const formData=new FormData(this);
+
+            $.ajax({
+                type:'POST',
+                url:'',
+                data:formData,
+                dataType:'json',
+                processData: false,
+                contentType: false
+                })
+                .done(function (data){
+
+                                })
+                .fail(function (error){
+
+                                })
+        })
+    </script>
 </header>
 
 </body>

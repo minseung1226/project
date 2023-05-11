@@ -31,8 +31,11 @@ public class User {
     @Enumerated
     private UserStatus userStatus;
 
+    private String pimg;
+
     public User( String loginId, String name, String pw
-            , String birth, String phone, Address address,UserStatus userStatus,String residentNumber) {
+            , String birth, String phone, Address address,UserStatus userStatus,String residentNumber,
+                 String pimg) {
         this.email = loginId;
         this.name = name;
         this.pw = pw;
@@ -41,5 +44,6 @@ public class User {
         this.address = address;
         this.userStatus=userStatus;
         this.residentNumber=residentNumber;
+        this.pimg=pimg;
     }
 }
