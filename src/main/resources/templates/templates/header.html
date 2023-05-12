@@ -119,7 +119,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         function validEmail(email){
             let check=/\S+@\S+\.\S+/;
             return check.test(email);
@@ -139,16 +139,16 @@
             let pw2 = formData.get("pw2");
 
             if(name==''){
-                err="이름을 입력해 주세요";
+                err=[[#{name}]];
             }
             else if(!validEmail(joinEmail)){
-                err="올바른 이메일 형식을 입력해주세요";
+                err=[[#{joinEmail}]];
             }
             else if(!validPw(joinPw)){
-                err="비밀번호의 형식이 틀렸습니다.";
+                err=[[#{joinPw}]];
             }
             else if(joinPw!=pw2){
-                err="비밀번호가 일치하지 않습니다.";
+                err=[[#{notAccordPw}]];
             }
 
             if(err!=''){
@@ -156,20 +156,26 @@
                 $('#error_div').text(err);
                 return;
             }
-            alert("성공");
             $.ajax({
                 type:'POST',
-                url:'',
+                url:'/join',
                 data:formData,
-                dataType:'json',
+                dataType:'text',
                 processData: false,
-                contentType:false
+                contentType:'application/json'
             })
                 .done(function (data){
-
+                    if(data=="ok"){
+                        alert(data)
+                    }
+                    else{
+                        alert(data);
+                        $('#error_div').show();
+                        $('#error_div').text([[#{data}]]);
+                    }
                 })
                 .fail(function (error){
-
+                    alert(error);
                 })
         })
 

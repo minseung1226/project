@@ -46,4 +46,10 @@ public class User {
         this.residentNumber=residentNumber;
         this.pimg=pimg;
     }
+
+    public User(String email, String name, String pw) {
+        this.email = email;
+        this.name = name;
+        this.pw = pw;
+    }
 }

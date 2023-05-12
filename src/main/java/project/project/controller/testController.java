@@ -13,8 +13,5 @@ public class testController {
         return "home";
     }
 
-    @PostMapping("/join")
-    public String join(UserJoinForm userJoinForm){
-        return null;
-    }
+
 }
