@@ -42,7 +42,7 @@
             padding-left: 10px;
         }
 
-        #error_div{
+        .error_div{
             display:none;
         }
     </style>
@@ -55,6 +55,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3 px-3">
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="login_error"> 검증 에러 </div>
+                    </div>
                     <form id="login_form">
                         <div class="mb-3 px-3">
                             <input type="text" class="form-control" id="loginEmail" placeholder="이메일 또는 아이디">
@@ -93,7 +96,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 px-3">
-                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10" id="error_div">안뇽</div>
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="join_error"> 검증 에러 </div>
                     </div>
                     <form id="join_form">
                         <div class="mb-3 px-3">
@@ -153,8 +156,8 @@
             }
 
             if(err!=''){
-                $('#error_div').show();
-                $('#error_div').text(err);
+                $('#join_error').show();
+                $('#join_error').text(err);
                 return;
             }
             $.ajax({
@@ -181,8 +184,8 @@
                         });
                     }
                     else{
-                        $('#error_div').show();
-                        $('#error_div').text([[#{duplicateEmail}]]);
+                        $('#join_error').show();
+                        $('#join_error').text([[#{duplicateEmail}]]);
 
                     }
                 })
@@ -197,7 +200,7 @@
 
             $.ajax({
                 type:'POST',
-                url:'',
+                url:'/login',
                 data:formData,
                 dataType:'json',
                 processData: false,
