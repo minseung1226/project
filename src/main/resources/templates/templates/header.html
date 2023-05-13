@@ -162,16 +162,17 @@
                 data:formData,
                 dataType:'text',
                 processData: false,
-                contentType:'application/json'
+                contentType:false
             })
                 .done(function (data){
+                    let result =data;
                     if(data=="ok"){
                         alert(data)
                     }
                     else{
-                        alert(data);
                         $('#error_div').show();
-                        $('#error_div').text([[#{data}]]);
+                        $('#error_div').text([[#{${data}}]]);
+
                     }
                 })
                 .fail(function (error){
