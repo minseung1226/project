@@ -119,6 +119,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:inline="javascript">
         function validEmail(email){
             let check=/\S+@\S+\.\S+/;
@@ -167,11 +168,21 @@
                 .done(function (data){
                     let result =data;
                     if(data=="ok"){
-                        alert(data)
+                        Swal.fire({
+                            title: '가입이 완료되었습니다. <br> 로그인 해주세요',
+                            icon: null,
+                            showCancelButton: false,
+                            confirmButtonText: '확인',
+                            confirmButtonColor:`#aaa`
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href="/";
+                            }
+                        });
                     }
                     else{
                         $('#error_div').show();
-                        $('#error_div').text([[#{${data}}]]);
+                        $('#error_div').text([[#{duplicateEmail}]]);
 
                     }
                 })
