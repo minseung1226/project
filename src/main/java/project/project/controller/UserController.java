@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.project.controller.form.UserJoinForm;
 import project.project.controller.form.UserLoginForm;
 import project.project.domain.User;
@@ -46,8 +43,11 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public Boolean login(@Validated UserLoginForm userLoginForm, HttpSession session){
+        log.info("email={}",userLoginForm.getLoginEmail());
+        log.info("pw={}",userLoginForm.getLoginPw());
         User findUser = userRepository.findByEmail(userLoginForm.getLoginEmail());
         if(findUser==null||!findUser.getPw().equals(userLoginForm.getLoginPw())){
+            log.info("아이디나 비밀번호가 일치하지 않는다.");
             return false;
         }
 
@@ -55,5 +55,11 @@ public class UserController {
 
         return true;
 
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 }

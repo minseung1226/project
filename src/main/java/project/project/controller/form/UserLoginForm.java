@@ -10,4 +10,8 @@ public class UserLoginForm {
     private String loginEmail;
     private String loginPw;
 
+    public UserLoginForm(String loginEmail, String loginPw) {
+        this.loginEmail = loginEmail;
+        this.loginPw = loginPw;
+    }
 }

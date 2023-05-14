@@ -18,18 +18,19 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ms-auto mb-3 mb-md-0">
                     <li class="nav-item">
-                        <button type="button" class="nav-link active" data-bs-toggle="modal"
+                        <button th:if="${session.user}==null" type="button" class="nav-link active" data-bs-toggle="modal" id="loginButton"
                                 data-bs-target="#loginModal" data-bs-whatever="@mdo">로그인
                         </button>
+                        <a th:unless="${session.user}==null" class="nav-link active" aria-current="page" href="/logout">로그아웃</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">마이페이지</a>
+                        <a class="nav-link active atag" aria-current="page" href="#">마이페이지</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">찜 목록</a>
+                        <a class="nav-link active atag" aria-current="page" href="#">찜 목록</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">방 내놓기</a>
+                        <a class="nav-link active atag" aria-current="page" href="#">방 내놓기</a>
                     </li>
 
                 </ul>
@@ -46,7 +47,8 @@
             display:none;
         }
     </style>
-
+</header>
+<div th:fragment="header_modal">
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -56,14 +58,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 px-3">
-                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="login_error"> 검증 에러 </div>
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="login_error" th:text="#{loginError}"></div>
                     </div>
                     <form id="login_form">
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="loginEmail" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="loginEmail" name="loginEmail" placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="password" class="form-control" id="loginPw" placeholder="암호">
+                            <input type="password" class="form-control" id="loginPw" name="loginPw" placeholder="암호">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="submit" class="form-control btn btn-secondary" value="로그인">
@@ -124,6 +126,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:inline="javascript">
+
+        $('.nav-link.active.atag').on('click', function(event) {
+            event.preventDefault(); // 기본 동작 취소
+            if ([[${session.user}]]!=null) {
+                location.href = $(this).attr('href');
+            } else {
+                $('#loginButton').click();
+            }
+        });
+
         function validEmail(email){
             let check=/\S+@\S+\.\S+/;
             return check.test(email);
@@ -194,7 +206,8 @@
                 })
         })
 
-        $('login_form').submit(function (e){
+        $('#login_form').submit(function (e){
+
             e.preventDefault();
             const formData=new FormData(this);
 
@@ -207,14 +220,19 @@
                 contentType: false
                 })
                 .done(function (data){
-
+                    if(data){
+                        location.href="/";
+                    }
+                    else{
+                        $('#login_error').show();
+                    }
                                 })
                 .fail(function (error){
 
                                 })
         })
     </script>
-</header>
+</div>
 
 </body>
 </html>
