@@ -18,7 +18,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ms-auto mb-3 mb-md-0">
                     <li class="nav-item">
-                        <button th:if="${session.user}==null" type="button" class="nav-link active" data-bs-toggle="modal" id="loginButton"
+                        <button th:if="${session.user}==null" type="button" class="nav-link active"
+                                data-bs-toggle="modal" id="loginButton"
                                 data-bs-target="#loginModal" data-bs-whatever="@mdo">로그인
                         </button>
                         <a th:unless="${session.user}==null" class="nav-link active" aria-current="page" href="/logout">로그아웃</a>
@@ -43,12 +44,17 @@
             padding-left: 10px;
         }
 
-        .error_div{
-            display:none;
+        .error_div {
+            display: none;
         }
     </style>
 </header>
 <div th:fragment="header_modal">
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+            integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
+            crossorigin="anonymous"></script>
+
+
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -58,11 +64,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 px-3">
-                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="login_error" th:text="#{loginError}"></div>
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div"
+                             id="login_error" th:text="#{loginError}"></div>
                     </div>
                     <form id="login_form">
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="loginEmail" name="loginEmail" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="loginEmail" name="loginEmail"
+                                   placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="password" class="form-control" id="loginPw" name="loginPw" placeholder="암호">
@@ -71,6 +79,9 @@
                             <input type="submit" class="form-control btn btn-secondary" value="로그인">
                         </div>
                     </form>
+                    <div class="mb-3 px-3">
+                        <input type="button" class="form-control btn btn-secondary"  onclick="kakaoLogin()" value="카카오톡으로 로그인">
+                    </div>
                     <div class="mb-3 px-3" style="text-align: center">
                         <a href="#">아이디 찾기 |</a>
                         <a href="#"> 비밀번호 찾기</a>
@@ -98,20 +109,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 px-3">
-                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div" id="join_error"> 검증 에러 </div>
+                        <div class="bg-danger p-3 form-control text-center text-danger bg-opacity-10 error_div"
+                             id="join_error"> 검증 에러
+                        </div>
                     </div>
                     <form id="join_form">
                         <div class="mb-3 px-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="이름">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="text" class="form-control" id="joinEmail" name="joinEmail" placeholder="이메일 또는 아이디">
+                            <input type="text" class="form-control" id="joinEmail" name="joinEmail"
+                                   placeholder="이메일 또는 아이디">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="password" class="form-control" id="joinPw"  name="joinPw" placeholder="암호 8자리 이상(문자+숫자+특수기호)">
+                            <input type="password" class="form-control" id="joinPw" name="joinPw"
+                                   placeholder="암호 8자리 이상(문자+숫자+특수기호)">
                         </div>
                         <div class="mb-3 px-3">
-                            <input type="password" class="form-control" id="pw2"  name="pw2" placeholder="암호확인">
+                            <input type="password" class="form-control" id="pw2" name="pw2" placeholder="암호확인">
                         </div>
                         <div class="mb-3 px-3">
                             <input type="submit" class="form-control btn btn-secondary" value="가입">
@@ -126,111 +141,120 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:inline="javascript">
+        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+        Kakao.init('aad77ce5fb25c098c085b83a13dbad40');
 
-        $('.nav-link.active.atag').on('click', function(event) {
+        function kakaoLogin(){
+            Kakao.Auth.authorize({
+                redirectUri:`http://localhost:7080`
+            });
+        }
+
+
+        $('.nav-link.active.atag').on('click', function (event) {
             event.preventDefault(); // 기본 동작 취소
-            if ([[${session.user}]]!=null) {
+            if ([[${session.user}]] != null) {
                 location.href = $(this).attr('href');
             } else {
                 $('#loginButton').click();
             }
         });
 
-        function validEmail(email){
-            let check=/\S+@\S+\.\S+/;
+        function validEmail(email) {
+            let check = /\S+@\S+\.\S+/;
             return check.test(email);
         }
-        function validPw(pw){
-            let check=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
+
+        function validPw(pw) {
+            let check = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
             return check.test(pw);
         }
 
-        $('#join_form').submit(function (e){
+        $('#join_form').submit(function (e) {
             e.preventDefault();
-            const formData=new FormData(this);
-            let err='';
+            const formData = new FormData(this);
+            let err = '';
             let name = formData.get('name');
             let joinEmail = formData.get('joinEmail');
-            let joinPw =formData.get('joinPw');
+            let joinPw = formData.get('joinPw');
             let pw2 = formData.get("pw2");
 
-            if(name==''){
-                err=[[#{name}]];
-            }
-            else if(!validEmail(joinEmail)){
-                err=[[#{joinEmail}]];
-            }
-            else if(!validPw(joinPw)){
-                err=[[#{joinPw}]];
-            }
-            else if(joinPw!=pw2){
-                err=[[#{notAccordPw}]];
+            if (name == '') {
+                err = [[#{name}]];
+            } else if (!validEmail(joinEmail)) {
+                err = [[#{joinEmail}]];
+            } else if (!validPw(joinPw)) {
+                err = [[#{joinPw}]];
+            } else if (joinPw != pw2) {
+                err = [[#{notAccordPw}]];
             }
 
-            if(err!=''){
+            if (err != '') {
                 $('#join_error').show();
                 $('#join_error').text(err);
                 return;
             }
             $.ajax({
-                type:'POST',
-                url:'/join',
-                data:formData,
-                dataType:'text',
+                type: 'POST',
+                url: '/join',
+                data: formData,
+                dataType: 'text',
                 processData: false,
-                contentType:false
+                contentType: false
             })
-                .done(function (data){
-                    let result =data;
-                    if(data=="ok"){
+                .done(function (data) {
+                    let result = data;
+                    if (data == "ok") {
                         Swal.fire({
                             title: '가입이 완료되었습니다. <br> 로그인 해주세요',
                             icon: null,
                             showCancelButton: false,
                             confirmButtonText: '확인',
-                            confirmButtonColor:`#aaa`
+                            confirmButtonColor: `#aaa`
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                location.href="/";
+                                location.href = "/";
                             }
                         });
-                    }
-                    else{
+                    } else {
                         $('#join_error').show();
                         $('#join_error').text([[#{duplicateEmail}]]);
 
                     }
                 })
-                .fail(function (error){
+                .fail(function (error) {
                     alert(error);
                 })
         })
 
-        $('#login_form').submit(function (e){
+        $('#login_form').submit(function (e) {
 
             e.preventDefault();
-            const formData=new FormData(this);
+            const formData = new FormData(this);
 
             $.ajax({
-                type:'POST',
-                url:'/login',
-                data:formData,
-                dataType:'json',
+                type: 'POST',
+                url: '/login',
+                data: formData,
+                dataType: 'json',
                 processData: false,
                 contentType: false
-                })
-                .done(function (data){
-                    if(data){
-                        location.href="/";
-                    }
-                    else{
+            })
+                .done(function (data) {
+                    if (data) {
+                        location.href = "/";
+                    } else {
                         $('#login_error').show();
                     }
-                                })
-                .fail(function (error){
+                })
+                .fail(function (error) {
 
-                                })
+                })
         })
+
+
+
+
     </script>
 </div>
 
