@@ -80,7 +80,8 @@
                         </div>
                     </form>
                     <div class="mb-3 px-3">
-                        <input type="button" class="form-control btn btn-secondary"  onclick="kakaoLogin()" value="카카오톡으로 로그인">
+                        <input type="button" class="form-control btn btn-secondary" onclick="kakaoLogin()"
+                               value="카카오톡으로 로그인">
                     </div>
                     <div class="mb-3 px-3" style="text-align: center">
                         <a href="#">아이디 찾기 |</a>
@@ -144,9 +145,11 @@
         // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
         Kakao.init('aad77ce5fb25c098c085b83a13dbad40');
 
-        function kakaoLogin(){
+        function kakaoLogin() {
             Kakao.Auth.authorize({
-                redirectUri:`http://localhost:7080`
+                redirectUri: `http://localhost:7080`,
+                scope: 'account_email'
+
             });
         }
 
@@ -251,8 +254,6 @@
 
                 })
         })
-
-
 
 
     </script>
