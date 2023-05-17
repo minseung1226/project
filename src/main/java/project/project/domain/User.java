@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.project.domain.embeded.Address;
+import project.project.domain.enum_type.UserJoinType;
 import project.project.domain.enum_type.UserStatus;
 
 @Entity
@@ -33,9 +34,12 @@ public class User {
 
     private String pimg;
 
+    @Enumerated
+    UserJoinType userJoinType;
+
     public User( String loginId, String name, String pw
             , String birth, String phone, Address address,UserStatus userStatus,String residentNumber,
-                 String pimg) {
+                 String pimg,UserJoinType userJoinType) {
         this.email = loginId;
         this.name = name;
         this.pw = pw;
@@ -45,11 +49,13 @@ public class User {
         this.userStatus=userStatus;
         this.residentNumber=residentNumber;
         this.pimg=pimg;
+        this.userJoinType=userJoinType;
     }
 
-    public User(String email, String name, String pw) {
+    public User(String email, String name, String pw, UserJoinType userJoinType) {
         this.email = email;
         this.name = name;
         this.pw = pw;
+        this.userJoinType=userJoinType;
     }
 }

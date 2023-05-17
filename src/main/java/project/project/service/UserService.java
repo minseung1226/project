@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.project.domain.User;
+import project.project.domain.enum_type.UserJoinType;
 import project.project.repository.UserRepository;
 
 @Service
@@ -15,10 +16,10 @@ public class UserService {
 
 
     @Transactional
-    public boolean userJoin(String name,String email,String pw){
+    public boolean userJoin(String name, String email, String pw, UserJoinType userJoinType){
         User findUser = userRepository.findByEmail(email);
         if(findUser==null){
-            userRepository.save(new User(email,name,pw));
+            userRepository.save(new User(email,name,pw,userJoinType));
             return true;
         }
         return false;
