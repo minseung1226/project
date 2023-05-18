@@ -1,6 +1,9 @@
 package project.project.service;
 
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,28 +15,41 @@ import java.net.URL;
 
 @Service
 public class KakaoService {
+    private final String GRANT_TYPE = "authorization_code";
+    private final String CLIENT_ID = "e380cd44828b9940dbcefe3517d0fb69";
+    private final String REDIRECT_URI = "http://localhost:7080/kakao/login";
+    private final String CLIENT_SECRET="TDoc2ffICcdms6XtnHXgtHwKqKRa4lMg";
+    private final String TOKEN_URI="https://kauth.kakao.com/oauth/token";
 
-    public String getKakaoData(String code){
-        String accessToken="";
-        String refreshToken="";
-        String requestUrl="https://kauth.kakao.com/oauth/token";
-        try{
-            URL url = new URL(requestUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            //POST 요청을 위해 기본값인 false인 setDoOutput을 true 변경
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
+    public String getKakaoToken(String code) {
+        RestTemplate restTemplate = new RestTemplate();
 
-            BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            StringBuffer sb = new StringBuffer();
+        //header 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity request = new HttpEntity(headers);
 
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=e380cd44828b9940dbcefe3517d0fb69"); // REST API 키
-            sb.append("&redirect_uri=http://localhost:7080")
+        //URI 빌더 사용
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(TOKEN_URI)
+                .queryParam("grant_type", GRANT_TYPE)
+                .queryParam("client_id", CLIENT_ID)
+                .queryParam("redirect_uri", REDIRECT_URI)
+                .queryParam("code", code)
+                .queryParam("client_secret", CLIENT_SECRET);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        ResponseEntity<String> response = restTemplate.exchange(
+                uriComponentsBuilder.toUriString(),
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        if(response.getStatusCode()==HttpStatus.OK){
+            return response.getBody();
         }
+        return "error";
+
+
     }
 }

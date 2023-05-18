@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import project.project.controller.form.UserJoinForm;
 import project.project.controller.form.UserLoginForm;
 import project.project.domain.User;
+import project.project.domain.enum_type.UserJoinType;
 import project.project.repository.UserRepository;
+import project.project.service.KakaoService;
 import project.project.service.UserService;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final KakaoService kakaoService;
     private final UserRepository userRepository;
 
 
@@ -32,7 +35,7 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return bindingResult.getFieldErrors().get(0).getField();
         }
-        boolean joinResult = userService.userJoin(form.getName(), form.getJoinEmail(), form.getJoinPw());
+        boolean joinResult = userService.userJoin(form.getName(), form.getJoinEmail(), form.getJoinPw(), UserJoinType.NORMAR);
         if(joinResult){
             return "ok";
         }
@@ -60,6 +63,13 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/kakao/login")
+    public String kakao_login(String code){
+        String kakaoToken = kakaoService.getKakaoToken(code);
+        log.info(kakaoToken);
         return "redirect:/";
     }
 }

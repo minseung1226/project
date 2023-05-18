@@ -147,13 +147,8 @@
 
         function kakaoLogin() {
             Kakao.Auth.authorize({
-                redirectUri: `http://localhost:7080/kakao/login`,
-                scope: 'account_email'
+                redirectUri: `http://localhost:7080/kakao/login`
 
-            }).then(function (response){
-                alert(response);
-            }).catch(function (err){
-                alert(err);
             })
 
         }
