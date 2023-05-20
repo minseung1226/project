@@ -1,20 +1,25 @@
 package project.project.service;
 
+import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import project.project.domain.User;
+import project.project.repository.UserRepository;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class KakaoService {
+    private final UserRepository userRepository;
+
     private final String GRANT_TYPE = "authorization_code";
     private final String CLIENT_ID = "e380cd44828b9940dbcefe3517d0fb69";
     private final String REDIRECT_URI = "http://localhost:7080/kakao/login";
@@ -22,6 +27,25 @@ public class KakaoService {
     private final String TOKEN_URI="https://kauth.kakao.com/oauth/token";
 
 
+    private final String INFO_REQUEST="https://kapi.kakao.com/v2/user/me";
+
+    public User kakaoLogin(String code){
+        String kakaoToken = getKakaoToken(code);
+        String userInfo = getUserInfo(kakaoToken);
+
+        JSONObject jsonObject = new JSONObject(userInfo);
+        String id = jsonObject.get("id").toString();
+
+        Optional<User> findUser = userRepository.findByKakaoId(id);
+
+        if(findUser.isEmpty()){
+            JSONObject kakao_account = (JSONObject) jsonObject.get("kakao_account");
+            new User(kakao_account.has("email")?kakao_account.get("email"):null,
+                    kakao_account.has("birthday")?kakao_account.get("birthday"):null,
+                    kakao_account.has(""))
+        }
+
+    }
     public String getKakaoToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -51,5 +75,23 @@ public class KakaoService {
         return "error";
 
 
+    }
+
+    public String getUserInfo(String token){
+        String jsonData="";
+
+        try {
+            URL url = new URL(INFO_REQUEST + "?access_token=" + token);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            String line;
+            while ((line=br.readLine())!=null){
+                jsonData+=line;
+            }
+
+            return jsonData;
+        } catch (Exception e) {
+            return "err";
+        }
     }
 }

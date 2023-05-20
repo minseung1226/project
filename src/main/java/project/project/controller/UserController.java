@@ -4,7 +4,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -39,18 +40,14 @@ public class UserController {
         if(joinResult){
             return "ok";
         }
-        log.info("중복 이메일");
         return "duplicateEmail";
     }
 
     @ResponseBody
     @PostMapping("/login")
     public Boolean login(@Validated UserLoginForm userLoginForm, HttpSession session){
-        log.info("email={}",userLoginForm.getLoginEmail());
-        log.info("pw={}",userLoginForm.getLoginPw());
         User findUser = userRepository.findByEmail(userLoginForm.getLoginEmail());
         if(findUser==null||!findUser.getPw().equals(userLoginForm.getLoginPw())){
-            log.info("아이디나 비밀번호가 일치하지 않는다.");
             return false;
         }
 
@@ -68,8 +65,21 @@ public class UserController {
 
     @GetMapping("/kakao/login")
     public String kakao_login(String code){
+
+
+        /*log.info("code={}",code);
         String kakaoToken = kakaoService.getKakaoToken(code);
-        log.info(kakaoToken);
+        JSONObject jsonObject = new JSONObject(kakaoToken);
+        String accessToken = jsonObject.get("access_token").toString();
+        log.info("access_token={}",accessToken);
+
+        String userInfo = kakaoService.getUserInfo(accessToken);
+        JSONObject userInfoJson = new JSONObject(userInfo);
+        log.info("userInfoJson={}",userInfoJson.toString());
+        JSONObject kakaoAccountJson = (JSONObject) userInfoJson.get("kakao_account");
+        log.info(String.valueOf(kakaoAccountJson));
+        String email = kakaoAccountJson.get("email").toString();
+        log.info("email={}",email);*/
         return "redirect:/";
     }
 }

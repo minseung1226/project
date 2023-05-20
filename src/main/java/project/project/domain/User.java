@@ -30,9 +30,11 @@ public class User {
     private String residentNumber;
 
     @Enumerated
-    private UserStatus userStatus;
+    private UserStatus userStatus=UserStatus.일반;
 
     private String pimg;
+
+    private String kakaoId;
 
     @Enumerated
     UserJoinType userJoinType;
@@ -57,5 +59,13 @@ public class User {
         this.name = name;
         this.pw = pw;
         this.userJoinType=userJoinType;
+    }
+
+    public User(String email, String birth, String pimg, String kakaoId, UserJoinType userJoinType) {
+        this.email = email;
+        this.birth = birth;
+        this.pimg = pimg;
+        this.kakaoId = kakaoId;
+        this.userJoinType = userJoinType;
     }
 }
