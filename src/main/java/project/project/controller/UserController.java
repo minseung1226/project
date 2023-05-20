@@ -66,8 +66,14 @@ public class UserController {
     @GetMapping("/kakao/login")
     public String kakao_login(String code){
 
+        User user = kakaoService.kakaoLogin(code);
 
-        /*log.info("code={}",code);
+        log.info("kakao_id={}",user.getKakaoId());
+        log.info("pimg={}",user.getPimg());
+        log.info("email={}",user.getEmail());
+        log.info("id={}",user.getId());
+
+/*        log.info("code={}",code);
         String kakaoToken = kakaoService.getKakaoToken(code);
         JSONObject jsonObject = new JSONObject(kakaoToken);
         String accessToken = jsonObject.get("access_token").toString();

@@ -1,12 +1,14 @@
 package project.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.valves.JsonAccessLogValve;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.project.domain.User;
+import project.project.domain.enum_type.UserJoinType;
 import project.project.repository.UserRepository;
 
 import java.io.*;
@@ -31,7 +33,7 @@ public class KakaoService {
 
     public User kakaoLogin(String code){
         String kakaoToken = getKakaoToken(code);
-        String userInfo = getUserInfo(kakaoToken);
+        String userInfo = getUserInfo(new JSONObject(kakaoToken).getString("access_token"));
 
         JSONObject jsonObject = new JSONObject(userInfo);
         String id = jsonObject.get("id").toString();
@@ -40,10 +42,16 @@ public class KakaoService {
 
         if(findUser.isEmpty()){
             JSONObject kakao_account = (JSONObject) jsonObject.get("kakao_account");
-            new User(kakao_account.has("email")?kakao_account.get("email"):null,
-                    kakao_account.has("birthday")?kakao_account.get("birthday"):null,
-                    kakao_account.has(""))
+            User user = new User(kakao_account.has("email") ? kakao_account.getString("email") : null,
+                    kakao_account.has("birthday") ? kakao_account.getString("birthday") : null,
+                    kakao_account.has("profile") ? kakao_account.getJSONObject("profile").getString("profile_image_url") : null,
+                    id,
+                    UserJoinType.KAKAO);
+            userRepository.save(user);
+            return user;
         }
+
+        return findUser.get();
 
     }
     public String getKakaoToken(String code) {
@@ -69,6 +77,7 @@ public class KakaoService {
                 String.class
         );
 
+
         if(response.getStatusCode()==HttpStatus.OK){
             return response.getBody();
         }
@@ -91,6 +100,7 @@ public class KakaoService {
 
             return jsonData;
         } catch (Exception e) {
+            e.printStackTrace();
             return "err";
         }
     }
