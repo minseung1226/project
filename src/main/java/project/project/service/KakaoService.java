@@ -5,6 +5,7 @@ import org.apache.catalina.valves.JsonAccessLogValve;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.project.domain.User;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class KakaoService {
     private final UserRepository userRepository;
 
@@ -31,14 +33,14 @@ public class KakaoService {
 
     private final String INFO_REQUEST="https://kapi.kakao.com/v2/user/me";
 
-    public User kakaoLogin(String code){
+    public Long kakaoLogin(String code){
         String kakaoToken = getKakaoToken(code);
         String userInfo = getUserInfo(new JSONObject(kakaoToken).getString("access_token"));
 
         JSONObject jsonObject = new JSONObject(userInfo);
         String id = jsonObject.get("id").toString();
 
-        Optional<User> findUser = userRepository.findByKakaoId(id);
+        Optional<User> findUser = userRepository.findByKakaoId(id,UserJoinType.KAKAO);
 
         if(findUser.isEmpty()){
             JSONObject kakao_account = (JSONObject) jsonObject.get("kakao_account");
@@ -48,10 +50,11 @@ public class KakaoService {
                     id,
                     UserJoinType.KAKAO);
             userRepository.save(user);
-            return user;
+            System.out.println("user.joinType="+user.getUserJoinType());
+            return user.getId();
         }
 
-        return findUser.get();
+        return findUser.get().getId();
 
     }
     public String getKakaoToken(String code) {
@@ -101,7 +104,7 @@ public class KakaoService {
             return jsonData;
         } catch (Exception e) {
             e.printStackTrace();
-            return "err";
+            return "error";
         }
     }
 }

@@ -25,7 +25,7 @@
                         <a th:unless="${session.user}==null" class="nav-link active" aria-current="page" href="/logout">로그아웃</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active atag" aria-current="page" href="#">마이페이지</a>
+                        <a class="nav-link active atag" aria-current="page" href="/user/mypage">마이페이지</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active atag" aria-current="page" href="#">찜 목록</a>
@@ -48,6 +48,18 @@
             display: none;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:inline="javascript">
+        $('.nav-link.active.atag').on('click', function (event) {
+            event.preventDefault(); // 기본 동작 취소
+            if ([[${session.user}]] != null) {
+                location.href = $(this).attr('href');
+            } else {
+                $('#loginButton').click();
+            }
+        });
+    </script>
 </header>
 <div th:fragment="header_modal">
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
@@ -80,8 +92,8 @@
                         </div>
                     </form>
                     <div class="mb-3 px-3">
-                        <input type="button" class="form-control btn btn-secondary" onclick="kakaoLogin()"
-                               value="카카오톡으로 로그인">
+                        <a href="#" onclick="kakaoLogin()"><img th:src="@{/img/kakao_login_medium_wide.png}" width="100%"></a>
+
                     </div>
                     <div class="mb-3 px-3" style="text-align: center">
                         <a href="#">아이디 찾기 |</a>
@@ -139,8 +151,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script th:inline="javascript">
         // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
         Kakao.init('aad77ce5fb25c098c085b83a13dbad40');
@@ -153,14 +164,7 @@
         }
 
 
-        $('.nav-link.active.atag').on('click', function (event) {
-            event.preventDefault(); // 기본 동작 취소
-            if ([[${session.user}]] != null) {
-                location.href = $(this).attr('href');
-            } else {
-                $('#loginButton').click();
-            }
-        });
+
 
         function validEmail(email) {
             let check = /\S+@\S+\.\S+/;

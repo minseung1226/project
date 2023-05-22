@@ -16,14 +16,15 @@ public class UserService {
 
 
     @Transactional
-    public boolean userJoin(String name, String email, String pw, UserJoinType userJoinType){
-        User findUser = userRepository.findByEmail(email);
+    public boolean userJoin(String name, String email, String pw){
+        User findUser = userRepository.findByEmail(email,UserJoinType.NORMAR);
         if(findUser==null){
-            userRepository.save(new User(email,name,pw,userJoinType));
+            userRepository.save(new User(email,name,pw));
             return true;
         }
         return false;
     }
+
 
 
 }

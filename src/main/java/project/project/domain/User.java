@@ -37,28 +37,12 @@ public class User {
     private String kakaoId;
 
     @Enumerated
-    UserJoinType userJoinType;
+    UserJoinType userJoinType=UserJoinType.NORMAR;
 
-    public User( String loginId, String name, String pw
-            , String birth, String phone, Address address,UserStatus userStatus,String residentNumber,
-                 String pimg,UserJoinType userJoinType) {
-        this.email = loginId;
-        this.name = name;
-        this.pw = pw;
-        this.birth = birth;
-        this.phone = phone;
-        this.address = address;
-        this.userStatus=userStatus;
-        this.residentNumber=residentNumber;
-        this.pimg=pimg;
-        this.userJoinType=userJoinType;
-    }
-
-    public User(String email, String name, String pw, UserJoinType userJoinType) {
+    public User(String email, String name, String pw) {
         this.email = email;
         this.name = name;
         this.pw = pw;
-        this.userJoinType=userJoinType;
     }
 
     public User(String email, String birth, String pimg, String kakaoId, UserJoinType userJoinType) {

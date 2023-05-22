@@ -1,14 +1,11 @@
 package project.project.controller;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.project.controller.form.UserJoinForm;
@@ -19,7 +16,7 @@ import project.project.repository.UserRepository;
 import project.project.service.KakaoService;
 import project.project.service.UserService;
 
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,14 +26,13 @@ public class UserController {
     private final KakaoService kakaoService;
     private final UserRepository userRepository;
 
-
     @PostMapping("/join")
     @ResponseBody
     public String join(@Validated UserJoinForm form,BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return bindingResult.getFieldErrors().get(0).getField();
         }
-        boolean joinResult = userService.userJoin(form.getName(), form.getJoinEmail(), form.getJoinPw(), UserJoinType.NORMAR);
+        boolean joinResult = userService.userJoin(form.getName(), form.getJoinEmail(), form.getJoinPw());
         if(joinResult){
             return "ok";
         }
@@ -46,15 +42,12 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public Boolean login(@Validated UserLoginForm userLoginForm, HttpSession session){
-        User findUser = userRepository.findByEmail(userLoginForm.getLoginEmail());
+        User findUser = userRepository.findByEmail(userLoginForm.getLoginEmail(),UserJoinType.NORMAR);
         if(findUser==null||!findUser.getPw().equals(userLoginForm.getLoginPw())){
             return false;
         }
-
-        session.setAttribute("user",findUser);
-
+        session.setAttribute("user",findUser.getId());
         return true;
-
     }
 
     @GetMapping("/logout")
@@ -64,28 +57,18 @@ public class UserController {
     }
 
     @GetMapping("/kakao/login")
-    public String kakao_login(String code){
-
-        User user = kakaoService.kakaoLogin(code);
-
-        log.info("kakao_id={}",user.getKakaoId());
-        log.info("pimg={}",user.getPimg());
-        log.info("email={}",user.getEmail());
-        log.info("id={}",user.getId());
-
-/*        log.info("code={}",code);
-        String kakaoToken = kakaoService.getKakaoToken(code);
-        JSONObject jsonObject = new JSONObject(kakaoToken);
-        String accessToken = jsonObject.get("access_token").toString();
-        log.info("access_token={}",accessToken);
-
-        String userInfo = kakaoService.getUserInfo(accessToken);
-        JSONObject userInfoJson = new JSONObject(userInfo);
-        log.info("userInfoJson={}",userInfoJson.toString());
-        JSONObject kakaoAccountJson = (JSONObject) userInfoJson.get("kakao_account");
-        log.info(String.valueOf(kakaoAccountJson));
-        String email = kakaoAccountJson.get("email").toString();
-        log.info("email={}",email);*/
+    public String kakao_login(String code,HttpSession session){
+        Long id = kakaoService.kakaoLogin(code);
+        session.setAttribute("user",id);
         return "redirect:/";
+    }
+
+    @GetMapping("/user/mypage")
+    public String mypage(HttpSession session, Model model){
+        Object id = session.getAttribute("user");
+        Optional<User> findUser = userRepository.findById((Long) id);
+        model.addAttribute("user",findUser.get());
+
+        return "mypage/mypage";
     }
 }
