@@ -69,6 +69,6 @@ public class UserController {
         Optional<User> findUser = userRepository.findById((Long) id);
         model.addAttribute("user",findUser.get());
 
-        return "mypage/mypage";
+        return "account";
     }
 }
