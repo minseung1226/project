@@ -63,12 +63,12 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/user/mypage")
+    @GetMapping("/mypage/account")
     public String mypage(HttpSession session, Model model){
         Object id = session.getAttribute("user");
         Optional<User> findUser = userRepository.findById((Long) id);
         model.addAttribute("user",findUser.get());
 
-        return "account";
+        return "mypage/account";
     }
 }

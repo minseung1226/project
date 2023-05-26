@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html th:replace="~{mypage :: template('pickList',~{::content})}"
+<html th:replace="~{mypage/template :: mypageTemplate('account',~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 <body>
 <section>
-    <div class="ad">데이터</div>
+    <div class="container" th:fragment="content" >
+        <div class="row">
+
+        </div>
+    </div>
 </section>
 </body>
 </html>

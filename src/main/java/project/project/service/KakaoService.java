@@ -36,7 +36,6 @@ public class KakaoService {
     public Long kakaoLogin(String code){
         String kakaoToken = getKakaoToken(code);
         String userInfo = getUserInfo(new JSONObject(kakaoToken).getString("access_token"));
-
         JSONObject jsonObject = new JSONObject(userInfo);
         String id = jsonObject.get("id").toString();
 
