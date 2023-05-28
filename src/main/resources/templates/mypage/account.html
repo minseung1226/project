@@ -1,14 +1,78 @@
 <!DOCTYPE html>
 <html th:replace="~{mypage/template :: mypageTemplate('account',~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
+<style>
+
+</style>
 <head>
 </head>
 <body>
 <section>
-    <div class="container" th:fragment="content" >
-        <div class="row">
+    <div class="container" th:fragment="content">
+        <h5 class="fw-bold"> 내 정보</h5>
+        <form>
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        프로필 사진
+                    </th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>
+                        이름
+                    </th>
+                    <td>
+                        <input class="form-control" name="name">
+                    </td>
+                </tr>
+                <tr>
+                    <th>휴대폰 번호</th>
+                    <td>
+                        <div class="row g-3">
+                            <div class="col">
+                                <select class="form-select" aria-label="phoneNumber">
+                                    <option selected value="010">010</option>
+                                </select>
+                            </div>
 
-        </div>
+                            <div class="col">
+                                <input class="form-control">
+                            </div>
+
+                            <div class="col">
+                                <input class="form-control">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>이메일 주소</th>
+                    <td>
+                        <input class="form-control">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <form>
+            <h5> 비밀번호 변경</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>현재 비밀번호</th>
+                    <td><input type="password" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>새 비밀번호</th>
+                    <td><input type="password" class="form-control"> </td>
+                </tr>
+                <tr>
+                    <th>비밀번호 확인</th>
+                    <td><input type="password" class="form-control"> </td>
+                </tr>
+            </table>
+        </form>
     </div>
 </section>
 </body>
