@@ -11,12 +11,19 @@
     <div class="container" th:fragment="content">
         <h5 class="fw-bold"> 내 정보</h5>
         <form>
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-1">
                 <tr>
-                    <th>
+                    <th class="text-nowrap">
                         프로필 사진
                     </th>
-                    <td></td>
+                    <td>
+                        <img class="rounded mb-2" src="https://img.peterpanz.com/images/img-profile-user.png"
+                             style="height: 80px;width: 80px;">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" style="display: none;">
+                            <label class="custom-file-label btn btn-secondary opacity-75" for="customFile">사진 선택</label>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th>
@@ -43,10 +50,21 @@
                             <div class="col">
                                 <input class="form-control">
                             </div>
+
+                            <div class="col">
+                                <input type="submit" class="btn btn-secondary opacity-75" value="인증번호 발송">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-3">
+                                <input class="form-control">
+                            </div>
+                            <div class="col-3">
+                                <input type="submit" class="btn btn-secondary opacity-75" value="인증하기">
+                            </div>
                         </div>
                     </td>
                 </tr>
-
                 <tr>
                     <th>이메일 주소</th>
                     <td>
@@ -54,24 +72,46 @@
                     </td>
                 </tr>
             </table>
+            <div class="row mb-3">
+                <div class="col-9"></div>
+                <div class="col-3">
+                    <div class="d-flex justify-content-end">
+                        <span>
+                           <input type="submit" class="btn btn-secondary btn-lg opacity-75" value="정보 수정">
+                        </span>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <form>
-            <h5> 비밀번호 변경</h5>
-            <table class="table table-bordered">
+            <h5 class="fw-bold"> 비밀번호 변경</h5>
+            <table class="table table-bordered mb-1">
                 <tr>
                     <th>현재 비밀번호</th>
-                    <td><input type="password" class="form-control"></td>
+                    <td>
+                        <input type="password" class="form-control">
+                    </td>
                 </tr>
                 <tr>
                     <th>새 비밀번호</th>
-                    <td><input type="password" class="form-control"> </td>
+                    <td><input type="password" class="form-control"></td>
                 </tr>
                 <tr>
                     <th>비밀번호 확인</th>
-                    <td><input type="password" class="form-control"> </td>
+                    <td><input type="password" class="form-control"></td>
                 </tr>
             </table>
+            <div class="row mb-3">
+                <div class="col-9"></div>
+                <div class="col-3">
+                    <div class="d-flex justify-content-end">
+                        <span>
+                           <input type="submit" class="btn btn-secondary btn-lg opacity-75" value="비밀번호 변경">
+                        </span>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </section>
