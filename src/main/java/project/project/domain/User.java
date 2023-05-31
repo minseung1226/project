@@ -29,14 +29,14 @@ public class User {
 
     private String residentNumber;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus=UserStatus.일반;
 
     private String pimg;
 
     private String kakaoId;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     UserJoinType userJoinType=UserJoinType.NORMAR;
 
     public User(String email, String name, String pw) {

@@ -10,15 +10,20 @@
 <section>
     <div class="container" th:fragment="content">
         <h5 class="fw-bold"> 내 정보</h5>
-        <form>
+        <form method="post" action="/user/modify">
             <table class="table table-bordered mb-1">
                 <tr>
                     <th class="text-nowrap">
                         프로필 사진
                     </th>
                     <td>
-                        <img class="rounded mb-2" src="https://img.peterpanz.com/images/img-profile-user.png"
-                             style="height: 80px;width: 80px;">
+                        <img th:if="${user.pimg==null}" class="rounded mb-2" src="https://img.peterpanz.com/images/img-profile-user.png"
+                             style="height: 100px;width: 100px;">
+
+                        <img th:unless="${user.pimg==null}" class="rounded mb-2"
+                             th:src="${user.userJoinType.toString()=='KAKAO'}?${user.pimg}:'asd'"
+                             style="height: 100px;width: 100px;">
+
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="customFile" style="display: none;">
                             <label class="custom-file-label btn btn-secondary opacity-75" for="customFile">사진 선택</label>
@@ -30,12 +35,17 @@
                         이름
                     </th>
                     <td>
-                        <input class="form-control" name="name">
+                        <input class="form-control" name="name" th:field="${user.name}">
                     </td>
                 </tr>
                 <tr>
                     <th>휴대폰 번호</th>
-                    <td>
+                    <td th:unless="${user.phone==null}">
+                        <div th:text="${user.phone}">
+                        </div>
+                        <div> 휴대폰 번호 변경은 고객센터에 문의해 주세요</div>
+                    </td>
+                    <td th:if="${user.phone==null}">
                         <div class="row g-3">
                             <div class="col">
                                 <select class="form-select" aria-label="phoneNumber">
@@ -68,7 +78,9 @@
                 <tr>
                     <th>이메일 주소</th>
                     <td>
-                        <input class="form-control">
+                        <input th:unless="${user.email==null}" type="text" readonly class="form-control-plaintext"
+                               id="staticEmail" th:value="${user.email}">
+                        <input th:if="${user.email==null}" class="form-control" th:field="${user.email}">
                     </td>
                 </tr>
             </table>
@@ -113,7 +125,9 @@
                 </div>
             </div>
         </form>
+
     </div>
+
 </section>
 </body>
 </html>
