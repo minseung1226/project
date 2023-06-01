@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html th:replace="~{mypage/template :: mypageTemplate('account',~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
-<style>
-
+<style>/*
+    API KEY =NCSDPSCNG9CQLBVW
+    Secret =NOT2VRY1CMXTDP6T24N0YDYOMJMPCEGG*/
 </style>
 <head>
 </head>
@@ -26,7 +27,7 @@
 
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="customFile" style="display: none;">
-                            <label class="custom-file-label btn btn-secondary opacity-75" for="customFile">사진 선택</label>
+                            <label class="custom-file-label btn btn-dark" for="customFile">사진 선택</label>
                         </div>
                     </td>
                 </tr>
@@ -48,29 +49,30 @@
                     <td th:if="${user.phone==null}">
                         <div class="row g-3">
                             <div class="col">
-                                <select class="form-select" aria-label="phoneNumber">
+                                <select class="form-select" name="tel[]" aria-label="phoneNumber">
                                     <option selected value="010">010</option>
                                 </select>
                             </div>
 
                             <div class="col">
-                                <input class="form-control">
+                                <input type="tel" name="tel[]" class="form-control">
                             </div>
 
                             <div class="col">
-                                <input class="form-control">
+                                <input type="tel" name="tel[]" class="form-control">
                             </div>
 
                             <div class="col">
-                                <input type="submit" class="btn btn-secondary opacity-75" value="인증번호 발송">
+                                <input type="button" id="send_btn" class="btn btn-dark" onclick="sendNumber()" value="인증번호 발송">
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-3">
-                                <input class="form-control">
+                                <input id="valid_number" class="form-control">
                             </div>
                             <div class="col-3">
-                                <input type="submit" class="btn btn-secondary opacity-75" value="인증하기">
+                                <input type="hidden" id="tel_valid" name="tel_valid" value="false">
+                                <input type="button" id="valid_btn" name="valid_btn" class="btn btn-dark" value="인증하기" disabled>
                             </div>
                         </div>
                     </td>
@@ -89,29 +91,23 @@
                 <div class="col-3">
                     <div class="d-flex justify-content-end">
                         <span>
-                           <input type="submit" class="btn btn-secondary btn-lg opacity-75" value="정보 수정">
+                           <input type="submit" class="btn btn-dark btn-lg " value="정보 수정">
                         </span>
                     </div>
                 </div>
             </div>
         </form>
 
-        <form>
+        <form action="/user/pw_change" method="post" id="pw_change">
             <h5 class="fw-bold"> 비밀번호 변경</h5>
             <table class="table table-bordered mb-1">
                 <tr>
-                    <th>현재 비밀번호</th>
-                    <td>
-                        <input type="password" class="form-control">
-                    </td>
-                </tr>
-                <tr>
                     <th>새 비밀번호</th>
-                    <td><input type="password" class="form-control"></td>
+                    <td><input type="password" name="pw"class="form-control" placeholder="8자리 이상(문자+숫자+특수기호)"></td>
                 </tr>
                 <tr>
                     <th>비밀번호 확인</th>
-                    <td><input type="password" class="form-control"></td>
+                    <td><input type="password" name="pwCheck" class="form-control"></td>
                 </tr>
             </table>
             <div class="row mb-3">
@@ -119,13 +115,94 @@
                 <div class="col-3">
                     <div class="d-flex justify-content-end">
                         <span>
-                           <input type="submit" class="btn btn-secondary btn-lg opacity-75" value="비밀번호 변경">
+                           <input type="submit" class="btn btn-dark btn-lg " value="비밀번호 변경">
                         </span>
                     </div>
                 </div>
             </div>
         </form>
 
+        <script th:inline="javascript">
+            function validPw(pw) {
+                let check = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
+                return check.test(pw);
+            }
+
+            function swal(title){
+                Swal.fire({
+                    title: title,
+                    icon: null,
+                    showCancelButton: false,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#aaa`
+                })
+            }
+
+            //비밀번호 변경
+            $('#pw_change').submit(function (e){
+                e.preventDefault();
+                let formData = new FormData(this);
+                let pw=formData.get("pw");
+                let pwCheck=formData.get("pwCheck");
+
+                if(!validPw(pw)){
+                    swal("비밀번호의 형식이<br> 올바르지 않습니다.");
+                    return ;
+                }
+                if(pw!=pwCheck){
+                    swal("비밀번호의 값이<br> 일치하지 않습니다")
+                    return ;
+                }
+
+
+                this.submit();
+            })
+
+
+            // 휴대폰 인증 ajax
+            $("#send_btn").click(function (){
+                let telValues="";
+                $(`[name="tel[]"]`).each(function (){
+                    telValues+=$(this).val();
+                })
+
+
+
+                if(telValues.length!=11){
+                    swal("전화번호 형식이 <br>알맞지 않습니다.");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/user/send_sms",
+                    type: "POST",
+                    data: {
+                        tel:telValues
+                    }
+                }).done(function (data){
+                        swal('인증번호가 발송되었습니다.');
+
+                        $(`[name="tel[]"]`).prop(`disabled`,true);
+                        $(`input[name="valid_btn"]`).prop(`disabled`,false);
+
+                        $(`input[name="valid_btn"]`).click(function (){
+
+                            if($("#valid_number").val()==data){
+                                swal("인증이 완료되었습니다.");
+                                $(`#tel_valid`).val("true");
+
+                                $(`input[name="valid_btn"]`).prop(`disabled`,true);
+                                $("#valid_number").prop(`disabled`,true);
+                            }
+                            else{
+                                swal("인증번호가 일치하지 않습니다.")
+                            }
+                        })
+                }).fail(function (err){
+                    alert(err);
+                })
+            })
+        </script>
     </div>
 
 </section>

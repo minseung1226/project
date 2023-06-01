@@ -52,4 +52,8 @@ public class User {
         this.kakaoId = kakaoId;
         this.userJoinType = userJoinType;
     }
+
+    public void changePw(String pw){
+        this.pw=pw;
+    }
 }

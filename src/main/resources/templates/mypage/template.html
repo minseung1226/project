@@ -10,7 +10,7 @@
 </head>
 <body>
 <header th:replace="templates/header :: header_template"></header>
-<div th:replace="templates/header :: header_modal"></div>
+<div th:if="${session.user==null}"th:replace="templates/header :: header_modal"></div>
 
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
     <div class="container bg-white border" >
@@ -43,6 +43,11 @@
         let titleTag=$(`#`+[[${typeName}]]);
         titleTag.addClass(`active`);
     })
+
+
+
+
+
 
 </script>
 
