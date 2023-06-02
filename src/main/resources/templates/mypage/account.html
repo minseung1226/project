@@ -98,16 +98,17 @@
             </div>
         </form>
 
-        <form action="/user/pw_change" method="post" id="pw_change">
+        <form th:if="${user.userJoinType==T(project.project.domain.enum_type.UserJoinType).NORMAR}"
+              action="/user/pw_change" method="post" id="pw_change">
             <h5 class="fw-bold"> 비밀번호 변경</h5>
             <table class="table table-bordered mb-1">
                 <tr>
                     <th>새 비밀번호</th>
-                    <td><input type="password" name="pw"class="form-control" placeholder="8자리 이상(문자+숫자+특수기호)"></td>
+                    <td><input type="password" name="pw" id="pw" class="form-control" placeholder="8자리 이상(문자+숫자+특수기호)"></td>
                 </tr>
                 <tr>
                     <th>비밀번호 확인</th>
-                    <td><input type="password" name="pwCheck" class="form-control"></td>
+                    <td><input type="password" name="pwCheck" id="pwCheck" class="form-control"></td>
                 </tr>
             </table>
             <div class="row mb-3">
@@ -115,7 +116,7 @@
                 <div class="col-3">
                     <div class="d-flex justify-content-end">
                         <span>
-                           <input type="submit" class="btn btn-dark btn-lg " value="비밀번호 변경">
+                           <input type="submit" id="pw_btn" class="btn btn-dark btn-lg " value="비밀번호 변경">
                         </span>
                     </div>
                 </div>
@@ -139,23 +140,29 @@
             }
 
             //비밀번호 변경
-            $('#pw_change').submit(function (e){
+            $('#pw_btn').click(function (e){
                 e.preventDefault();
-                let formData = new FormData(this);
-                let pw=formData.get("pw");
-                let pwCheck=formData.get("pwCheck");
+                let pw=$(`#pw`).val();
+                let pwCheck=$(`#pwCheck`).val();
 
                 if(!validPw(pw)){
                     swal("비밀번호의 형식이<br> 올바르지 않습니다.");
                     return ;
                 }
                 if(pw!=pwCheck){
-                    swal("비밀번호의 값이<br> 일치하지 않습니다")
+                    swal("비밀번호가<br> 일치하지 않습니다")
                     return ;
                 }
 
-
-                this.submit();
+                Swal.fire({
+                    title: "비밀번호가 변경되었습니다.",
+                    icon: null,
+                    showCancelButton: false,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#aaa`
+                }).then(function (){
+                    $('#pw_change').submit();
+                })
             })
 
 

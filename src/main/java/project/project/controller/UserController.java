@@ -118,6 +118,6 @@ public class UserController {
     public String pw_change(String pw,HttpSession session){
         userService.pwChange((Long) session.getAttribute("user"),pw);
 
-        return "mypage/account";
+        return "redirect:/mypage/account";
     }
 }
