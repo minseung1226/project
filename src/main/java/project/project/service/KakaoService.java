@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.project.domain.User;
 import project.project.domain.enum_type.UserJoinType;
+import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
 
 import java.io.*;
@@ -43,13 +44,21 @@ public class KakaoService {
 
         if(findUser.isEmpty()){
             JSONObject kakao_account = (JSONObject) jsonObject.get("kakao_account");
+            String fileName = "";
+
+            //프로필 사진여부
+            if(kakao_account.has("profile")){
+                String urlString = kakao_account.getJSONObject("profile").getString("profile_image_url");
+                UploadFile uploadFile = new UploadFile(urlString);
+                uploadFile.fileUpload();
+                fileName= uploadFile.getStoreName();
+            }
             User user = new User(kakao_account.has("email") ? kakao_account.getString("email") : null,
                     kakao_account.has("birthday") ? kakao_account.getString("birthday") : null,
-                    kakao_account.has("profile") ? kakao_account.getJSONObject("profile").getString("profile_image_url") : null,
+                    fileName.isEmpty()?null:fileName,
                     id,
                     UserJoinType.KAKAO);
             userRepository.save(user);
-            System.out.println("user.joinType="+user.getUserJoinType());
             return user.getId();
         }
 

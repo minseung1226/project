@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.project.controller.form.UserJoinForm;
 import project.project.controller.form.UserLoginForm;
 import project.project.domain.User;
@@ -117,7 +118,6 @@ public class UserController {
     @PostMapping("/user/pw_change")
     public String pw_change(String pw,HttpSession session){
         userService.pwChange((Long) session.getAttribute("user"),pw);
-
         return "redirect:/mypage/account";
     }
 }
