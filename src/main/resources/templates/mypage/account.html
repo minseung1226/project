@@ -22,7 +22,7 @@
                              style="height: 100px;width: 100px;">
 
                         <img th:unless="${user.pimg==null}" id="pimgView" class="rounded mb-2"
-                             th:src="${user.pimg}"
+                             th:src="|/images/${user.pimg}|"
                              style="height: 100px;width: 100px;">
 
                         <div class="custom-file">

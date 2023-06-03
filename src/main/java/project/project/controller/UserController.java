@@ -8,6 +8,8 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,10 +20,12 @@ import project.project.controller.form.UserJoinForm;
 import project.project.controller.form.UserLoginForm;
 import project.project.domain.User;
 import project.project.domain.enum_type.UserJoinType;
+import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
 import project.project.service.KakaoService;
 import project.project.service.UserService;
 
+import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.Random;
 
@@ -119,5 +123,11 @@ public class UserController {
     public String pw_change(String pw,HttpSession session){
         userService.pwChange((Long) session.getAttribute("user"),pw);
         return "redirect:/mypage/account";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{pimg}")
+    public Resource profileImage(@PathVariable String pimg) throws MalformedURLException {
+        return new UrlResource("file:"+ UploadFile.PATH+    pimg);
     }
 }
