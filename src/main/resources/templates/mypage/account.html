@@ -12,17 +12,18 @@
     <div class="container" th:fragment="content">
         <h5 class="fw-bold"> 내 정보</h5>
         <form method="post" action="/user/modify" enctype="multipart/form-data">
-            <table class="table table-bordered mb-1">
+            <table class="table table-bordered mb-1" th:object="${user}">
                 <tr>
                     <th class="text-nowrap">
                         프로필 사진
                     </th>
                     <td>
-                        <img th:if="${user.pimg==null}" id="pimgView" class="rounded mb-2" src="https://img.peterpanz.com/images/img-profile-user.png"
+                        <img th:if="*{pimg==null}" id="pimgView" class="rounded mb-2"
+                             src="https://img.peterpanz.com/images/img-profile-user.png"
                              style="height: 100px;width: 100px;">
 
-                        <img th:unless="${user.pimg==null}" id="pimgView" class="rounded mb-2"
-                             th:src="|/images/${user.pimg}|"
+                        <img th:unless="*{pimg==null}" id="pimgView" class="rounded mb-2"
+                             th:src="|/images/*{pimg}|"
                              style="height: 100px;width: 100px;">
 
                         <div class="custom-file">
@@ -36,17 +37,17 @@
                         이름
                     </th>
                     <td>
-                        <input class="form-control" name="name" th:field="${user.name}">
+                        <input class="form-control" name="name" th:field="*{name}">
                     </td>
                 </tr>
                 <tr>
                     <th>휴대폰 번호</th>
-                    <td th:unless="${user.phone==null}">
-                        <div th:text="${user.phone}">
+                    <td th:unless="*{phone==null}">
+                        <div th:text="*{phone}">
                         </div>
                         <div> 휴대폰 번호 변경은 고객센터에 문의해 주세요</div>
                     </td>
-                    <td th:if="${user.phone==null}">
+                    <td th:if="*{phone==null}">
                         <div class="row g-3">
                             <div class="col">
                                 <select class="form-select" name="tel[]" aria-label="phoneNumber">
@@ -63,26 +64,58 @@
                             </div>
 
                             <div class="col">
-                                <input type="button" id="send_btn" class="btn btn-dark"  value="인증번호 발송">
+                                <input type="button" id="send_btn" class="btn btn-dark" value="인증번호 발송">
                             </div>
                         </div>
+
                         <div class="row mt-2">
                             <div class="col-3">
                                 <input id="valid_number" class="form-control">
                             </div>
                             <div class="col-3">
                                 <input type="hidden" id="tel_valid" name="tel_valid" value="false">
-                                <input type="button" id="valid_btn" name="valid_btn" class="btn btn-dark" value="인증하기" disabled>
+                                <input type="button" id="valid_btn" name="valid_btn" class="btn btn-dark" value="인증하기"
+                                       disabled>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div id="tel_sign" class="fw-bold">인증을 완료하지 않으면 휴대폰 번호 수정이 불가합니다.</div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th>이메일 주소</th>
                     <td>
-                        <input th:unless="${user.email==null}" type="text" readonly class="form-control-plaintext"
-                               id="staticEmail" th:value="${user.email}">
-                        <input th:if="${user.email==null}" class="form-control" th:field="${user.email}">
+                        <div th:unless="*{email==null}" th:text="*{email}">이메일</div>
+                        <input th:if="*{email==null}" class="form-control" th:field="*{email}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>
+                        <div class="row mb-2">
+                            <div class="col-5">
+                                <input type="text" class="form-control" th:field="*{address.postcode}" placeholder="우편번호" readonly>
+                            </div>
+                            <div class="col-3">
+                                <input type="button" class="btn btn-dark" onclick="daumPostcode()" value="우편번호 찾기"><br>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-8">
+                                <input type="text" class="form-control" th:field="*{address.address}" placeholder="주소" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5">
+                                <input type="text" class="form-control" th:field="*{address.detailAddress}" placeholder="상세주소">
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control" th:field="*{address.extraAddress}" placeholder="참고항목" readonly>
+                            </div>
+                        </div>
+
+
                     </td>
                 </tr>
             </table>
@@ -104,7 +137,8 @@
             <table class="table table-bordered mb-1">
                 <tr>
                     <th>새 비밀번호</th>
-                    <td><input type="password" name="pw" id="pw" class="form-control" placeholder="8자리 이상(문자+숫자+특수기호)"></td>
+                    <td><input type="password" name="pw" id="pw" class="form-control" placeholder="8자리 이상(문자+숫자+특수기호)">
+                    </td>
                 </tr>
                 <tr>
                     <th>비밀번호 확인</th>
@@ -123,13 +157,15 @@
             </div>
         </form>
 
+        <!--        daum 주소 검색을 위한 js 링크-->
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script th:inline="javascript">
             function validPw(pw) {
                 let check = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
                 return check.test(pw);
             }
 
-            function swal(title){
+            function swal(title) {
                 Swal.fire({
                     title: title,
                     icon: null,
@@ -140,18 +176,18 @@
             }
 
             //비밀번호 변경
-            $('#pw_btn').click(function (e){
+            $('#pw_btn').click(function (e) {
                 e.preventDefault();
-                let pw=$(`#pw`).val();
-                let pwCheck=$(`#pwCheck`).val();
+                let pw = $(`#pw`).val();
+                let pwCheck = $(`#pwCheck`).val();
 
-                if(!validPw(pw)){
+                if (!validPw(pw)) {
                     swal("비밀번호의 형식이<br> 올바르지 않습니다.");
-                    return ;
+                    return;
                 }
-                if(pw!=pwCheck){
+                if (pw != pwCheck) {
                     swal("비밀번호가<br> 일치하지 않습니다")
-                    return ;
+                    return;
                 }
 
                 Swal.fire({
@@ -160,22 +196,21 @@
                     showCancelButton: false,
                     confirmButtonText: '확인',
                     confirmButtonColor: `#aaa`
-                }).then(function (){
+                }).then(function () {
                     $('#pw_change').submit();
                 })
             })
 
 
             // 휴대폰 인증 ajax
-            $("#send_btn").click(function (){
-                let telValues="";
-                $(`[name="tel[]"]`).each(function (){
-                    telValues+=$(this).val();
+            $("#send_btn").click(function () {
+                let telValues = "";
+                $(`[name="tel[]"]`).each(function () {
+                    telValues += $(this).val();
                 })
 
 
-
-                if(telValues.length!=11){
+                if (telValues.length != 11) {
                     swal("전화번호 형식이 <br>알맞지 않습니다.");
                     return;
                 }
@@ -184,43 +219,91 @@
                     url: "/user/send_sms",
                     type: "POST",
                     data: {
-                        tel:telValues
+                        tel: telValues
                     }
-                }).done(function (data){
-                        swal('인증번호가 발송되었습니다.');
+                }).done(function (data) {
+                    swal('인증번호가 발송되었습니다.');
 
-                        $(`[name="tel[]"]`).prop(`disabled`,true);
-                        $(`input[name="valid_btn"]`).prop(`disabled`,false);
+                    $(`[name="tel[]"]`).prop(`disabled`, true);
+                    $(`input[name="valid_btn"]`).prop(`disabled`, false);
 
-                        $(`input[name="valid_btn"]`).click(function (){
+                    $(`input[name="valid_btn"]`).click(function () {
 
-                            if($("#valid_number").val()==data){
-                                swal("인증이 완료되었습니다.");
-                                $(`#tel_valid`).val("true");
+                        if ($("#valid_number").val() == data) {
+                            swal("인증이 완료되었습니다.");
+                            $(`#tel_valid`).val("true");
 
-                                $(`input[name="valid_btn"]`).prop(`disabled`,true);
-                                $("#valid_number").prop(`disabled`,true);
-                            }
-                            else{
-                                swal("인증번호가 일치하지 않습니다.")
-                            }
-                        })
-                }).fail(function (err){
+                            $(`input[name="valid_btn"]`).prop(`disabled`, true);
+                            $("#valid_number").prop(`disabled`, true);
+                        } else {
+                            swal("인증번호가 일치하지 않습니다.")
+                        }
+                    })
+                }).fail(function (err) {
                     alert(err);
                 })
             })
 
             //프로필 사진 변경시 미리보기
-            $('#pimg').change(function (){
-                let file =this.files[0];
-                let reader=new FileReader();
+            $('#pimg').change(function () {
+                let file = this.files[0];
+                let reader = new FileReader();
 
-                reader.onload=function (e){
-                    $('#pimgView').attr('src',e.target.result);
+                reader.onload = function (e) {
+                    $('#pimgView').attr('src', e.target.result);
                 }
 
                 reader.readAsDataURL(file);
             })
+
+            //주소 검색
+            function daumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var addr = ''; // 주소 변수
+                        var extraAddr = ''; // 참고항목 변수
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                        if (data.userSelectedType === 'R') {
+                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                extraAddr += data.bname;
+                            }
+                            // 건물명이 있고, 공동주택일 경우 추가한다.
+                            if (data.buildingName !== '' && data.apartment === 'Y') {
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if (extraAddr !== '') {
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                            // 조합된 참고항목을 해당 필드에 넣는다.
+                            document.getElementById("address.extraAddress").value = extraAddr;
+
+                        } else {
+                            document.getElementById("address.extraAddress").value = '';
+                        }
+
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('address.postcode').value = data.zonecode;
+                        document.getElementById("address.address").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("address.detailAddress").focus();
+                    }
+                }).open();
+            }
         </script>
     </div>
 

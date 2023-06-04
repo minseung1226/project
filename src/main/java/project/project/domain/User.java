@@ -56,4 +56,7 @@ public class User {
     public void changePw(String pw){
         this.pw=pw;
     }
+    public void changeAddress(Address address){
+        this.address=address;
+    }
 }

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.project.controller.form.UserJoinForm;
 import project.project.controller.form.UserLoginForm;
+import project.project.controller.form.UserModifyForm;
 import project.project.domain.User;
+import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
@@ -93,8 +95,12 @@ public class UserController {
     public String mypage(HttpSession session, Model model){
         Object id = session.getAttribute("user");
         Optional<User> findUser = userRepository.findById((Long) id);
-        model.addAttribute("user",findUser.get());
+        User user = findUser.get();
 
+        if(user.getAddress()==null) {
+            user.changeAddress(new Address(null, null, null, null));
+            model.addAttribute("user", user);
+        }
         return "mypage/account";
     }
 
@@ -129,5 +135,12 @@ public class UserController {
     @GetMapping("/images/{pimg}")
     public Resource profileImage(@PathVariable String pimg) throws MalformedURLException {
         return new UrlResource("file:"+ UploadFile.PATH+    pimg);
+    }
+
+    @PostMapping("/user/modify")
+    public String userModify(UserModifyForm form){
+        System.out.println(form.toString());
+        System.out.println("");
+        return "redirect:/mypage/account";
     }
 }
