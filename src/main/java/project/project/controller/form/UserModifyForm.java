@@ -13,5 +13,8 @@ public class UserModifyForm {
     private String email;
     private MultipartFile pimg;
     private boolean tel_valid;
-    private Address address;
+    private Integer postcode;
+    private String address;
+    private String detailAddress;
+    private String extraAddress;
 }

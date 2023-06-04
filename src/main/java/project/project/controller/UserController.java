@@ -113,13 +113,14 @@ public class UserController {
         for(int i=0;i<4;i++){
             number+=random.nextInt(10);
         }
-        Message message=new Message();
+        log.info("인증번호= {}"+number);
+        /*Message message=new Message();
         message.setFrom("01055645417");
         message.setTo(tel);
         message.setText("인증번호는 "+number+" 입니다.");
 
         SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
-
+*/
 
         return number;
     }
@@ -140,7 +141,7 @@ public class UserController {
     @PostMapping("/user/modify")
     public String userModify(UserModifyForm form){
         System.out.println(form.toString());
-        System.out.println("");
+        System.out.println("pimg="+form.getPimg().getOriginalFilename());
         return "redirect:/mypage/account";
     }
 }

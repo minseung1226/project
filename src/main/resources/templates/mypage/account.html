@@ -50,20 +50,21 @@
                     <td th:if="*{phone==null}">
                         <div class="row g-3">
                             <div class="col">
-                                <select class="form-select" name="tel[]" aria-label="phoneNumber">
+                                <select class="form-select" name="exTel" aria-label="phoneNumber">
                                     <option selected value="010">010</option>
                                 </select>
                             </div>
 
                             <div class="col">
-                                <input type="tel" name="tel[]" class="form-control">
+                                <input type="tel" name="exTel" class="form-control">
                             </div>
 
                             <div class="col">
-                                <input type="tel" name="tel[]" class="form-control">
+                                <input type="tel" name="exTel" class="form-control">
                             </div>
 
                             <div class="col">
+                                <input type="hidden" name="tel">
                                 <input type="button" id="send_btn" class="btn btn-dark" value="인증번호 발송">
                             </div>
                         </div>
@@ -73,7 +74,6 @@
                                 <input id="valid_number" class="form-control">
                             </div>
                             <div class="col-3">
-                                <input type="hidden" id="tel_valid" name="tel_valid" value="false">
                                 <input type="button" id="valid_btn" name="valid_btn" class="btn btn-dark" value="인증하기"
                                        disabled>
                             </div>
@@ -92,26 +92,26 @@
                 </tr>
                 <tr>
                     <th>주소</th>
-                    <td>
+                    <td th:object="${user.address}">
                         <div class="row mb-2">
                             <div class="col-5">
-                                <input type="text" class="form-control" th:field="*{address.postcode}" placeholder="우편번호" readonly>
+                                <input type="text" class="form-control" th:id="postcode" th:name="postcode" th:value="*{postcode}"   placeholder="우편번호">
                             </div>
                             <div class="col-3">
-                                <input type="button" class="btn btn-dark" onclick="daumPostcode()" value="우편번호 찾기"><br>
+                                <input type="button" class="btn btn-dark" onclick="daumPostcode()" value="우편번호 찾기">
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-8">
-                                <input type="text" class="form-control" th:field="*{address.address}" placeholder="주소" readonly>
+                                <input type="text" class="form-control" th:id="address" th:name="address" th:value="*{address}" placeholder="주소">
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-5">
-                                <input type="text" class="form-control" th:field="*{address.detailAddress}" placeholder="상세주소">
+                                <input type="text" class="form-control" th:id="detailAddress" th:name="detailAddress" th:value="*{detailAddress}" placeholder="상세주소">
                             </div>
                             <div class="col-3">
-                                <input type="text" class="form-control" th:field="*{address.extraAddress}" placeholder="참고항목" readonly>
+                                <input type="text" class="form-control" th:id="extraAddress" th:name="extraAddress" th:value="*{extraAddress}" placeholder="참고항목">
                             </div>
                         </div>
 
@@ -205,7 +205,7 @@
             // 휴대폰 인증 ajax
             $("#send_btn").click(function () {
                 let telValues = "";
-                $(`[name="tel[]"]`).each(function () {
+                $(`[name="exTel"]`).each(function () {
                     telValues += $(this).val();
                 })
 
@@ -223,18 +223,24 @@
                     }
                 }).done(function (data) {
                     swal('인증번호가 발송되었습니다.');
-
-                    $(`[name="tel[]"]`).prop(`disabled`, true);
                     $(`input[name="valid_btn"]`).prop(`disabled`, false);
+
+                    $(`input[name="exTel"]`).change(function (){
+                        $(`input[name="valid_btn"]`).prop(`disabled`, true);
+                    })
+                    $("#send_btn").click(function (){
+                        data=null;
+                    })
 
                     $(`input[name="valid_btn"]`).click(function () {
 
                         if ($("#valid_number").val() == data) {
                             swal("인증이 완료되었습니다.");
-                            $(`#tel_valid`).val("true");
-
+                            $('[name="tel"]').val(telValues);
+                            $(`[name="exTel"]`).prop(`disabled`, true);
                             $(`input[name="valid_btn"]`).prop(`disabled`, true);
                             $("#valid_number").prop(`disabled`, true);
+                            $("#send_btn").prop('disabled',true);
                         } else {
                             swal("인증번호가 일치하지 않습니다.")
                         }
@@ -290,17 +296,17 @@
                                 extraAddr = ' (' + extraAddr + ')';
                             }
                             // 조합된 참고항목을 해당 필드에 넣는다.
-                            document.getElementById("address.extraAddress").value = extraAddr;
+                            document.getElementById("extraAddress").value = extraAddr;
 
                         } else {
-                            document.getElementById("address.extraAddress").value = '';
+                            document.getElementById("extraAddress").value = '';
                         }
 
                         // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        document.getElementById('address.postcode').value = data.zonecode;
-                        document.getElementById("address.address").value = addr;
+                        document.getElementById('postcode').value = data.zonecode;
+                        document.getElementById("address").value = addr;
                         // 커서를 상세주소 필드로 이동한다.
-                        document.getElementById("address.detailAddress").focus();
+                        document.getElementById("detailAddress").focus();
                     }
                 }).open();
             }
