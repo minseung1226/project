@@ -37,15 +37,15 @@ public class RoomTest {
 
         //User 생성
         User user = new User("alstmd", "강민승", "123", "971226"
-                , "010-5564-5417", new Address("부천시 심곡동 408-7", "308호")
-                ,UserStatus.일반,"1912624",null,UserJoinType.NORMAR);
+                , "01055645417", new Address(12346,"부천시 심곡동 408-7", "308호","심곡동")
+                ,"1912624",UserStatus.일반,UserJoinType.NORMAR);
 
         //RoomInfo 생성
         RoomInfo roomInfo = RoomInfo.makeRoomInfo(RoomType.원룸, 7.5, maintenanceLists,
                 Bearing.남향, options, true, false, true, LocalDate.now());
 
         //Room 생성
-        Address address = new Address("부천시 심곡동 408-7", "308호");
+        Address address = new Address(12345,"부천시 심곡동 408-7", "308호","심곡동");
         List<Photo> photos=new ArrayList<>();
         photos.add(new Photo("img1"));
         photos.add(new Photo("img2"));

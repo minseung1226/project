@@ -68,6 +68,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public Boolean login(@Validated UserLoginForm userLoginForm, HttpSession session){
+        log.info("왔는데");
         User findUser = userRepository.findNormalByEmail(userLoginForm.getLoginEmail(),UserJoinType.NORMAR);
         if(findUser==null||!findUser.getPw().equals(userLoginForm.getLoginPw())){
             return false;
@@ -99,8 +100,8 @@ public class UserController {
 
         if(user.getAddress()==null) {
             user.changeAddress(new Address(null, null, null, null));
-            model.addAttribute("user", user);
         }
+        model.addAttribute("user", user);
         return "mypage/account";
     }
 
@@ -140,8 +141,12 @@ public class UserController {
 
     @PostMapping("/user/modify")
     public String userModify(UserModifyForm form){
-        System.out.println(form.toString());
-        System.out.println("pimg="+form.getPimg().getOriginalFilename());
+
+        log.info("form={}",form);
+        userService.profileModify(form.getId(),form.getName(),form.getTel(),form.getEmail(),
+                form.getPimg(),form.getPostcode(),form.getAddress(),form.getDetailAddress(),
+                form.getExtraAddress());
+
         return "redirect:/mypage/account";
     }
 }

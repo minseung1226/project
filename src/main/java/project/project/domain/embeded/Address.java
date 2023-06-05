@@ -17,7 +17,7 @@ public class Address {
     private String detailAddress;
     private String extraAddress;
 
-    public Address(Integer postcode, String address, String detail_address, String extraAddress) {
+    public Address(Integer postcode, String address, String detailAddress, String extraAddress) {
         this.postcode = postcode;
         this.address = address;
         this.detailAddress = detailAddress;

@@ -12,12 +12,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 @Getter
 public class UploadFile {
-    public static final String PATH="/intellij/project_img/";
+    public static final String PATH="C:/intellij/project_img/";
     private String fileName;
     private String storeName;
 
     public UploadFile(String fileName) {
-
         this.fileName = fileName;
         String[] split = fileName.split("\\.");
         this.storeName = UUID.randomUUID().toString()+"."+split[split.length-1];

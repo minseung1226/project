@@ -8,11 +8,11 @@ import project.project.domain.embeded.Address;
 @Data
 public class UserModifyForm {
 
+    private Long id;
     private String name;
     private String tel;
     private String email;
     private MultipartFile pimg;
-    private boolean tel_valid;
     private Integer postcode;
     private String address;
     private String detailAddress;
