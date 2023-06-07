@@ -23,6 +23,9 @@ public class Room {
     @Embedded
     private Address address;
 
+    private String x;
+    private String y;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

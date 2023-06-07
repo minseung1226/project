@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{mypage/template :: mypageTemplate('account',~{::content})}"
+<html th:replace="~{mypage/mypage_template :: mypageTemplate('account',~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
 <style>/*
     API KEY =NCSDPSCNG9CQLBVW
@@ -163,6 +163,8 @@
 
         <!--        daum 주소 검색을 위한 js 링크-->
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services"></script>
+
         <script th:inline="javascript">
             function validPw(pw) {
                 let check = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
@@ -270,6 +272,7 @@
             function daumPostcode() {
                 new daum.Postcode({
                     oncomplete: function (data) {
+
                         // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                         // 각 주소의 노출 규칙에 따라 주소를 조합한다.
@@ -311,6 +314,15 @@
                         document.getElementById("address").value = addr;
                         // 커서를 상세주소 필드로 이동한다.
                         document.getElementById("detailAddress").focus();
+                        var geocoder = new kakao.maps.services.Geocoder();
+
+                        var callback = function(result, status) {
+                            if (status === kakao.maps.services.Status.OK) {
+                                console.log(result);
+                            }
+                        };
+
+                        geocoder.addressSearch(addr, callback);
                     }
                 }).open();
             }
