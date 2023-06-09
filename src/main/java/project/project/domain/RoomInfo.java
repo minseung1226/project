@@ -25,13 +25,6 @@ public class RoomInfo {
     @Column(name = "room_info_id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private RoomType roomType; //집 종류
-    private double maintenance; // 관리비
-
-    @Convert(converter = EnumListConverter.class)
-    @Enumerated(EnumType.STRING)
-    private List<MaintenanceList> maintenanceList=new ArrayList<>(); //관리비포함항목
 
     @Enumerated(EnumType.STRING)
     private Bearing bearing; // 주실 방향
@@ -42,26 +35,9 @@ public class RoomInfo {
     private boolean animal; // 반려동물
     private boolean parking; // 주차 여부
     private boolean ev;      // 엘리베이터 유무
-    private LocalDate moveInDate; // 입주일
+    private String floor;  // 층수
+    private String entireFloor; //전체층
+    private Integer household; //총 세대 수
 
-    public RoomInfo(RoomType roomType, double maintenance, List<MaintenanceList> maintenanceList
-            , Bearing bearing, List<Option> options, boolean animal, boolean parking, boolean ev
-            , LocalDate moveInDate) {
-        this.roomType = roomType;
-        this.maintenance = maintenance;
-        this.maintenanceList = maintenanceList;
-        this.bearing = bearing;
-        this.options = options;
-        this.animal = animal;
-        this.parking = parking;
-        this.ev = ev;
-        this.moveInDate = moveInDate;
-    }
 
-    public static RoomInfo makeRoomInfo(RoomType roomType,double maintenance, List<MaintenanceList> maintenanceList,
-                                    Bearing bearing, List<Option> options, boolean animal, boolean parking,
-                                    boolean ev, LocalDate moveInDate){
-        return new RoomInfo(roomType,maintenance,maintenanceList,bearing,options
-                ,animal,parking,ev,moveInDate);
-    }
 }

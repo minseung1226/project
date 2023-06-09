@@ -2,10 +2,14 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.Level;
+import project.project.domain.enum_type.MaintenanceList;
+import project.project.domain.enum_type.RoomType;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +27,6 @@ public class Room {
     @Embedded
     private Address address;
 
-    private String x;
-    private String y;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -37,43 +39,36 @@ public class Room {
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Photo> photos=new ArrayList<>();
 
+    private String registrarInfo; // 등록자 정보 : 세입자,임대인,기타
+    private double x; //위도
+    private double y;  //경도
+
     private String img; // 대표 이미지
+
     private int deposit; //보증금
     private int monthlyRent; //월세
-    private double area;   //전용면적
-    private String floor;  // 층수
+
+    private double realSize;   //전용면적
+    private double supplySize; //공급 면적
+
     @Enumerated(EnumType.STRING)
     private HouseType houseType; //집종류
 
     @Enumerated(EnumType.STRING)
-    private Level level;
+    private RoomType roomType; //집 종류
 
-    public Room(Address address, User user, RoomInfo roomInfo, List<Photo> photos
-            , String img, int deposit, int monthlyRent, double area, String floor
-            , HouseType houseType,Level level) {
-        this.address = address;
-        this.user = user;
-        this.roomInfo = roomInfo;
-        this.photos = photos;
-        this.img = img;
-        this.deposit = deposit;
-        this.monthlyRent = monthlyRent;
-        this.area = area;
-        this.floor = floor;
-        this.houseType = houseType;
-        this.level=level;
-    }
 
-    public static Room makeRoom(Address address, User user, RoomInfo roomInfo, List<Photo> photos,
-                                 String img, int deposit, int monthlyRent, double area, String floor,
-                                 HouseType houseType,Level level){
-        Room room = new Room(address, user, roomInfo, photos, img, deposit, monthlyRent, area, floor, houseType,level);
+    private double maintenance; // 관리비
+    private LocalDate moveInDate; // 입주일
 
-        for(int i=0;i<room.photos.size();i++){
-            room.photos.get(i).changeRoom(room);
-        }
 
-        return room;
-    }
+    @Convert(converter = EnumListConverter.class)
+    @Enumerated(EnumType.STRING)
+    private List<MaintenanceList> maintenanceList=new ArrayList<>(); //관리비포함항목
+
+
+
+
+
 
 }
