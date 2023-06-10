@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.Bearing;
-import project.project.domain.enum_type.MaintenanceList;
-import project.project.domain.enum_type.Option;
-import project.project.domain.enum_type.RoomType;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import project.project.domain.enum_type.Option;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +32,11 @@ public class RoomInfo {
     private boolean animal; // 반려동물
     private boolean parking; // 주차 여부
     private boolean ev;      // 엘리베이터 유무
+
     private String floor;  // 층수
     private String entireFloor; //전체층
     private Integer household; //총 세대 수
 
-
+    private double realSize;   //전용면적
+    private double supplySize; //공급 면적
 }

@@ -5,10 +5,8 @@ import lombok.*;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
-import project.project.domain.enum_type.Level;
 import project.project.domain.enum_type.MaintenanceList;
 import project.project.domain.enum_type.RoomType;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +46,7 @@ public class Room {
     private int deposit; //보증금
     private int monthlyRent; //월세
 
-    private double realSize;   //전용면적
-    private double supplySize; //공급 면적
+
 
     @Enumerated(EnumType.STRING)
     private HouseType houseType; //집종류
