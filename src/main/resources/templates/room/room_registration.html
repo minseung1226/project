@@ -178,15 +178,55 @@
                 <th class="col-2">입주 가능일*</th>
                 <td colspan="3">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="moveInDate" id="date" value="option1">
-                        <label class="form-check-label" for="date">즉시 입주</label>
+                        <input class="form-check-input" type="radio" name="moveInDate" id="today" value="option1">
+                        <label class="form-check-label" for="today">즉시 입주</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel1" value="" >
-                        <label class="form-check-label" for="radioNoLabel1"></label>
+                        <input class="form-check-input" type="radio" name="moveInDate" id="select_date" value="" >
+                        <label class="form-check-label" for="select_date"></label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-control" name="moveInDate" id="date_input" placeholder="날짜선택">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <h5>방 정보</h5>
+        <table class="table">
+            <tr>
+                <th class="col-2">
+                    공급면적*
+                </th>
+                <td class="col-4">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="input-group">
+                            <input class="form-control" style="margin-right: 10px">
+                                <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="0평">
+                        </div>
+                    </div>
+                </td>
+                <th class="col-2">
+                    전용면적*
+                </th>
+                <td class="col-4">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="input-group">
+                                <input class="form-control" style="margin-right: 10px">
+                                <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <input type="text" readonly class="form-control-plaintext" id="d" value="0평">
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -291,5 +331,12 @@
             }
         });
     }
+        $("input[name='moveInDate'][type='radio']").change(function () {
+            if ($("#today").prop("checked")) {
+                $("#date_input").prop("disabled", true);
+            } else {
+                $("#date_input").prop("disabled", false);
+            }
+        });
 </script>
 </html>
