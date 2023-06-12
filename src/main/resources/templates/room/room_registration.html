@@ -18,6 +18,12 @@
             background-color: rgba(128, 128, 128, 0.1);
         }
 
+        .form-check-input:checked{
+            background-color: black;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -164,7 +170,8 @@
                 <th class="col-2">관리비<br>포함내역*</th>
                 <td class="col-4">
                     <div class="row ">
-                        <div class="col-4 mb-2"th:each="value:${T(project.project.domain.enum_type.MaintenanceList).values()}">
+                        <div class="col-4 mb-2"
+                             th:each="value:${T(project.project.domain.enum_type.MaintenanceList).values()}">
                             <input type="checkbox" class="btn-check btn-sm" th:id="${value}" th:value="${value}"
                                    autocomplete="off">
                             <label class="btn btn-outline-dark btn-sm" th:for="${value}" th:text="${value}"></label>
@@ -182,11 +189,11 @@
                         <label class="form-check-label" for="today">즉시 입주</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="moveInDate" id="select_date" value="" >
-                        <label class="form-check-label" for="select_date"></label>
+                        <input class="form-check-input" type="radio" name="moveInDate" id="selectDate" value="">
+                        <label class="form-check-label" for="selectDate"></label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-control" name="moveInDate" id="date_input" placeholder="날짜선택">
+                        <input class="form-control" name="moveInDate" id="dateInput" placeholder="날짜선택">
                     </div>
                 </td>
             </tr>
@@ -202,13 +209,14 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="input-group">
-                            <input class="form-control" style="margin-right: 10px">
+                                <input class="form-control" name="supplySize" id="supplySize"
+                                       style="margin-right: 10px">
                                 <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
                             </div>
                         </div>
 
                         <div class="col-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="0평">
+                            <input type="text" readonly class="form-control-plaintext" id="flatSupplySize" value="0평">
                         </div>
                     </div>
                 </td>
@@ -219,18 +227,112 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="input-group">
-                                <input class="form-control" style="margin-right: 10px">
+                                <input class="form-control" name="realSize" id="realSize" style="margin-right: 10px">
                                 <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
                             </div>
                         </div>
 
                         <div class="col-3">
-                            <input type="text" readonly class="form-control-plaintext" id="d" value="0평">
+                            <input type="text" readonly class="form-control-plaintext" id="flatRealSize" value="0평">
                         </div>
                     </div>
                 </td>
             </tr>
+
+            <tr>
+                <th class="col-2">해당 층*</th>
+                <td class="col-4">
+                    <div class="row">
+                        <div class="col-4" style="padding-right: 0">
+                            <input name="floor" id="floor" class="form-control">
+                        </div>
+                        <div class="col-1 d-flex align-items-center vertical-center" style=" padding-left: 2px">
+                            <span>층</span>
+                        </div>
+
+                        <div class="col-4 d-flex justify-content-center align-items-center">
+                            <input type="checkbox" class="btn-check" name="floor" id="basement" value="반지하" autocomplete="off">
+                            <label class="btn btn-outline-dark btn-sm" for="basement">반지하</label>
+                        </div>
+                    </div>
+                </td>
+
+                <th class="col-2">전체 층*</th>
+                <td class="col-4">
+                    <div class="row">
+                        <div class="col-4" style="padding-right: 0">
+                            <input id="entireFloor" name="entireFloor" class="form-control">
+                        </div>
+                        <div class="col-1 d-flex align-items-center vertical-center" style=" padding-left: 2px">
+                            <span>층</span>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th class="col-2">
+                    주실 방향*
+                </th>
+                <td class="col-10" colspan="3">
+                    <th:block th:each="value:${T(project.project.domain.enum_type.Bearing).values()}">
+                    <input type="radio" class="btn-check" th:id="${value}" th:name="bearing" th:value="${value}" autocomplete="off">
+                    <label class="btn btn-outline-dark" th:for="${value}" th:text="${value}"></label>
+                    </th:block>
+                </td>
+            </tr>
+
+            <tr>
+                <th class="col-2">
+                    주차 여부
+                </th>
+                <td class="col-4">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="parkingPossible" value="true">
+                        <label class="form-check-label" for="parkingPossible" >가능</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="parkingImpossible" value="false">
+                        <label class="form-check-label" for="parkingImpossible">불가능</label>
+                    </div>
+                </td>
+                <th class="col-2">
+                    반려동물
+                </th>
+                <td class="col-4">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="animal" id="animalPossible" value="true">
+                        <label class="form-check-label" for="animalPossible" >가능</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="animal" id="animalImpossible" value="false">
+                        <label class="form-check-label" for="animalImpossible">불가능</label>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th class="col-2">
+                    옵션
+                </th>
+                <td class="col-10" colspan="3">
+                    <th:block th:each="value:${T(project.project.domain.enum_type.Option).values()}">
+                        <input type="checkbox" class="btn-check" th:id="${value}" th:name="option" th:value="${value}" autocomplete="off">
+                        <label class="btn btn-outline-dark m-1" th:for="${value}" th:text="${value}"></label>
+                    </th:block>
+                </td>
+            </tr>
         </table>
+
+        <h5>사진 등록</h5>
+        <hr style="border: 1px solid black">
+        <ul>
+            <li class="fw-bold">최소 3장 이상의 사진을 등록해 주세요</li>
+            <li class="fw-bold">첫번쨰 사진은 대표 사진입니다.</li>
+        </ul>
+        <input type="file" name="images" id="image-input" multiple>
+        <label for="image-input">이미지 선택</label>
     </div>
 </div>
 </body>
@@ -240,10 +342,35 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script>
+    //반지하 체크박스 체크시 층수 입력 input disabled
+    $("#basement").change(function (){
+        if(this.checked){
+            $("#floor").prop("disabled",true);
+        }
+        else{
+            $("#floor").prop("disabled",false);
+        }
+    })
+
+
+    //면적 -> 평수변경
+    function flatChange(area) {
+        return Math.round(area * 0.3025) + "평";
+    }
+
+    $("#realSize").on("input", function () {
+        $("#flatRealSize").val(flatChange(this.value));
+    })
+    $("#supplySize").on("input", function () {
+        $("#flatSupplySize").val(flatChange(this.value));
+    })
+
+
     //날짜 선택기
-    let date=flatpickr(document.getElementById("date_input"),{
-        "locale":"ko"
+    let date = flatpickr(document.getElementById("dateInput"), {
+        "locale": "ko"
     });
+
     //주소 검색
     function daumPostcode() {
         new daum.Postcode({
@@ -305,13 +432,6 @@
 
     //위치확인 버튼 클릭시 지도로 위치 보여주기
     function mapView() {
-        let mapContainer = document.getElementById('map');
-        let mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
-            level: 5
-        };
-
-        let map = new kakao.maps.Map(mapContainer, mapOption);
 
         //주소 ->좌표 변환 객체
         let geocoder = new kakao.maps.services.Geocoder();
@@ -320,6 +440,14 @@
         //주소로 좌표 검색
         geocoder.addressSearch($("#address").val(), function (result, status) {
             if (status == kakao.maps.services.Status.OK) {
+                let mapContainer = document.getElementById('map');
+                let mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667),
+                    level: 5
+                };
+
+                let map = new kakao.maps.Map(mapContainer, mapOption);
+
                 let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                 let marker = new kakao.maps.Marker({
@@ -329,14 +457,24 @@
 
                 map.setCenter(coords);
             }
-        });
-    }
-        $("input[name='moveInDate'][type='radio']").change(function () {
-            if ($("#today").prop("checked")) {
-                $("#date_input").prop("disabled", true);
-            } else {
-                $("#date_input").prop("disabled", false);
+            else{
+                Swal.fire({
+                    title: "주소를 입력해주세요",
+                    icon: null,
+                    showCancelButton: false,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#aaa`
+                })
             }
         });
+    }
+
+    $("input[name='moveInDate'][type='radio']").change(function () {
+        if ($("#today").prop("checked")) {
+            $("#dateInput").prop("disabled", true);
+        } else {
+            $("#dateInput").prop("disabled", false);
+        }
+    });
 </script>
 </html>

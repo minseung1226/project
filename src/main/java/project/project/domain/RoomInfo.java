@@ -31,7 +31,6 @@ public class RoomInfo {
     private List<Option> options=new ArrayList<>(); // 옵션
     private boolean animal; // 반려동물
     private boolean parking; // 주차 여부
-    private boolean ev;      // 엘리베이터 유무
 
     private String floor;  // 층수
     private String entireFloor; //전체층
