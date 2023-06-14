@@ -5,7 +5,7 @@ import lombok.*;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
-import project.project.domain.enum_type.MaintenanceList;
+import project.project.domain.enum_type.MaintenanceItem;
 import project.project.domain.enum_type.RoomType;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ public class Room {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "room_info_id")
     private RoomInfo roomInfo;
@@ -37,19 +39,19 @@ public class Room {
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Photo> photos=new ArrayList<>();
 
-    private String registrarInfo; // 등록자 정보 : 세입자,임대인,기타
-    private double x; //위도
-    private double y;  //경도
+    private String registrant; // 등록자 정보 : 세입자,임대인
+    private double lat; //위도
+    private double lng;  //경도
 
     private String img; // 대표 이미지
 
-    private int deposit; //보증금
-    private int monthlyRent; //월세
+    private Integer deposit; //보증금
+    private Integer monthlyRent; //월세
 
 
 
     @Enumerated(EnumType.STRING)
-    private HouseType houseType; //집종류
+    private HouseType houseType; //건물 종류
 
     @Enumerated(EnumType.STRING)
     private RoomType roomType; //집 종류
@@ -61,7 +63,7 @@ public class Room {
 
     @Convert(converter = EnumListConverter.class)
     @Enumerated(EnumType.STRING)
-    private List<MaintenanceList> maintenanceList=new ArrayList<>(); //관리비포함항목
+    private List<MaintenanceItem> maintenanceItem=new ArrayList<>(); //관리비포함항목
 
 
 

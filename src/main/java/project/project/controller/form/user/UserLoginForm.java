@@ -1,4 +1,4 @@
-package project.project.controller.form;
+package project.project.controller.form.user;
 
 import lombok.Data;
 import lombok.Getter;

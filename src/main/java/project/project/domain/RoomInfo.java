@@ -34,7 +34,6 @@ public class RoomInfo {
 
     private String floor;  // 층수
     private String entireFloor; //전체층
-    private Integer household; //총 세대 수
 
     private double realSize;   //전용면적
     private double supplySize; //공급 면적

@@ -1,12 +1,8 @@
 package project.project.controller;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,10 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import project.project.controller.form.UserJoinForm;
-import project.project.controller.form.UserLoginForm;
-import project.project.controller.form.UserModifyForm;
+import project.project.controller.form.user.UserJoinForm;
+import project.project.controller.form.user.UserLoginForm;
+import project.project.controller.form.user.UserModifyForm;
 import project.project.domain.User;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;

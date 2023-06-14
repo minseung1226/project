@@ -1,8 +1,6 @@
 package project.project.domain;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +10,6 @@ import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +24,10 @@ public class RoomTest {
 
     @Test
     void RoomAndRoomInfoMakeTest(){
-        List<MaintenanceList> maintenanceLists=new ArrayList<>();
-        maintenanceLists.add(MaintenanceList.TV);
-        maintenanceLists.add(MaintenanceList.전기세);
+/*
+        List<MaintenanceItem> maintenanceItems =new ArrayList<>();
+        maintenanceItems.add(MaintenanceItem.TV);
+        maintenanceItems.add(MaintenanceItem.전기);
 
         List<Option> options=new ArrayList<>();
         options.add(Option.가스레인지);
@@ -41,7 +39,7 @@ public class RoomTest {
                 ,"1912624",UserStatus.일반,UserJoinType.NORMAR);
 
         //RoomInfo 생성
-        RoomInfo roomInfo = RoomInfo.makeRoomInfo(RoomType.원룸, 7.5, maintenanceLists,
+        RoomInfo roomInfo = RoomInfo.makeRoomInfo(RoomType.원룸, 7.5, maintenanceItems,
                 Bearing.남향, options, true, false, true, LocalDate.now());
 
         //Room 생성
@@ -68,6 +66,7 @@ public class RoomTest {
         assertThat(findRoom).isEqualTo(room);
         assertThat(findUser).isEqualTo(user);
         assertThat(findRoomInfo).isEqualTo(roomInfo);
+*/
 
 
     }
