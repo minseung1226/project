@@ -137,7 +137,6 @@ public class UserController {
     @PostMapping("/user/modify")
     public String userModify(UserModifyForm form){
 
-        log.info("form={}",form);
         userService.profileModify(form.getId(),form.getName(),form.getTel(),form.getEmail(),
                 form.getPimg(),form.getPostcode(),form.getAddress(),form.getDetailAddress(),
                 form.getExtraAddress());

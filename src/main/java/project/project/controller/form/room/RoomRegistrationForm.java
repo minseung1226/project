@@ -1,6 +1,6 @@
 package project.project.controller.form.room;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import project.project.domain.enum_type.HouseType;
@@ -12,30 +12,34 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class RoomRegistrationForm {
-    @NotEmpty
+    @NotNull
     private Long userId;
-    @NotEmpty
+    @NotBlank
     private String registrant; //등록자
-    @NotEmpty
+    @NotNull
     private HouseType houseType; //건물 종류
-    @NotEmpty
+    @NotNull
     private RoomType roomType; //방 종류
-    @NotEmpty
+    @NotBlank
     private String postcode;
-    @NotEmpty
+    @NotBlank
     private String address;
-    @NotEmpty
+    @NotBlank
     private String detailAddress;
     private String extraAddress;
-    @NotEmpty
+    @NotNull
+    @Positive
     private  Integer deposit; //보증금
-    @NotEmpty
+    @NotNull
+    @Positive
     private Integer monthlyRent; //월세
-    @NotEmpty
+    @NotNull
+    @Positive
     private double maintenance; //관리비
-    @NotEmpty
+    @NotNull
     private LocalDate moveInDate; //입주일
     private List<MaintenanceItem> maintenanceItem =new ArrayList<>();
 
+    @Size(min = 3,max = 10)
     private List<MultipartFile> img =new ArrayList<>();
 }

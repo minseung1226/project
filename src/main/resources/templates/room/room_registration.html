@@ -37,6 +37,11 @@
             right: 0;
         }
 
+        .error-class {
+            border-color: #dc3543;
+            color: #dc3543;
+        }
+
     </style>
 </head>
 <body>
@@ -44,11 +49,12 @@
 <div th:if="${session.user==null}" th:replace="templates/header :: header_modal"></div>
 
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
-    <div class="container bg-white border">
-        <form action="/room/registration" method="post" enctype="multipart/form-data">
+    <div class="container bg-white border" >
+        <form th:object="${roomForm}" action="/room/registration" method="post" enctype="multipart/form-data">
             <input type="hidden" name="userId" th:value="${session.user}">
             <h2 class="mb-5">방 내놓기</h2>
             <h5>등록자 정보</h5>
+            <div th:class="error-class" th:errors="*{roomForm.registrant}">등록자 오류</div>
             <table class="table">
                 <tr>
                     <th class=" col-2">
@@ -56,14 +62,14 @@
                     </th>
                     <td class="col-10">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="registrant" id="inlineRadio1"
-                                   value="임대인">
-                            <label class="form-check-label" for="inlineRadio1">임대인</label>
+                            <input class="form-check-input" th:field="${roomForm.registrant}" type="radio" th:name="${roomForm.registrant}" id="lessor"
+                                   value="임대인" th:checked="${roomForm.registrant}=='임대인'">
+                            <label class="form-check-label" for="lessor">임대인</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="registrant" id="inlineRadio2"
-                                   value="기존 세입자">
-                            <label class="form-check-label" for="inlineRadio2">기존 세입자</label>
+                            <input class="form-check-input" type="radio" th:name="${roomForm.registrant}" id="tenant"
+                                   value="기존 세입자" th:checked="${roomForm.registrant}=='기존 세입자'">
+                            <label class="form-check-label" for="tenant">기존 세입자</label>
                         </div>
                     </td>
                 </tr>
@@ -482,15 +488,15 @@
                 //검색한 주소 좌표 변환 좌표 변환 실패시 경고창
                 let geocoder = new kakao.maps.services.Geocoder();
 
-                geocoder.addressSearch(addr,function (result,status){
+                geocoder.addressSearch(addr, function (result, status) {
 
-                    if(status===kakao.maps.services.Status.OK){
-                        let lat=result[0].y;
-                        let lng=result[0].x;
+                    if (status === kakao.maps.services.Status.OK) {
+                        let lat = result[0].y;
+                        let lng = result[0].x;
 
                         $("#lat").val(lat);
                         $("#lng").val(lng);
-                    }else{
+                    } else {
                         Swal.fire({
                             title: '올바른 주소를 입략헤주세요',
                             icon: null,
