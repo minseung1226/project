@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>홈앤룸</title>
@@ -49,12 +49,13 @@
 <div th:if="${session.user==null}" th:replace="templates/header :: header_modal"></div>
 
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
-    <div class="container bg-white border" >
-        <form th:object="${roomForm}" action="/room/registration" method="post" enctype="multipart/form-data">
+    <div class="container bg-white border">
+        <form th:object="${roomRegistrationForm}" action="/room/registration" method="post"
+              enctype="multipart/form-data">
             <input type="hidden" name="userId" th:value="${session.user}">
             <h2 class="mb-5">방 내놓기</h2>
             <h5>등록자 정보</h5>
-            <div th:class="error-class" th:errors="*{roomForm.registrant}">등록자 오류</div>
+            <div th:class="error-class" th:errors="*{registrant}">등록자 오류</div>
             <table class="table">
                 <tr>
                     <th class=" col-2">
@@ -62,13 +63,13 @@
                     </th>
                     <td class="col-10">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" th:field="${roomForm.registrant}" type="radio" th:name="${roomForm.registrant}" id="lessor"
-                                   value="임대인" th:checked="${roomForm.registrant}=='임대인'">
+                            <input class="form-check-input" type="radio" th:field="*{registrant}" id="lessor"
+                                   value="임대인">
                             <label class="form-check-label" for="lessor">임대인</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" th:name="${roomForm.registrant}" id="tenant"
-                                   value="기존 세입자" th:checked="${roomForm.registrant}=='기존 세입자'">
+                            <input class="form-check-input" type="radio" th:field="*{registrant}" id="tenant"
+                                   value="기존 세입자">
                             <label class="form-check-label" for="tenant">기존 세입자</label>
                         </div>
                     </td>
@@ -83,11 +84,16 @@
                     </th>
                     <td class="col-10">
                         <div class="col-5">
-                            <select class="form-select col-5" name="houseType" aria-label="Default select example">
-                                <option selected>선택</option>
+                            <select class="form-select col-5" th:field="*{houseType}"
+                                    aria-label="Default select example"
+                                    th:errorclass="error-class">
+                                <option value="" selected>선택</option>
                                 <option th:each="value :${T(project.project.domain.enum_type.HouseType).values()}"
                                         th:value="${value}" th:text="${value}"></option>
                             </select>
+                            <div class="error-class" th:errors="*{houseType}">
+                                house type 오류
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -97,11 +103,15 @@
                     </th>
                     <td class="col-10">
                         <div class="col-5">
-                            <select class="form-select" name="roomType" aria-label="Default select example">
-                                <option selected>선택</option>
+                            <select class="form-select" th:field="*{roomType}" aria-label="Default select example"
+                             th:errorclass="error-class">
+                                <option value="" selected>선택</option>
                                 <option th:each="value :${T(project.project.domain.enum_type.RoomType).values()}"
                                         th:value="${value}" th:text="${value}"></option>
                             </select>
+                            <div class="error-class" th:errors="*{roomType}">
+                                room type 오류
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -112,8 +122,11 @@
                     <td class="col-10">
                         <div class="row mb-2">
                             <div class="col-5">
-                                <input type="text" class="form-control" th:id="postcode" th:name="postcode"
-                                       placeholder="우편번호">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{postcode}"  onclick="daumPostcode()" placeholder="우편번호">
+                                <div class="error-class" th:errors="*{postcode}">
+                                    postcode 오류
+                                </div>
                             </div>
                             <div class="col-3">
                                 <input type="button" class="btn btn-dark" onclick="daumPostcode()" value="우편번호 찾기">
@@ -121,17 +134,24 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-8">
-                                <input type="text" class="form-control" th:id="address" th:name="address"
-                                       placeholder="주소">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{address}" placeholder="주소">
+                                <div class="error-class" th:errors="*{address}">
+                                    address 오류
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-5">
-                                <input type="text" class="form-control" th:id="detailAddress" th:name="detailAddress"
-                                       placeholder="상세주소">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{detailAddress}"  placeholder="상세주소">
+                                <div class="error-class" th:errors="*{detailAddress}">
+                                    detail address 오류
+                                </div>
                             </div>
                             <div class="col-3">
-                                <input type="text" class="form-control" th:id="extraAddress" th:name="extraAddress"
+                                <input type="text" class="form-control"
+                                       th:field="*{extraAddress}"
                                        placeholder="참고항목">
                             </div>
 
@@ -160,7 +180,11 @@
                     <td class="col-4">
                         <div class="row">
                             <div class="col-8">
-                                <input class="form-control">
+                                <input class="form-control" th:errorclass="error-class"
+                                th:field="*{deposit}">
+                                <div class="error-class" th:errors="*{deposit}">
+                                    deposit 오류
+                                </div>
                             </div>
                             <div class="col-4 text-sm-start">
                                 만원
@@ -171,7 +195,11 @@
                     <td class="col-4">
                         <div class="row">
                             <div class="col-8">
-                                <input class="form-control">
+                                <input class="form-control" th:errorclass="error-class"
+                                th:field="*{monthlyRent}">
+                                <div class="error-class" th:errors="*{monthlyRent}">
+                                    monthlyRent 오류
+                                </div>
                             </div>
                             <div class="col-4 text-sm-start">
                                 만원
@@ -185,7 +213,8 @@
                     <td class="col-4">
                         <div class="row">
                             <div class="col-8">
-                                <input class="form-control">
+                                <input class="form-control" th:errorclass="error-class"
+                                th:field="*{maintenance}">
                             </div>
                             <div class="col-4 text-sm-start">
                                 만원
@@ -197,8 +226,8 @@
                         <div class="row ">
                             <div class="col-4 mb-2"
                                  th:each="value:${T(project.project.domain.enum_type.MaintenanceItem).values()}">
-                                <input type="checkbox" class="btn-check btn-sm" th:id="${value}" th:value="${value}"
-                                       autocomplete="off">
+                                <input type="checkbox" class="btn-check btn-sm"  name="maintenanceItem" th:id="${value}" th:value="${value}"
+                                       autocomplete="off" th:checked="${roomRegistrationForm.maintenanceItem.contains(value)}">
                                 <label class="btn btn-outline-dark btn-sm" th:for="${value}" th:text="${value}"></label>
                             </div>
                         </div>
@@ -210,7 +239,8 @@
                     <th class="col-2">입주 가능일*</th>
                     <td colspan="3">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="moveInDate" id="today" value="option1">
+                            <input class="form-check-input" type="radio" th:field="*{moveInDate}" id="today"
+                                   th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
                             <label class="form-check-label" for="today">즉시 입주</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -218,7 +248,11 @@
                             <label class="form-check-label" for="selectDate"></label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-control" name="moveInDate" id="dateInput" placeholder="날짜선택">
+                            <input class="form-control"  id="dateInput" placeholder="날짜선택"
+                            th:value="">
+                        </div>
+                        <div class="error-class" th:errors="*{moveInDate}">
+                            moveIndate 오류
                         </div>
                     </td>
                 </tr>
@@ -386,6 +420,7 @@
             </div>
         </form>
     </div>
+</div>
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services"></script>
@@ -463,8 +498,12 @@
 
     //날짜 선택기
     let date = flatpickr(document.getElementById("dateInput"), {
-        "locale": "ko"
-    });
+        "locale": "ko",
+        onClose: function(selectedDates, dateStr, instance) {
+            // 선택된 날짜를 targetInput의 값으로 설정합니다.
+            $("#selectDate").val(dateStr);
+        }
+    })
 
     //주소 검색
     function daumPostcode() {
@@ -498,7 +537,7 @@
                         $("#lng").val(lng);
                     } else {
                         Swal.fire({
-                            title: '올바른 주소를 입략헤주세요',
+                            title: '올바른 주소를 입력헤주세요',
                             icon: null,
                             showCancelButton: false,
                             confirmButtonText: '확인',
