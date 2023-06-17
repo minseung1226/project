@@ -418,7 +418,7 @@
                 <div class="row">
                     <div class="custom-file col-2 d-flex align-items-center justify-content-center"
                          th:each="i:${#numbers.sequence(0,9)}">
-                        <input type="file" class="custom-file-input img" th:id="img+${i}" name="img" style="display: none">
+                        <input type="file" class="custom-file-input img" th:id="img+${i}" style="display: none">
                         <label class="custom-file-label btn btn-dark" th:for="img+${i}">사진 선택</label>
                         <button type="button" th:id="delBtn+${i}" class="btn btn-sm delete-button"
                         >X

@@ -21,6 +21,11 @@ public class Photo {
 
     private String img;
 
+    public Photo(Room room, String img) {
+        this.room = room;
+        this.img = img;
+    }
+
     public Photo(String img) {
         this.img = img;
     }

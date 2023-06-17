@@ -49,7 +49,7 @@ public class RoomInfo {
     }
 
     public static RoomInfo makeRoomInfo(RoomInfoRegistrationDto dto){
-        RoomInfo roomInfo = makeRoomInfo(dto);
+        RoomInfo roomInfo = new RoomInfo(dto);
 
         return roomInfo;
     }

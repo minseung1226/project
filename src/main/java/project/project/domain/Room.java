@@ -11,7 +11,10 @@ import project.project.dto.RoomRegistrationDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Entity
 @Getter
@@ -68,13 +71,34 @@ public class Room {
     private List<MaintenanceItem> maintenanceItem=new ArrayList<>(); //관리비포함항목
 
 
-    public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo) {
+    public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo,String img) {
         this.address=new Address(dto.getPostcode(),dto.getAddress(),dto.getDetailAddress(),dto.getExtraAddress());
         this.user=user;
         this.roomInfo=roomInfo;
+        this.registrant=dto.getRegistrant();
+        this.lat=dto.getLat();
+        this.lng=dto.getLng();
+        this.deposit=dto.getDeposit();
+        this.monthlyRent=dto.getMonthlyRent();
+        this.houseType=dto.getHouseType();
+        this.roomType=dto.getRoomType();
+        this.maintenance=dto.getMaintenance();
+        this.moveInDate=dto.getMoveInDate();
+        this.maintenanceItem=dto.getMaintenanceItem();
+        this.img=img;
 
     }
 
-    public static
+    public static Room makeRoom(RoomRegistrationDto dto,RoomInfo roomInfo,String[] images,User user){
+        Room room = new Room(dto, user, roomInfo, images[0]);
+
+        List<Photo> photoList = Arrays.stream(images).map(img -> new Photo(room, img)).collect(Collectors.toList());
+
+        room.photos=photoList;
+
+        return room;
+
+
+    }
 
 }
