@@ -1,4 +1,4 @@
-package project.project.controller.form.room;
+package project.project.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Data
-public class RoomRegistrationForm {
+public class RoomRegistrationDto {
     @NotNull
     private Long userId;
     @NotBlank
@@ -20,8 +20,9 @@ public class RoomRegistrationForm {
     private HouseType houseType; //건물 종류
     @NotNull
     private RoomType roomType; //방 종류
-    @NotBlank
-    private String postcode;
+    @NotNull
+    @Positive
+    private Integer postcode;
     @NotBlank
     private String address;
     @NotBlank

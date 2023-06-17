@@ -1,4 +1,4 @@
-package project.project.controller.form.room;
+package project.project.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -8,7 +8,7 @@ import project.project.domain.enum_type.Option;
 import java.util.ArrayList;
 import java.util.List;
 @Data
-public class RoomInfoRegistrationForm {
+public class RoomInfoRegistrationDto {
     @NotNull
     @Positive
     private Double realSize;  //전용면적

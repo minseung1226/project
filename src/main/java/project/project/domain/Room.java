@@ -7,6 +7,8 @@ import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.MaintenanceItem;
 import project.project.domain.enum_type.RoomType;
+import project.project.dto.RoomRegistrationDto;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +68,13 @@ public class Room {
     private List<MaintenanceItem> maintenanceItem=new ArrayList<>(); //관리비포함항목
 
 
+    public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo) {
+        this.address=new Address(dto.getPostcode(),dto.getAddress(),dto.getDetailAddress(),dto.getExtraAddress());
+        this.user=user;
+        this.roomInfo=roomInfo;
 
+    }
 
-
+    public static
 
 }
