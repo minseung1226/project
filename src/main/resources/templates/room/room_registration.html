@@ -427,6 +427,37 @@
                 </div>
             </div>
 
+            <h5 class="mt-3">상세 정보</h5>
+            <hr style="border: 1px solid black">
+            <ul>
+                <li class="fw-bold">등록 하실 매물의 자세한 설명을 입력해주세요</li>
+                <li class="fw-bold">방 정보,가격 협의 내용, 교통 등 자세한 정보를 입력하면 거래가 성사될 가능성이 높아집니다.</li>
+            </ul>
+
+            <table class="table">
+                <tr>
+                    <th class="col-2">
+                        제목*
+                    </th>
+                    <td class="col-10">
+                        <input class="form-control" th:field="*{title}" th:errorclass="error-class"
+                        placeholder="ex)홍대역 도보 10분 이내, 복층형 원룸">
+                        <div class="error-class" th:errors="*{title}">
+                            title 오류
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-2">
+                        상세 내용
+                    </th>
+
+                    <td class="col-10">
+                        <textarea class="form-control" th:field="*{content}" style="height: 300px;resize: none;"
+                        placeholder="해당 방에 대한 상세한 정보를 입력해주세요. &#13;&#10; 방 구조,교통, 주변 편의 시설 등 구체적인 방의 정보를 입력해주세요"></textarea>
+                    </td>
+                </tr>
+            </table>
 
             <div class="row">
                 <div class="col-md-6 offset-md-3 mt-4">

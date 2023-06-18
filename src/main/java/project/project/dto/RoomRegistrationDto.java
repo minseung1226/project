@@ -53,10 +53,19 @@ public class RoomRegistrationDto {
     @Size(min = 3,max = 10)
     private List<MultipartFile> img =new ArrayList<>();
 
+    @NotBlank
+    private String title;
+
+    private String content;
+
     public RoomRegistrationDto() {
     }
 
-    public RoomRegistrationDto(Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance, LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, List<MultipartFile> img) {
+    public RoomRegistrationDto(Long userId, String registrant, HouseType houseType, RoomType roomType,
+                               Integer postcode, String address, String detailAddress, String extraAddress,
+                               Double lat, Double lng, Integer deposit, Integer monthlyRent,
+                               Double maintenance, LocalDate moveInDate, List<MaintenanceItem> maintenanceItem,
+                               List<MultipartFile> img,String title,String content) {
         this.userId = userId;
         this.registrant = registrant;
         this.houseType = houseType;
@@ -73,5 +82,7 @@ public class RoomRegistrationDto {
         this.moveInDate = moveInDate;
         this.maintenanceItem = maintenanceItem;
         this.img = img;
+        this.title=title;
+        this.content=content;
     }
 }

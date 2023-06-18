@@ -2,6 +2,7 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.project.domain.baseentity.BaseEntity;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.Bearing;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoomInfo {
+public class RoomInfo extends BaseEntity {
 
     @Id
     @GeneratedValue

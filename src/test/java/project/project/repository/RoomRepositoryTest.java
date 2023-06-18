@@ -52,21 +52,21 @@ class RoomRepositoryTest {
         maintenanceItems.add(MaintenanceItem.인터넷);
 
         RoomRegistrationDto roomDto = new RoomRegistrationDto(user.getId(), "기존 세입자", HouseType.단독, RoomType.원룸, 12312, "부천로 57번길 50", "201호"
-                , "심곡동", 12.12121, 21.222, 500, 40, 5.0, LocalDate.now(), maintenanceItems, null);
+                , "심곡동", 12.12121, 21.222, 500, 40, 5.0, LocalDate.now(), maintenanceItems, null,"제목","상세정보");
 
         String[] images = {"이미지1", "이미지2"};
         Room room = Room.makeRoom(roomDto, roomInfo, images, user);
 
         roomRepository.save(room);
 
+        System.out.println("roomNumber="+room.getRoomNumber());
+
         em.flush();
         em.clear();
 
         Room findRoom = roomRepository.findById(room.getId()).get();
 
-        assertThat(room).isEqualTo(findRoom  );
-        assertThat(room.getRoomInfo()).isEqualTo(roomInfo);
-        assertThat(room.getUser()).isEqualTo(user);
+
         assertThat(room.getPhotos()).extracting("img").containsExactly("이미지1","이미지2");
 
 

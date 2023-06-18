@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.project.domain.baseentity.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Wishlist {
+public class Wishlist extends BaseEntity {
 
     @Id
     @GeneratedValue

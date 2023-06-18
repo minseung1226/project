@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
+import project.project.domain.baseentity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Contract {
+public class Contract extends BaseEntity {
 
     @Id
     @GeneratedValue

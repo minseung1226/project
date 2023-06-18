@@ -5,11 +5,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import project.project.domain.baseentity.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Inquiry {
+public class Inquiry extends BaseEntity {
 
     @Id
     @GeneratedValue

@@ -2,6 +2,7 @@ package project.project.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.project.domain.baseentity.BaseEntity;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
@@ -10,6 +11,7 @@ import project.project.domain.enum_type.RoomType;
 import project.project.dto.RoomRegistrationDto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +21,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(exclude = {"user","roomInfo","photos","address"})
-public class Room {
+public class Room extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -70,6 +71,23 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private List<MaintenanceItem> maintenanceItem=new ArrayList<>(); //관리비포함항목
 
+    private String title; //제목
+    private String content; //상세정보
+
+    @Column(unique = true)
+    private String roomNumber; //매물 번호
+
+    @PostPersist
+    private void generateNumber(){
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String id=String.valueOf(this.getId());
+        String zero="";
+        for(int i=0;i<6-id.length();i++) zero+="0";
+
+        roomNumber=date+zero+id;
+
+    }
+
 
     public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo,String img) {
         this.address=new Address(dto.getPostcode(),dto.getAddress(),dto.getDetailAddress(),dto.getExtraAddress());
@@ -86,6 +104,8 @@ public class Room {
         this.moveInDate=dto.getMoveInDate();
         this.maintenanceItem=dto.getMaintenanceItem();
         this.img=img;
+        this.title=dto.getTitle();
+        this.content=dto.getContent();
 
     }
 

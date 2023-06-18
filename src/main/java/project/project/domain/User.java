@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
+import project.project.domain.baseentity.BaseEntity;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.domain.enum_type.UserStatus;
@@ -15,7 +16,7 @@ import project.project.domain.enum_type.UserStatus;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USERS")
 @EqualsAndHashCode()
-public class User {
+public class User extends BaseEntity {
     @Id
     @Column(name = "user_id")
     @GeneratedValue
