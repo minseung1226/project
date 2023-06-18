@@ -52,4 +52,26 @@ public class RoomRegistrationDto {
 
     @Size(min = 3,max = 10)
     private List<MultipartFile> img =new ArrayList<>();
+
+    public RoomRegistrationDto() {
+    }
+
+    public RoomRegistrationDto(Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance, LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, List<MultipartFile> img) {
+        this.userId = userId;
+        this.registrant = registrant;
+        this.houseType = houseType;
+        this.roomType = roomType;
+        this.postcode = postcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.extraAddress = extraAddress;
+        this.lat = lat;
+        this.lng = lng;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+        this.maintenance = maintenance;
+        this.moveInDate = moveInDate;
+        this.maintenanceItem = maintenanceItem;
+        this.img = img;
+    }
 }

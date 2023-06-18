@@ -28,4 +28,17 @@ public class RoomInfoRegistrationDto {
 
     private List<Option> option=new ArrayList<>(); //옵션
 
+    public RoomInfoRegistrationDto() {
+    }
+
+    public RoomInfoRegistrationDto(Double realSize, Double supplySize, String floor, String entireFloor, Bearing bearing, Boolean parking, Boolean animal, List<Option> option) {
+        this.realSize = realSize;
+        this.supplySize = supplySize;
+        this.floor = floor;
+        this.entireFloor = entireFloor;
+        this.bearing = bearing;
+        this.parking = parking;
+        this.animal = animal;
+        this.option = option;
+    }
 }
