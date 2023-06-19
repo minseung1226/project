@@ -4,17 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import project.project.domain.Room;
 import project.project.domain.RoomInfo;
 import project.project.domain.User;
 import project.project.dto.RoomInfoRegistrationDto;
 import project.project.dto.RoomRegistrationDto;
 import project.project.file.UploadFile;
-import project.project.repository.RoomRepository;
+import project.project.repository.roomrepository.RoomRepository;
 import project.project.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -87,9 +87,9 @@ public class Room extends BaseEntity {
         // roomNumber 값 주입
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String id=String.valueOf(this.getId());
-        String number=date+id+"00000";
+        String number=date+id+"000000";
 
-        roomNumber=number.substring(0,16);
+        roomNumber=number.substring(0,12);
 
     }
 

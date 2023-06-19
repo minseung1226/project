@@ -24,4 +24,8 @@ public class Wishlist extends BaseEntity {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    public Wishlist(User user, Room room) {
+        this.user = user;
+        this.room = room;
+    }
 }

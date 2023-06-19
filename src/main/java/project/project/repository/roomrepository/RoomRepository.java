@@ -1,4 +1,4 @@
-package project.project.repository;
+package project.project.repository.roomrepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
