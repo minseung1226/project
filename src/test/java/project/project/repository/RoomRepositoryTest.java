@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.project.domain.Room;
 import project.project.domain.RoomInfo;
 import project.project.domain.User;
+import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
 import project.project.dto.RoomInfoRegistrationDto;
 import project.project.dto.RoomRegistrationDto;
@@ -59,14 +60,14 @@ class RoomRepositoryTest {
 
         roomRepository.save(room);
 
-        System.out.println("roomNumber="+room.getRoomNumber());
 
         em.flush();
         em.clear();
 
         Room findRoom = roomRepository.findById(room.getId()).get();
 
-
+        assertThat(room.getAddress()).isEqualTo(new Address(12312,"부천로 57번길 50","201호","심곡동"));
+        assertThat(room.getRegistrant()).isEqualTo("기존 세입자");
         assertThat(room.getPhotos()).extracting("img").containsExactly("이미지1","이미지2");
 
 

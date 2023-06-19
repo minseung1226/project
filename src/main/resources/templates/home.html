@@ -12,7 +12,9 @@
 
 
 <header th:replace="templates/header :: header_template"></header>
-<div th:replace="templates/header :: header_modal"></div>
+<div th:if="${session.user==null}">
+    <div th:replace="templates/header :: header_modal"></div>
+</div>
 <div class="container-fluid" style="height:900px">
     <div class="row" style="height: 100%">
         <div class="col-8 fluid" style="padding: 0">

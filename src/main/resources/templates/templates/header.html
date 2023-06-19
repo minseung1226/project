@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>홈앤룸</title>
@@ -35,7 +35,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active atag" aria-current="page" href="#">매물 관리</a>
+                        <a class="nav-link active atag" aria-current="page" th:href="@{/room/management/{userId} (userId=${session.user})}">매물 관리</a>
                     </li>
 
                 </ul>
@@ -60,6 +60,7 @@
             if ([[${session.user}]] != null) {
                 location.href = $(this).attr('href');
             } else {
+                alert("실행");
                 $('#loginButton').click();
             }
         });

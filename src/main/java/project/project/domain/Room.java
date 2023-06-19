@@ -7,6 +7,7 @@ import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.MaintenanceItem;
+import project.project.domain.enum_type.RoomStatus;
 import project.project.domain.enum_type.RoomType;
 import project.project.dto.RoomRegistrationDto;
 
@@ -77,14 +78,18 @@ public class Room extends BaseEntity {
     @Column(unique = true)
     private String roomNumber; //매물 번호
 
+    @Enumerated(EnumType.STRING)
+    private RoomStatus status=RoomStatus.진행중;
+
     @PostPersist
     private void generateNumber(){
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String id=String.valueOf(this.getId());
-        String zero="";
-        for(int i=0;i<6-id.length();i++) zero+="0";
 
-        roomNumber=date+zero+id;
+        // roomNumber 값 주입
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String id=String.valueOf(this.getId());
+        String number=date+id+"00000";
+
+        roomNumber=number.substring(0,16);
 
     }
 

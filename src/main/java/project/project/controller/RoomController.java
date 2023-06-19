@@ -8,10 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import project.project.domain.Room;
 import project.project.dto.RoomInfoRegistrationDto;
 import project.project.dto.RoomRegistrationDto;
+import project.project.repository.RoomRepository;
 import project.project.service.RoomService;
 
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
+    private final RoomRepository roomRepository;
 
     @GetMapping("/room/registration")
     public String roomRegistrationForm(Model model){
@@ -45,6 +49,13 @@ public class RoomController {
         roomService.roomRegistration(roomDto,roomInfoDto);
 
 
-        return "redirect:/";
+        return "redirect:/room/management";
+    }
+
+    @GetMapping("/room/management/{userId}")
+    public String room_management(@PathVariable("userId")Long userId,Model model){
+        List<Room> rooms = roomRepository.findRooms(userId);
+        model.addAttribute("rooms",rooms);
+        return "room/management";
     }
 }
