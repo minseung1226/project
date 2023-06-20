@@ -23,27 +23,29 @@
     <div class="container bg-white border">
         <h3 class="fw-bold mt-3 mb-3">매물 관리</h3>
 
-        <table class="table table-bordered " style="border-top: 2px solid black">
+        <table class="table table-bordered table-hover" style="border-top: 2px solid black">
             <tr>
                 <th class="col-2">매물 번호</th>
                 <th class="col-3">소재지</th>
                 <th class="col-1">진행 상태</th>
                 <th class="col-1">찜</th>
                 <th class="col-1">문의</th>
-                <th class="col-1">등록일</th>
-                <th class="col-2"></th>
+                <th class="col-2">등록일</th>
+                <th class="col-1"></th>
             </tr>
 
-            <tr th:each="room:${rooms}">
-                <td th:field="${room.roomNumber}"></td>
-                <td th:field="${room.address.address}"></td>
-                <td th:field="${room.status}"></td>
-                <td></td>
-                <td></td>
-                <td th:field="${room.createDate}"></td>
+            <tr th:each="room:${roomDtos}">
+                <a th:href="@{/room/modify/{roomId}}"
+                <td  th:text="${room.roomNumber}"></td>
+                <td  th:text="${room.address}"></td>
+                <td  th:text="${room.status}"></td>
+                <td  th:text="${room.wishlistCount}"></td>
+                <td  th:text="${room.inquiryCount}"></td>
+                <td  th:text="${#temporals.format(room.createDate,'yy-MM-dd')}"></td>
+                <td>
+
+                </td>
             </tr>
-
-
 
         </table>
     </div>

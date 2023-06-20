@@ -126,4 +126,9 @@ public class Room extends BaseEntity {
 
     }
 
+
+    public void testGeneretedRoomNumber(){
+        generateNumber();
+    }
+
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import project.project.domain.Room;
 import project.project.dto.RoomInfoRegistrationDto;
 import project.project.dto.RoomRegistrationDto;
+import project.project.dto.RoomSimpleDto;
+import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.RoomService;
 
@@ -24,6 +26,7 @@ public class RoomController {
 
     private final RoomService roomService;
     private final RoomRepository roomRepository;
+    private final DslRoomRepository dslRoomRepository;
 
     @GetMapping("/room/registration")
     public String roomRegistrationForm(Model model){
@@ -52,8 +55,12 @@ public class RoomController {
 
     @GetMapping("/room/management/{userId}")
     public String room_management(@PathVariable("userId")Long userId,Model model){
-        List<Room> rooms = roomRepository.findRooms(userId);
-        model.addAttribute("rooms",rooms);
+        List<RoomSimpleDto> rooms = dslRoomRepository.findRooms(userId);
+        model.addAttribute("roomDtos",rooms);
+        log.info("room size={}",        rooms.size());
+        for (RoomSimpleDto room : rooms) {
+            log.info("roomDto={}",room.toString());
+        }
         return "room/management";
     }
 }

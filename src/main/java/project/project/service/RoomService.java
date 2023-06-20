@@ -9,10 +9,13 @@ import project.project.domain.RoomInfo;
 import project.project.domain.User;
 import project.project.dto.RoomInfoRegistrationDto;
 import project.project.dto.RoomRegistrationDto;
+import project.project.dto.RoomSimpleDto;
 import project.project.file.UploadFile;
+import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,8 @@ import java.util.Optional;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+
+    private final DslRoomRepository dslRoomRepository;
 
     @Transactional
     public void roomRegistration(RoomRegistrationDto roomDto, RoomInfoRegistrationDto roomInfoDto){
@@ -46,4 +51,5 @@ public class RoomService {
 
 
     }
+
 }
