@@ -35,22 +35,20 @@
             </tr>
 
             <tr th:each="room:${roomDtos}">
-                <a th:href="@{/room/modify/{roomId}}"
-                <td  th:text="${room.roomNumber}"></td>
-                <td  th:text="${room.address}"></td>
-                <td  th:text="${room.status}"></td>
-                <td  th:text="${room.wishlistCount}"></td>
-                <td  th:text="${room.inquiryCount}"></td>
-                <td  th:text="${#temporals.format(room.createDate,'yy-MM-dd')}"></td>
-                <td>
 
-                </td>
+                    <td th:text="${room.roomNumber}"></td>
+                    <td th:text="${room.address}"></td>
+                    <td th:text="${room.status}"></td>
+                    <td th:text="${room.wishlistCount}"></td>
+                    <td th:text="${room.inquiryCount}"></td>
+                    <td th:text="${#temporals.format(room.createDate,'yy-MM-dd')}"></td>
+                    <td>
+
+                    </td>
             </tr>
 
         </table>
     </div>
-
-
 
 
 </div>
