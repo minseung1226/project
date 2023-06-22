@@ -6,13 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import project.project.domain.Room;
-import project.project.dto.RoomInfoRegistrationDto;
-import project.project.dto.RoomRegistrationDto;
-import project.project.dto.RoomSimpleDto;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.dto.roominfo.RoomInfoRegistrationDto;
+import project.project.dto.room.RoomRegistrationDto;
+import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.RoomService;
@@ -32,7 +33,7 @@ public class RoomController {
     public String roomRegistrationForm(Model model){
         model.addAttribute("roomRegistrationDto",new RoomRegistrationDto());
         model.addAttribute("roomInfoRegistrationDto",new RoomInfoRegistrationDto());
-        return "room/room_registration";
+        return "room/registration";
 
     }
 
@@ -41,26 +42,39 @@ public class RoomController {
                                    BindingResult roomResult,
                                    @Valid RoomInfoRegistrationDto roomInfoDto,
                                    BindingResult roomInfoResult,
-                                   Model model){
+                                   RedirectAttributes redirectAttributes){
         if(roomInfoResult.hasErrors() || roomResult.hasErrors()){
 
-            return "room/room_registration";
+            List<FieldError> fieldErrors = roomResult.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                log.info("room={}",fieldError.toString());
+            }
+            List<FieldError> fieldErrors1 = roomInfoResult.getFieldErrors();
+            for (FieldError fieldError : fieldErrors1) {
+                log.info("roomInfo={}",fieldError.toString());
+            }
+
+            return "room/registration";
         }
 
         roomService.roomRegistration(roomDto,roomInfoDto);
 
+        redirectAttributes.addAttribute("id",roomDto.getUserId());
 
-        return "redirect:/room/management";
+        return "redirect:/room/management/{id}";
     }
 
     @GetMapping("/room/management/{userId}")
     public String room_management(@PathVariable("userId")Long userId,Model model){
         List<RoomSimpleDto> rooms = dslRoomRepository.findRooms(userId);
         model.addAttribute("roomDtos",rooms);
-        log.info("room size={}",        rooms.size());
-        for (RoomSimpleDto room : rooms) {
-            log.info("roomDto={}",room.toString());
-        }
+
         return "room/management";
+    }
+
+    @GetMapping("/room/detailInfo/{id}")
+    public String room_detail_info(@PathVariable("id")Long roomId,Model model){
+
+        return "room/detail_info";
     }
 }

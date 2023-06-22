@@ -8,7 +8,7 @@ import project.project.domain.QInquiry;
 import project.project.domain.QRoom;
 import project.project.domain.QWishlist;
 import project.project.dto.QRoomSimpleDto;
-import project.project.dto.RoomSimpleDto;
+import project.project.dto.room.RoomSimpleDto;
 
 import java.util.List;
 
@@ -45,7 +45,9 @@ public class DslRoomRepository {
                         JPAExpressions
                                 .select(inquiry.count())
                                 .from(inquiry)
-                                .where(inquiry.room.eq(room))))
+                                .where(inquiry.room.eq(room)),
+                        room.deposit,
+                        room.monthlyRent))
                 .from(room)
                 .fetch();
     }

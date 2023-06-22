@@ -31,10 +31,10 @@
                 <th class="col-1">찜</th>
                 <th class="col-1">문의</th>
                 <th class="col-2">등록일</th>
-                <th class="col-1"></th>
+                <th class="col-1">금액</th>
             </tr>
-
-            <tr th:each="room:${roomDtos}">
+            <th:block th:each="room:${roomDtos}">
+            <tr th:onclick="|location.href='@{/room/detailInfo/{id}(id=${room.id})}'|" style="cursor:pointer">
 
                     <td th:text="${room.roomNumber}"></td>
                     <td th:text="${room.address}"></td>
@@ -42,15 +42,19 @@
                     <td th:text="${room.wishlistCount}"></td>
                     <td th:text="${room.inquiryCount}"></td>
                     <td th:text="${#temporals.format(room.createDate,'yy-MM-dd')}"></td>
-                    <td>
-
+                    <td th:text="${room.deposit}+'/'+${room.monthlyRent}">
                     </td>
             </tr>
-
+            </th:block>
         </table>
     </div>
 
 
 </div>
 </body>
+<script>
+    function modify(roomId){
+        location.href="/room/modify/"+roomId;
+    }
+</script>
 </html>

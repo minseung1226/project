@@ -9,13 +9,14 @@ import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.MaintenanceItem;
 import project.project.domain.enum_type.RoomStatus;
 import project.project.domain.enum_type.RoomType;
-import project.project.dto.RoomRegistrationDto;
+import project.project.dto.room.RoomRegistrationDto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -81,15 +82,19 @@ public class Room extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoomStatus status=RoomStatus.진행중;
 
-    @PostPersist
+    @PrePersist
     private void generateNumber(){
 
         // roomNumber 값 주입
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
-        String id=String.valueOf(this.getId());
-        String number=date+id+"000000";
+        String randomNum="";
 
-        roomNumber=number.substring(0,12);
+        Random random = new Random();
+        for(int i=0;i<6;i++){
+            randomNum+=random.nextInt(9 );
+        }
+
+        roomNumber=date+randomNum;
 
     }
 
@@ -127,8 +132,5 @@ public class Room extends BaseEntity {
     }
 
 
-    public void testGeneretedRoomNumber(){
-        generateNumber();
-    }
 
 }

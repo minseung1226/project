@@ -1,4 +1,4 @@
-package project.project.dto;
+package project.project.dto.roominfo;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

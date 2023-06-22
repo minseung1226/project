@@ -7,7 +7,7 @@ import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.Bearing;
 
 import project.project.domain.enum_type.Option;
-import project.project.dto.RoomInfoRegistrationDto;
+import project.project.dto.roominfo.RoomInfoRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;

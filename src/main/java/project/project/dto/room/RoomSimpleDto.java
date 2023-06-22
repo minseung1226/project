@@ -1,4 +1,4 @@
-package project.project.dto;
+package project.project.dto.room;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
@@ -17,8 +17,11 @@ public class RoomSimpleDto {
     private Long wishlistCount;
     private Long inquiryCount;
 
+    private int deposit;
+    private int monthlyRent;
+
     @QueryProjection
-    public RoomSimpleDto(Long id, String roomNumber, String address, RoomStatus status, LocalDateTime createDate, Long wishlistCount, Long inquiryCount) {
+    public RoomSimpleDto(Long id, String roomNumber, String address, RoomStatus status, LocalDateTime createDate, Long wishlistCount, Long inquiryCount, int deposit, int monthlyRent) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.address = address;
@@ -26,5 +29,7 @@ public class RoomSimpleDto {
         this.createDate = createDate;
         this.wishlistCount = wishlistCount;
         this.inquiryCount = inquiryCount;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
     }
 }

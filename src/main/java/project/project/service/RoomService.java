@@ -7,15 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import project.project.domain.Room;
 import project.project.domain.RoomInfo;
 import project.project.domain.User;
-import project.project.dto.RoomInfoRegistrationDto;
-import project.project.dto.RoomRegistrationDto;
-import project.project.dto.RoomSimpleDto;
+import project.project.dto.roominfo.RoomInfoRegistrationDto;
+import project.project.dto.room.RoomRegistrationDto;
 import project.project.file.UploadFile;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,9 +44,7 @@ public class RoomService {
         RoomInfo roomInfo = RoomInfo.makeRoomInfo(roomInfoDto);
 
         Room room = Room.makeRoom(roomDto, roomInfo, images, findUser);
-
         roomRepository.save(room);
-
 
     }
 

@@ -10,8 +10,8 @@ import project.project.domain.RoomInfo;
 import project.project.domain.User;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
-import project.project.dto.RoomInfoRegistrationDto;
-import project.project.dto.RoomRegistrationDto;
+import project.project.dto.roominfo.RoomInfoRegistrationDto;
+import project.project.dto.room.RoomRegistrationDto;
 import project.project.repository.roomrepository.RoomRepository;
 
 import java.time.LocalDate;

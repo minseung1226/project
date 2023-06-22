@@ -156,8 +156,8 @@
                                        placeholder="참고항목">
                             </div>
 
-                            <input type="hidden" name="lat" id="lat">
-                            <input type="hidden" name="lng" id="lng">
+                            <input type="hidden" th:field="*{lat}">
+                            <input type="hidden" th:field="*{lng}">
                             <div class="col-4">
                                 <input type="button" class="btn btn-dark" onclick="mapView()" value="위치 확인">
                             </div>
@@ -415,6 +415,9 @@
                 <li class="fw-bold">최소 3장 이상의 사진을 등록해 주세요</li>
                 <li class="fw-bold">첫번쨰 사진은 대표 사진입니다.</li>
             </ul>
+            <div class="error-class" th:errors="*{img}">
+                img 오류
+            </div>
             <div class="container bg-secondary bg-opacity-10" style="height: 400px">
                 <div class="row">
                     <div class="custom-file col-2 d-flex align-items-center justify-content-center"
@@ -434,7 +437,6 @@
                 <li class="fw-bold">등록 하실 매물의 자세한 설명을 입력해주세요</li>
                 <li class="fw-bold">방 정보,가격 협의 내용, 교통 등 자세한 정보를 입력하면 거래가 성사될 가능성이 높아집니다.</li>
             </ul>
-
             <table class="table">
                 <tr>
                     <th class="col-2">
