@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.domain.Photo;
+import project.project.domain.Room;
+import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.dto.room.RoomSimpleDto;
@@ -66,7 +69,7 @@ public class RoomController {
 
     @GetMapping("/room/management/{userId}")
     public String room_management(@PathVariable("userId")Long userId,Model model){
-        List<RoomSimpleDto> rooms = dslRoomRepository.findRooms(userId);
+        List<RoomSimpleDto> rooms = dslRoomRepository.findRoomDtos(userId);
         model.addAttribute("roomDtos",rooms);
 
         return "room/management";
@@ -74,7 +77,11 @@ public class RoomController {
 
     @GetMapping("/room/detailInfo/{id}")
     public String room_detail_info(@PathVariable("id")Long roomId,Model model){
-
+        Room room = roomRepository.fetchFindById(roomId);
+        List<Photo> photos = room.getPhotos();
+        for (Photo photo : photos) {
+            System.out.println("photos="+photo.getId());
+        }
         return "room/detail_info";
     }
 }

@@ -1,16 +1,26 @@
 package project.project.repository.roomrepository;
 
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.QList;
+import com.querydsl.core.types.dsl.ListExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
-import project.project.domain.QInquiry;
-import project.project.domain.QRoom;
-import project.project.domain.QWishlist;
-import project.project.dto.QRoomSimpleDto;
+import project.project.domain.*;
+import project.project.dto.photo.PhotoDto;
+import project.project.dto.photo.QPhotoDto;
+import project.project.dto.room.QRoomModifyDto;
+import project.project.dto.room.QRoomSimpleDto;
+import project.project.dto.room.RoomModifyDto;
 import project.project.dto.room.RoomSimpleDto;
 
 import java.util.List;
+
+import static project.project.domain.QPhoto.*;
+import static project.project.domain.QRoom.*;
+import static project.project.domain.QRoomInfo.*;
 
 
 @Repository
@@ -25,7 +35,7 @@ public class DslRoomRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<RoomSimpleDto> findRooms(Long userId){
+    public List<RoomSimpleDto> findRoomDtos(Long userId){
 
         QRoom room = QRoom.room;
         QInquiry inquiry = QInquiry.inquiry;
@@ -51,4 +61,6 @@ public class DslRoomRepository {
                 .from(room)
                 .fetch();
     }
+
+
 }

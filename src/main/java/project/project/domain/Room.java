@@ -51,7 +51,6 @@ public class Room extends BaseEntity {
     private double lat; //위도
     private double lng;  //경도
 
-    private String img; // 대표 이미지
 
     private Integer deposit; //보증금
     private Integer monthlyRent; //월세
@@ -99,7 +98,7 @@ public class Room extends BaseEntity {
     }
 
 
-    public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo,String img) {
+    public Room(RoomRegistrationDto dto,User user,RoomInfo roomInfo) {
         this.address=new Address(dto.getPostcode(),dto.getAddress(),dto.getDetailAddress(),dto.getExtraAddress());
         this.user=user;
         this.roomInfo=roomInfo;
@@ -113,14 +112,13 @@ public class Room extends BaseEntity {
         this.maintenance=dto.getMaintenance();
         this.moveInDate=dto.getMoveInDate();
         this.maintenanceItem=dto.getMaintenanceItem();
-        this.img=img;
         this.title=dto.getTitle();
         this.content=dto.getContent();
 
     }
 
     public static Room makeRoom(RoomRegistrationDto dto,RoomInfo roomInfo,String[] images,User user){
-        Room room = new Room(dto, user, roomInfo, images[0]);
+        Room room = new Room(dto, user, roomInfo);
 
         List<Photo> photoList = Arrays.stream(images).map(img -> new Photo(room, img)).collect(Collectors.toList());
 

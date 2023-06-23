@@ -70,5 +70,26 @@ public class RoomModifyDto{
 
     private String content;
 
-
+    @QueryProjection
+    public RoomModifyDto(Long id, Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance, LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content) {
+        this.id = id;
+        this.userId = userId;
+        this.registrant = registrant;
+        this.houseType = houseType;
+        this.roomType = roomType;
+        this.postcode = postcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.extraAddress = extraAddress;
+        this.lat = lat;
+        this.lng = lng;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+        this.maintenance = maintenance;
+        this.moveInDate = moveInDate;
+        this.maintenanceItem = maintenanceItem;
+        this.img = img;
+        this.title = title;
+        this.content = content;
+    }
 }
