@@ -1,16 +1,20 @@
 package project.project.dto.room;
 
 import com.querydsl.core.annotations.QueryProjection;
+import jakarta.persistence.Convert;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
+import project.project.domain.Room;
+import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.MaintenanceItem;
 import project.project.domain.enum_type.RoomType;
 import project.project.dto.photo.PhotoDto;
+import project.project.dto.roominfo.RoomInfoModifyDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -59,6 +63,8 @@ public class RoomModifyDto{
     private Double maintenance; //관리비
     @NotNull
     private LocalDate moveInDate; //입주일
+
+    @Convert(converter = EnumListConverter.class)
     private List<MaintenanceItem> maintenanceItem =new ArrayList<>();
 
     private List<PhotoDto> img=new ArrayList<>();
@@ -70,8 +76,11 @@ public class RoomModifyDto{
 
     private String content;
 
+    private RoomInfoModifyDto roomInfoModifyDto;
+
     @QueryProjection
-    public RoomModifyDto(Long id, Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance, LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content) {
+    public RoomModifyDto(Long id, Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance
+            , LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content,RoomInfoModifyDto roomInfoModifyDto) {
         this.id = id;
         this.userId = userId;
         this.registrant = registrant;
@@ -88,8 +97,8 @@ public class RoomModifyDto{
         this.maintenance = maintenance;
         this.moveInDate = moveInDate;
         this.maintenanceItem = maintenanceItem;
-        this.img = img;
         this.title = title;
         this.content = content;
+        this.roomInfoModifyDto=roomInfoModifyDto;
     }
 }

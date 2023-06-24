@@ -15,12 +15,14 @@ import project.project.dto.room.QRoomModifyDto;
 import project.project.dto.room.QRoomSimpleDto;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.room.RoomSimpleDto;
+import project.project.dto.roominfo.QRoomInfoModifyDto;
 
 import java.util.List;
 
 import static project.project.domain.QPhoto.*;
 import static project.project.domain.QRoom.*;
 import static project.project.domain.QRoomInfo.*;
+import static project.project.domain.QUser.*;
 
 
 @Repository
@@ -62,5 +64,49 @@ public class DslRoomRepository {
                 .fetch();
     }
 
+    public RoomModifyDto findRoomDto(Long roomId) {
+        RoomModifyDto roomModifyDto = queryFactory.select(new QRoomModifyDto(
+                        room.id,
+                        room.user.id,
+                        room.registrant,
+                        room.houseType,
+                        room.roomType,
+                        room.address.postcode,
+                        room.address.address,
+                        room.address.detailAddress,
+                        room.address.extraAddress,
+                        room.lat,
+                        room.lng,
+                        room.deposit,
+                        room.monthlyRent,
+                        room.maintenance,
+                        room.moveInDate,
+                        room.maintenanceItem,
+                        room.title,
+                        room.content,
+                        new QRoomInfoModifyDto(
+                                roomInfo.id,
+                                roomInfo.bearing,
+                                roomInfo.options,
+                                roomInfo.animal,
+                                roomInfo.parking,
+                                roomInfo.floor,
+                                roomInfo.entireFloor,
+                                roomInfo.realSize,
+                                roomInfo.supplySize)))
+                .from(room)
+                .join(room.user, user)
+                .join(room.roomInfo,roomInfo)
+                .where(room.id.eq(roomId))
+                .fetchOne();
+
+        List<PhotoDto> photoDtos = queryFactory.select(new QPhotoDto(photo.id, photo.img))
+                .from(photo)
+                .where(photo.room.id.eq(roomId)).fetch();
+
+        roomModifyDto.setImg(photoDtos);
+
+        return roomModifyDto;
+    }
 
 }

@@ -77,11 +77,10 @@ public class RoomController {
 
     @GetMapping("/room/detailInfo/{id}")
     public String room_detail_info(@PathVariable("id")Long roomId,Model model){
-        Room room = roomRepository.fetchFindById(roomId);
-        List<Photo> photos = room.getPhotos();
-        for (Photo photo : photos) {
-            System.out.println("photos="+photo.getId());
-        }
+
+        RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
+        log.info("roomDto={}",roomDto);
+
         return "room/detail_info";
     }
 }
