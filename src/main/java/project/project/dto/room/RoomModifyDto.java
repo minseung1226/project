@@ -29,6 +29,8 @@ public class RoomModifyDto{
     @NotNull
     private Long userId;
 
+    private String roomNumber;
+
     @NotBlank
     private String registrant; //등록자
     @NotNull
@@ -79,10 +81,11 @@ public class RoomModifyDto{
     private RoomInfoModifyDto roomInfoModifyDto;
 
     @QueryProjection
-    public RoomModifyDto(Long id, Long userId, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance
+    public RoomModifyDto(Long id, Long userId,String roomNumber, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance
             , LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content,RoomInfoModifyDto roomInfoModifyDto) {
         this.id = id;
         this.userId = userId;
+        this.roomNumber=roomNumber;
         this.registrant = registrant;
         this.houseType = houseType;
         this.roomType = roomType;

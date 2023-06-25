@@ -68,6 +68,7 @@ public class DslRoomRepository {
         RoomModifyDto roomModifyDto = queryFactory.select(new QRoomModifyDto(
                         room.id,
                         room.user.id,
+                        room.roomNumber,
                         room.registrant,
                         room.houseType,
                         room.roomType,

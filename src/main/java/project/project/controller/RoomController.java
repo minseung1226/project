@@ -79,8 +79,7 @@ public class RoomController {
     public String room_detail_info(@PathVariable("id")Long roomId,Model model){
 
         RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
-        log.info("roomDto={}",roomDto);
-
+        model.addAttribute("roomModifyDto",roomDto);
         return "room/detail_info";
     }
 }
