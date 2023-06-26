@@ -37,6 +37,12 @@
             right: 0;
         }
 
+        .del-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
         .error-class {
             border-color: #dc3543;
             color: #dc3543;
@@ -50,6 +56,440 @@
     <div th:replace="templates/header :: header_modal"></div>
 </div>
 
+<div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
+    <div class="container bg-white border">
+        <form th:object="${roomModifyDto}" action="/room/registration" method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="userId" th:value="${session.user}">
+            <h2 class="mb-5">매물 수정</h2>
+            <h5>등록자 정보</h5>
+            <div th:class="error-class" th:errors="*{registrant}">등록자 오류</div>
+            <table class="table">
+                <tr>
+                    <th class=" col-2">
+                        등록자 정보
+                    </th>
+                    <td class="col-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{registrant}" id="lessor"
+                                   value="임대인">
+                            <label class="form-check-label" for="lessor">임대인</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{registrant}" id="tenant"
+                                   value="기존 세입자">
+                            <label class="form-check-label" for="tenant">기존 세입자</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <h5>위치 정보</h5>
+            <table class="table">
+                <tr>
+                    <th class="col-2">
+                        건물 유형*
+                    </th>
+                    <td class="col-10">
+                        <div class="col-5">
+                            <select class="form-select col-5" th:field="*{houseType}"
+                                    aria-label="Default select example"
+                                    th:errorclass="error-class">
+                                <option value="" selected>선택</option>
+                                <option th:each="value :${T(project.project.domain.enum_type.HouseType).values()}"
+                                        th:value="${value}" th:text="${value}"></option>
+                            </select>
+                            <div class="error-class" th:errors="*{houseType}">
+                                house type 오류
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-2">
+                        집 형태*
+                    </th>
+                    <td class="col-10">
+                        <div class="col-5">
+                            <select class="form-select" th:field="*{roomType}" aria-label="Default select example"
+                                    th:errorclass="error-class">
+                                <option value="" selected>선택</option>
+                                <option th:each="value :${T(project.project.domain.enum_type.RoomType).values()}"
+                                        th:value="${value}" th:text="${value}"></option>
+                            </select>
+                            <div class="error-class" th:errors="*{roomType}">
+                                room type 오류
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-2">
+                        주소*
+                    </th>
+                    <td class="col-10">
+                        <div class="row mb-2">
+                            <div class="col-5">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{postcode}" onclick="daumPostcode()" placeholder="우편번호">
+                                <div class="error-class" th:errors="*{postcode}">
+                                    postcode 오류
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <input type="button" class="btn btn-dark" onclick="daumPostcode()" value="우편번호 찾기">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-8">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{address}" placeholder="주소">
+                                <div class="error-class" th:errors="*{address}">
+                                    address 오류
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5">
+                                <input type="text" class="form-control" th:errorclass="error-class"
+                                       th:field="*{detailAddress}" placeholder="상세주소">
+                                <div class="error-class" th:errors="*{detailAddress}">
+                                    detail address 오류
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control"
+                                       th:field="*{extraAddress}"
+                                       placeholder="참고항목">
+                            </div>
+
+                            <input type="hidden" th:field="*{lat}">
+                            <input type="hidden" th:field="*{lng}">
+                            <div class="col-4">
+                                <input type="button" class="btn btn-dark" onclick="mapView()" value="위치 확인">
+                            </div>
+                        </div>
+
+                        <div id="map" class="rounded d-flex align-items-center justify-content-center"
+                             style="height: 200px;width: 300px;background-color: rgba(128, 128, 128, 0.1);">
+                            <div>
+                                등록하실 매물의 위치를 표시합니다.
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <h5>거래 정보</h5>
+            <table class="table">
+                <tr>
+                    <th class="col-2">보증금*</th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <input class="form-control" th:errorclass="error-class"
+                                       th:field="*{deposit}">
+                                <div class="error-class" th:errors="*{deposit}">
+                                    deposit 오류
+                                </div>
+                            </div>
+                            <div class="col-4 text-sm-start">
+                                만원
+                            </div>
+                        </div>
+                    </td>
+                    <th class="col-2">월세*</th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <input class="form-control" th:errorclass="error-class"
+                                       th:field="*{monthlyRent}">
+                                <div class="error-class" th:errors="*{monthlyRent}">
+                                    monthlyRent 오류
+                                </div>
+                            </div>
+                            <div class="col-4 text-sm-start">
+                                만원
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">관리비*</th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <input class="form-control" th:errorclass="error-class"
+                                       th:field="*{maintenance}">
+                                <div class="error-class" th:errors="*{maintenance}">
+                                    maintenance 오류
+                                </div>
+                            </div>
+                            <div class="col-4 text-sm-start">
+                                만원
+                            </div>
+                        </div>
+                    </td>
+                    <th class="col-2">관리비<br>포함내역*</th>
+                    <td class="col-4">
+                        <div class="row ">
+                            <div class="col-4 mb-2"
+                                 th:each="value:${T(project.project.domain.enum_type.MaintenanceItem).values()}">
+                                <input type="checkbox" class="btn-check btn-sm" name="maintenanceItem" th:id="${value}"
+                                       th:value="${value}"
+                                       autocomplete="off" th:checked="${roomModifyDto.maintenanceItem.contains(value)}">
+                                <label class="btn btn-outline-dark btn-sm" th:for="${value}" th:text="${value}"></label>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">입주 가능일*</th>
+                    <td colspan="3">
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-control" th:errorclass="error-class"
+                                   th:field="*{moveInDate}" id="dateInput" placeholder="날짜선택"
+                            >
+                        </div>
+                        <div class="fw-bold">즉시 입주가 가능한 경우 오늘 날짜를 입력해 주세요.</div>
+                        <div class="error-class" th:errors="*{moveInDate}">
+                            moveIndate 오류
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <h5>방 정보</h5>
+            <table class="table" th:object="${roomInfoModifyDto}">
+                <tr>
+                    <th class="col-2">
+                        공급면적*
+                    </th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <input class="form-control" th:errorclass="error-class" th:field="*{supplySize}"
+                                           style="margin-right: 10px">
+                                    <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                                </div>
+                                <div class="error-class" th:errors="*{supplySize}">
+                                    supplySize 오류
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <input type="text" readonly class="form-control-plaintext" id="flatSupplySize"
+                                       value="0평">
+                            </div>
+                        </div>
+                    </td>
+                    <th class="col-2">
+                        전용면적*
+                    </th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <input class="form-control" th:errorclass="error-class" th:field="*{realSize}"
+                                           style="margin-right: 10px">
+                                    <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                                </div>
+                                <div class="error-class" th:errors="*{realSize}">
+                                    realSize 오류
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <input type="text" readonly class="form-control-plaintext" id="flatRealSize" value="0평">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">해당 층*</th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-4" style="padding-right: 0">
+                                <input th:field="*{floor}" class="form-control" th:errorclass="error-class">
+                            </div>
+                            <div class="col-1 d-flex align-items-center vertical-center" style=" padding-left: 2px">
+                                <span>층</span>
+                            </div>
+
+                        </div>
+                        <div class="fw-bold">반지하일 경우 반지하 입력</div>
+                        <div class="error-class" th:errors="*{floor}">
+                            floor 오류
+                        </div>
+                    </td>
+
+                    <th class="col-2">전체 층*</th>
+                    <td class="col-4">
+                        <div class="row">
+                            <div class="col-4" style="padding-right: 0">
+                                <input th:field="*{entireFloor}" class="form-control" th:errorclass="error-class">
+                            </div>
+                            <div class="col-1 d-flex align-items-center vertical-center" style=" padding-left: 2px">
+                                <span>층</span>
+                            </div>
+
+                        </div>
+                        <div class="error-class" th:errors="*{entireFloor}">
+                            entireFloor 오류
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">
+                        주실 방향*
+                    </th>
+                    <td class="col-10" colspan="3">
+                        <th:block th:each="value:${T(project.project.domain.enum_type.Bearing).values()}">
+                            <input type="radio" class="btn-check" th:id="${value}" th:field="*{bearing}"
+                                   th:value="${value}"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-dark" th:for="${value}" th:text="${value}"></label>
+                        </th:block>
+                        <div class="error-class" th:errors="*{bearing}">
+                            bearing오류
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">
+                        주차 여부
+                    </th>
+                    <td class="col-4">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{parking}" id="parkingPossible"
+                                   value="true">
+                            <label class="form-check-label" for="parkingPossible">가능</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{parking}" id="parkingImpossible"
+                                   value="false">
+                            <label class="form-check-label" for="parkingImpossible">불가능</label>
+                        </div>
+                        <div class="error-class" th:errors="*{parking}">
+                            parking 오류
+                        </div>
+                    </td>
+                    <th class="col-2">
+                        반려동물
+                    </th>
+                    <td class="col-4">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{animal}" id="animalPossible"
+                                   value="true">
+                            <label class="form-check-label" for="animalPossible">가능</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{animal}" id="animalImpossible"
+                                   value="false">
+                            <label class="form-check-label" for="animalImpossible">불가능</label>
+                        </div>
+                        <div class="error-class" th:errors="*{animal}">
+                            animal 오류
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-2">
+                        옵션
+                    </th>
+                    <td class="col-10" colspan="3">
+                        <th:block th:each="value:${T(project.project.domain.enum_type.Option).values()}">
+                            <input type="checkbox" class="btn-check" th:id="${value}" th:name="option"
+                                   th:value="${value}" th:checked="${roomInfoModifyDto.options.contains(value)}"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-dark m-1" th:for="${value}" th:text="${value}"></label>
+                        </th:block>
+
+                    </td>
+                </tr>
+            </table>
+
+            <h5>사진 등록</h5>
+            <hr style="border: 1px solid black">
+            <ul>
+                <li class="fw-bold">사진은 최소 3장, 최대 10장 까지 가능합니다.</li>
+                <li class="fw-bold">첫번쨰 사진은 대표 사진입니다.</li>
+                <li class="fw-bold">대표 사진을 변경할려면 기존 사진을 모두 삭제한 후 다시 등록해주세요.</li>
+            </ul>
+            <div class="error-class" th:errors="*{img}">
+                img 오류
+            </div>
+            <div class="container bg-secondary bg-opacity-10" style="height: 400px">
+                <div class="row">
+                    <th:block th:each="i:${#numbers.sequence(0,9)}">
+                        <div th:if="*{img.size()>__${i}__}"
+                             class="custom-file col-2 d-flex align-items-center justify-content-center">
+                            <input type="hidden" name="img" th:id="img+${i}" th:value="*{img[__${i}__].img}">
+                            <button type="button" th:id="delBtn+${i}" class="btn btn-sm del-button"
+                            >X
+                            </button>
+                        </div>
+                        <div th:unless="*{img.size()>__${i}__}"
+                             class="custom-file col-2 d-flex align-items-center justify-content-center">
+                            <input type="file" class="custom-file-input img" th:id="img+${i}" style="display: none">
+                            <label class="custom-file-label btn btn-dark" th:for="img+${i}">사진 선택</label>
+                            <button type="button" th:id="delBtn+${i}" class="btn btn-sm delete-button"
+                            >X
+                            </button>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+            <h5 class="mt-3">상세 정보</h5>
+            <hr style="border: 1px solid black">
+            <ul>
+                <li class="fw-bold">등록 하실 매물의 자세한 설명을 입력해주세요</li>
+                <li class="fw-bold">방 정보,가격 협의 내용, 교통 등 자세한 정보를 입력하면 거래가 성사될 가능성이 높아집니다.</li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th class="col-2">
+                        제목*
+                    </th>
+                    <td class="col-10">
+                        <input class="form-control" th:field="*{title}" th:errorclass="error-class"
+                               placeholder="ex)홍대역 도보 10분 이내, 복층형 원룸">
+                        <div class="error-class" th:errors="*{title}">
+                            title 오류
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-2">
+                        상세 내용
+                    </th>
+
+                    <td class="col-10">
+                        <textarea class="form-control" th:field="*{content}" style="height: 300px;resize: none;"
+                                  placeholder="해당 방에 대한 상세한 정보를 입력해주세요. &#13;&#10; 방 구조,교통, 주변 편의 시설 등 구체적인 방의 정보를 입력해주세요"></textarea>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3 mt-4">
+                    <input type="submit" class="btn btn-dark btn-lg btn-block" style="width: 100%" value="방등록">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -57,4 +497,206 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+<script th:inline="javascript">
+    let delImg = [];
+
+    $(document).ready(function () {
+        mapView();
+        $("#flatRealSize").val(flatChange([[${roomModifyDto.roomInfoModifyDto.realSize}]]));
+        $("#flatSupplySize").val(flatChange([[${roomModifyDto.roomInfoModifyDto.supplySize}]]));
+
+        let imgArr = [[${roomModifyDto.img}]];
+
+        for (let i = 0; i < imgArr.length; i++) {
+            $("#img" + i).parent("div").css({
+                "background-image": "url(/images/" + imgArr[i].img + ")",
+                "background-size": "cover",
+                "background-position": "center",
+                "background-repeat": "no-repeat"
+            });
+        }
+
+    });
+
+    //기존 이미지 삭제
+    $(".btn.btn-sm.del-button").click(function () {
+        let id = $(this).attr("id");
+        alert(id);
+        let index = id.charAt(id.length-1);
+        let imgValue = $("#img"+index).val();
+        delImg.push(imgValue);
+        this.removeClass('del-button').addClass('delete-button');
+        this.before(`<input type="file" class="custom-file-input img" th:id="img`+index+`" style="display: none">`);
+        this.before(`<label class="custom-file-label btn btn-dark" th:for="img`+index+`">사진 선택</label>`)
+    });
+
+    //이미지 삭제 구현
+    $(".btn.btn-sm.delete-button").click(function () {
+        let id = $(this).attr("id");
+        let index = id.charAt(id.length - 1);
+        let imgInput = $("#img" + index);
+        imgInput.attr("name", "");
+        imgInput.val("");
+        imgInput.parent("div").css("background-image", "");
+
+        imgInput.next("label").css("display", "inline");
+
+        $("#delBtn" + index).css("display", "none");
+
+    })
+
+    //이미지 미리보기 구현
+    $(".custom-file-input.img").change(function () {
+        let id = $(this).attr("id");
+        let index = id.charAt(id.length - 1);
+
+        let file = this.files[0];
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+            $("#img" + index).parent("div").css({
+                "background-image": "url(" + e.target.result + ")",
+                "background-size": "cover",
+                "background-position": "center",
+                "background-repeat": "no-repeat"
+            });
+        }
+
+        reader.readAsDataURL(file);
+
+        $(this).next("label").css("display", "none");
+        $(this).attr("name", "img");
+
+        $("#delBtn" + index).css("display", "inline");
+
+    })
+
+
+    function mapView() {
+
+        //주소 ->좌표 변환 객체
+        let geocoder = new kakao.maps.services.Geocoder();
+
+
+        //주소로 좌표 검색
+        geocoder.addressSearch($("#address").val(), function (result, status) {
+            if (status == kakao.maps.services.Status.OK) {
+                let mapContainer = document.getElementById('map');
+                let mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667),
+                    level: 5
+                };
+
+                let map = new kakao.maps.Map(mapContainer, mapOption);
+
+                let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                let marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+
+                map.setCenter(coords);
+            }
+        });
+    }
+
+    //면적 -> 평수변경
+    function flatChange(area) {
+        return Math.round(area * 0.3025) + "평";
+    }
+
+    $("#realSize").on("input", function () {
+        $("#flatRealSize").val(flatChange(this.value));
+
+    })
+    $("#supplySize").on("input", function () {
+        $("#flatSupplySize").val(flatChange(this.value));
+    })
+
+    //날짜 선택기
+    let date = flatpickr(document.getElementById("dateInput"), {
+        "locale": "ko",
+        onClose: function (selectedDates, dateStr, instance) {
+            // 선택된 날짜를 targetInput의 값으로 설정합니다.
+            $("#selectDate").val(dateStr);
+        }
+    })
+
+    //주소 검색
+    function daumPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                //검색한 주소 좌표 변환 좌표 변환 실패시 경고창
+                let geocoder = new kakao.maps.services.Geocoder();
+
+                geocoder.addressSearch(addr, function (result, status) {
+
+                    if (status === kakao.maps.services.Status.OK) {
+                        let lat = result[0].y;
+                        let lng = result[0].x;
+
+                        $("#lat").val(lat);
+                        $("#lng").val(lng);
+                    } else {
+                        Swal.fire({
+                            title: '올바른 주소를 입력헤주세요',
+                            icon: null,
+                            showCancelButton: false,
+                            confirmButtonText: '확인',
+                            confirmButtonColor: `#aaa`
+                        })
+
+                        return;
+                    }
+                })
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if (data.userSelectedType === 'R') {
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+
+            }
+        }).open();
+    }
+
+</script>
 </html>

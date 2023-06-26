@@ -5,10 +5,7 @@ import lombok.*;
 import project.project.domain.baseentity.BaseEntity;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
-import project.project.domain.enum_type.HouseType;
-import project.project.domain.enum_type.MaintenanceItem;
-import project.project.domain.enum_type.RoomStatus;
-import project.project.domain.enum_type.RoomType;
+import project.project.domain.enum_type.*;
 import project.project.dto.room.RoomRegistrationDto;
 
 import java.time.LocalDate;
@@ -81,6 +78,8 @@ public class Room extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoomStatus status=RoomStatus.진행중;
 
+    private EntityStatus entityStatus=EntityStatus.BASIC;
+
     @PrePersist
     private void generateNumber(){
 
@@ -130,5 +129,8 @@ public class Room extends BaseEntity {
     }
 
 
+    public void delete(){
+        this.entityStatus=EntityStatus.DELETE;
+    }
 
 }

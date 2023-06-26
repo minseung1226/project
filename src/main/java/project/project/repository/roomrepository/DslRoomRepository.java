@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import project.project.domain.*;
+import project.project.domain.enum_type.EntityStatus;
 import project.project.dto.photo.PhotoDto;
 import project.project.dto.photo.QPhotoDto;
 import project.project.dto.room.QRoomModifyDto;
@@ -61,6 +62,8 @@ public class DslRoomRepository {
                         room.deposit,
                         room.monthlyRent))
                 .from(room)
+                .leftJoin(room.user,user)
+                .where(user.id.eq(userId).and(room.entityStatus.eq(EntityStatus.BASIC)))
                 .fetch();
     }
 
@@ -98,7 +101,7 @@ public class DslRoomRepository {
                 .from(room)
                 .join(room.user, user)
                 .join(room.roomInfo,roomInfo)
-                .where(room.id.eq(roomId))
+                .where(room.id.eq(roomId).and(room.entityStatus.eq(EntityStatus.BASIC)))
                 .fetchOne();
 
         List<PhotoDto> photoDtos = queryFactory.select(new QPhotoDto(photo.id, photo.img))

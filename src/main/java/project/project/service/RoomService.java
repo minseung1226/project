@@ -48,4 +48,14 @@ public class RoomService {
 
     }
 
+    @Transactional
+    public void roomDelete(Long roomId){
+        Optional<Room> findRoomOptional = roomRepository.findById(roomId);
+        if(findRoomOptional.isEmpty()){
+
+        }
+        Room findRoom = findRoomOptional.get();
+        findRoom.delete();
+    }
+
 }
