@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class RoomInfoModifyDto {
-    private Long id;
-
-
     @Enumerated(EnumType.STRING)
     private Bearing bearing; // 주실 방향
 
@@ -31,8 +28,7 @@ public class RoomInfoModifyDto {
     private double supplySize; //공급 면적
 
     @QueryProjection
-    public RoomInfoModifyDto(Long id, Bearing bearing, List<Option> options, boolean animal, boolean parking, String floor, String entireFloor, double realSize, double supplySize) {
-        this.id = id;
+    public RoomInfoModifyDto(Bearing bearing, List<Option> options, boolean animal, boolean parking, String floor, String entireFloor, double realSize, double supplySize) {
         this.bearing = bearing;
         this.options = options;
         this.animal = animal;

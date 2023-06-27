@@ -69,7 +69,7 @@ public class RoomModifyDto{
     @Convert(converter = EnumListConverter.class)
     private List<MaintenanceItem> maintenanceItem =new ArrayList<>();
 
-    private List<PhotoDto> img=new ArrayList<>();
+    private List<String> img=new ArrayList<>();
     private List<MultipartFile> newImg =new ArrayList<>();
     private List<String> delImg=new ArrayList<>();
 

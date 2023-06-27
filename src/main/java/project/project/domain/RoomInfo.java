@@ -7,6 +7,7 @@ import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.Bearing;
 
 import project.project.domain.enum_type.Option;
+import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 
 import java.util.ArrayList;
@@ -53,5 +54,17 @@ public class RoomInfo extends BaseEntity {
         RoomInfo roomInfo = new RoomInfo(dto);
 
         return roomInfo;
+    }
+
+    public void roomInfoUpdate(RoomInfoModifyDto dto) {
+        this.bearing=dto.getBearing();
+        this.options=dto.getOptions();
+        this.animal=dto.isAnimal();
+        this.parking=dto.isParking();
+        this.floor=dto.getFloor();
+        this.entireFloor=dto.getEntireFloor();
+        this.realSize=dto.getRealSize();
+        this.supplySize=dto.getSupplySize();
+
     }
 }

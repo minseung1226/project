@@ -34,4 +34,8 @@ public class Photo extends BaseEntity {
     public void changeRoom(Room room){
         this.room=room;
     }
+
+    protected void DeleteRoom(){
+        this.room=null;
+    }
 }

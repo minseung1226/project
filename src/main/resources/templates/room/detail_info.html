@@ -209,7 +209,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-4 p-2" th:each="img:${roomModifyDto.img}" style="height: 200px">
-                    <img class="rounded" th:src="@{/images/{img}(img=${img.img})}" style="height: 100%; width: 100%">
+                    <img class="rounded" th:src="@{/images/{img}(img=${img})}" style="height: 100%; width: 100%">
                 </div>
             </div>
         </div>

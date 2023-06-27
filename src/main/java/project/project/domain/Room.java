@@ -6,6 +6,7 @@ import project.project.domain.baseentity.BaseEntity;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
+import project.project.dto.room.RoomModifyDto;
 import project.project.dto.room.RoomRegistrationDto;
 
 import java.time.LocalDate;
@@ -130,7 +131,36 @@ public class Room extends BaseEntity {
 
 
     public void delete(){
+
+        photos.clear();
         this.entityStatus=EntityStatus.DELETE;
+
+
+    }
+
+    public void roomUpdate(RoomModifyDto dto,List<String> newImages){
+        this.address=new Address(dto.getPostcode(),dto.getAddress(),dto.getDetailAddress(),dto.getExtraAddress());
+        this.roomInfo.roomInfoUpdate(dto.getRoomInfoModifyDto());
+        this.registrant=dto.getRegistrant();
+        this.lat=dto.getLat();
+        this.lng=dto.getLng();
+        this.deposit=dto.getDeposit();
+        this.monthlyRent=dto.getMonthlyRent();
+        this.houseType=dto.getHouseType();
+        this.roomType=dto.getRoomType();
+        this.maintenance=dto.getMaintenance();
+        this.moveInDate=dto.getMoveInDate();
+        this.maintenanceItem=dto.getMaintenanceItem();
+        this.title=dto.getTitle();
+        this.content=dto.getContent();
+
+        //이미지 삭제
+        dto.getDelImg().forEach(delImg-> photos.removeIf(photo->photo.getImg().equals(delImg)));
+
+        //새 이미지 저장
+        newImages.forEach(newImage->photos.add(new Photo(this,newImage)));
+
+
     }
 
 }

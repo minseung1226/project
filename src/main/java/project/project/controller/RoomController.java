@@ -10,13 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.domain.RoomInfo;
 import project.project.dto.room.RoomModifyDto;
+import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.RoomService;
+import retrofit2.http.Path;
 
 import java.util.List;
 
@@ -62,8 +65,8 @@ public class RoomController {
         return "room/management";
     }
 
-    @GetMapping("/room/detailInfo/{id}")
-    public String roomDetailInfo(@PathVariable("id")Long roomId,Model model){
+    @GetMapping("/room/detailInfo/{roomId}")
+    public String roomDetailInfo(@PathVariable("roomId")Long roomId,Model model){
 
         RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
         model.addAttribute("roomModifyDto",roomDto);
@@ -86,5 +89,21 @@ public class RoomController {
         model.addAttribute("roomInfoModifyDto",roomDto.getRoomInfoModifyDto());
 
         return "room/modify";
+    }
+
+    @PostMapping("/room/modify/{roomId}")
+    public String modify(@PathVariable("roomId")Long roomId,
+                         @Valid RoomModifyDto roomModifyDto,BindingResult roomDtoBindingResult,
+                         @Valid RoomInfoModifyDto roomInfoModifyDto,BindingResult roomInfoDtoBindingResult,
+                         RedirectAttributes redirectAttributes){
+        if(roomDtoBindingResult.hasErrors()||roomInfoDtoBindingResult.hasErrors()){
+            return "room/modify";
+        }
+        roomModifyDto.setRoomInfoModifyDto(roomInfoModifyDto);
+
+        roomService.roomUpdate(roomId,roomModifyDto);
+
+        redirectAttributes.addAttribute("roomId",roomId);
+        return "redirect:/room/detailInfo/{roomId}";
     }
 }

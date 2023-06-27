@@ -43,5 +43,12 @@ public class UploadFile {
     public String getFullPath(){
         return PATH+storeName;
     }
+
+    public static void fileDelete(String img){
+        File file = new File(PATH + img);
+        if(file.exists()){
+            file.delete();
+        }
+    }
     
 }

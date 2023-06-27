@@ -58,9 +58,10 @@
 
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
     <div class="container bg-white border">
-        <form th:object="${roomModifyDto}" action="/room/registration" method="post"
+        <form id="modifyForm" th:object="${roomModifyDto}" th:action="@{/room/modify/{roomId}(roomId=${roomModifyDto.id})}" method="post"
               enctype="multipart/form-data">
             <input type="hidden" name="userId" th:value="${session.user}">
+            <input type="hidden" name="id" th:value="*{id}">
             <h2 class="mb-5">매물 수정</h2>
             <h5>등록자 정보</h5>
             <div th:class="error-class" th:errors="*{registrant}">등록자 오류</div>
@@ -434,20 +435,21 @@
                     <th:block th:each="i:${#numbers.sequence(0,9)}">
                         <div th:if="*{img.size()>__${i}__}"
                              class="custom-file col-2 d-flex align-items-center justify-content-center">
-                            <input type="hidden" name="img" th:id="img+${i}" th:value="*{img[__${i}__].img}">
+                            <input type="hidden" name="img" th:id="img+${i}" th:value="*{img[__${i}__]}">
                             <button type="button" th:id="delBtn+${i}" class="btn btn-sm del-button"
                             >X
                             </button>
                         </div>
                         <div th:unless="*{img.size()>__${i}__}"
                              class="custom-file col-2 d-flex align-items-center justify-content-center">
-                            <input type="file" class="custom-file-input img" th:id="img+${i}" style="display: none">
-                            <label class="custom-file-label btn btn-dark" th:for="img+${i}">사진 선택</label>
+                            <input type="file" class="custom-file-input img" th:id="newImg+${i}" style="display: none">
+                            <label class="custom-file-label btn btn-dark" th:for="newImg+${i}">사진 선택</label>
                             <button type="button" th:id="delBtn+${i}" class="btn btn-sm delete-button"
                             >X
                             </button>
                         </div>
                     </th:block>
+                    <input type="hidden" name="delImg" id="delImg">
                 </div>
             </div>
 
@@ -484,7 +486,7 @@
 
             <div class="row">
                 <div class="col-md-6 offset-md-3 mt-4">
-                    <input type="submit" class="btn btn-dark btn-lg btn-block" style="width: 100%" value="방등록">
+                    <input id="submit" type="submit" class="btn btn-dark btn-lg btn-block" style="width: 100%" value="수정완료">
                 </div>
             </div>
         </form>
@@ -509,7 +511,7 @@
 
         for (let i = 0; i < imgArr.length; i++) {
             $("#img" + i).parent("div").css({
-                "background-image": "url(/images/" + imgArr[i].img + ")",
+                "background-image": "url(/images/" + imgArr[i] + ")",
                 "background-size": "cover",
                 "background-position": "center",
                 "background-repeat": "no-repeat"
@@ -518,23 +520,27 @@
 
     });
 
+
     //기존 이미지 삭제
-    $(".btn.btn-sm.del-button").click(function () {
+    $(document).on("click", ".btn.btn-sm.del-button", function () {
         let id = $(this).attr("id");
-        alert(id);
         let index = id.charAt(id.length-1);
         let imgValue = $("#img"+index).val();
         delImg.push(imgValue);
-        this.removeClass('del-button').addClass('delete-button');
-        this.before(`<input type="file" class="custom-file-input img" th:id="img`+index+`" style="display: none">`);
-        this.before(`<label class="custom-file-label btn btn-dark" th:for="img`+index+`">사진 선택</label>`)
+        $("#delImg").val(delImg);
+        $(this).removeClass('del-button').addClass('delete-button');
+        $(this).before(`<input type="file" class="custom-file-input img" id="newImg${index}" style="display: none">`);
+        $(this).before(`<label class="custom-file-label btn btn-dark" for="newImg${index}">사진 선택</label>`);
+/*        $(this).before(`<input type="file" class="custom-file-input img" th:id="newImg`+index+`" style="display: none">`);
+        $(this).before(`<label class="custom-file-label btn btn-dark" th:for="newImg`+index+`">사진 선택</label>`)*/
+        $(this).parent("div").css("background-image", "");
     });
 
     //이미지 삭제 구현
     $(".btn.btn-sm.delete-button").click(function () {
         let id = $(this).attr("id");
         let index = id.charAt(id.length - 1);
-        let imgInput = $("#img" + index);
+        let imgInput = $("#newImg" + index);
         imgInput.attr("name", "");
         imgInput.val("");
         imgInput.parent("div").css("background-image", "");
@@ -546,7 +552,7 @@
     })
 
     //이미지 미리보기 구현
-    $(".custom-file-input.img").change(function () {
+    $(document).on("change", "input[type='file']", function () {
         let id = $(this).attr("id");
         let index = id.charAt(id.length - 1);
 
@@ -554,7 +560,7 @@
         let reader = new FileReader();
 
         reader.onload = function (e) {
-            $("#img" + index).parent("div").css({
+            $("#newImg" + index).parent("div").css({
                 "background-image": "url(" + e.target.result + ")",
                 "background-size": "cover",
                 "background-position": "center",
@@ -565,7 +571,7 @@
         reader.readAsDataURL(file);
 
         $(this).next("label").css("display", "none");
-        $(this).attr("name", "img");
+        $(this).attr("name", "newImg");
 
         $("#delBtn" + index).css("display", "inline");
 

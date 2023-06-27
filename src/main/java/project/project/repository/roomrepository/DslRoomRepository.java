@@ -89,7 +89,6 @@ public class DslRoomRepository {
                         room.title,
                         room.content,
                         new QRoomInfoModifyDto(
-                                roomInfo.id,
                                 roomInfo.bearing,
                                 roomInfo.options,
                                 roomInfo.animal,
@@ -104,11 +103,11 @@ public class DslRoomRepository {
                 .where(room.id.eq(roomId).and(room.entityStatus.eq(EntityStatus.BASIC)))
                 .fetchOne();
 
-        List<PhotoDto> photoDtos = queryFactory.select(new QPhotoDto(photo.id, photo.img))
+        List<String> imgNames = queryFactory.select(photo.img)
                 .from(photo)
                 .where(photo.room.id.eq(roomId)).fetch();
 
-        roomModifyDto.setImg(photoDtos);
+        roomModifyDto.setImg(imgNames);
 
         return roomModifyDto;
     }
