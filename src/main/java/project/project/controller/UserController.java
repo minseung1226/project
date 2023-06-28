@@ -21,6 +21,7 @@ import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
 import project.project.service.KakaoService;
 import project.project.service.UserService;
+import retrofit2.http.Path;
 
 import java.net.MalformedURLException;
 import java.util.Optional;
@@ -63,7 +64,6 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public Boolean login(@Validated UserLoginForm userLoginForm, HttpSession session){
-        log.info("왔는데");
         User findUser = userRepository.findNormalByEmail(userLoginForm.getLoginEmail(),UserJoinType.NORMAR);
         if(findUser==null||!findUser.getPw().equals(userLoginForm.getLoginPw())){
             return false;
@@ -142,6 +142,16 @@ public class UserController {
                 form.getExtraAddress());
 
         return "redirect:/mypage/account";
+    }
+
+    @ResponseBody
+    @GetMapping("/user/registration/check/{userId}")
+    public boolean checkRoomRegistration(@PathVariable("userId") Long userId){
+        System.out.println("왔다. userId="+userId);
+        Boolean result = userService.checkRoomRegistrationEligibility(userId);
+        System.out.println("왔다. result="+result);
+
+        return result;
     }
 
 

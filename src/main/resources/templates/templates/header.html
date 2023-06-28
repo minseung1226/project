@@ -31,7 +31,7 @@
                         <a class="nav-link active atag" aria-current="page" href="#">찜 목록</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active atag" aria-current="page" href="/room/registration">방 내놓기</a>
+                        <a class="nav-link active atag" id="registration" aria-current="page" href="/room/registration">방 내놓기</a>
                     </li>
 
                     <li class="nav-item">
@@ -57,10 +57,43 @@
     <script th:inline="javascript">
         $('.nav-link.active.atag').on('click', function (event) {
             event.preventDefault(); // 기본 동작 취소
-            if ([[${session.user}]] != null) {
-                location.href = $(this).attr('href');
+            let userId = [[${session.user}]];
+
+            if (userId != null) {
+                if($(this).attr("id")==="registration"){
+
+                    $.ajax({
+                        url:"/user/registration/check/"+userId,
+                        type:"get",
+
+                    }).done(function(result){
+                       if(!result){
+                           Swal.fire({
+                               title: '매물을 등록하기 위해서는 <br>프로필을 작성해 주세요.',
+                               icon: null,
+                               showCancelButton: true,
+                               confirmButtonText: '마이페이지 이동',
+                               confirmButtonColor: `#000`,
+                               cancelButtonText:'취소',
+
+                           }).then((result) => {
+                               if (result.isConfirmed) {
+                                   location.href = "/mypage/account";
+                               }
+                               else{
+                                   return;
+                               }
+                           });
+                       }
+                    })
+                        .fail(function (err){
+                            alert(err);
+                        });
+                }else{
+                    location.href = $(this).attr('href');
+                }
+
             } else {
-                alert("실행");
                 $('#loginButton').click();
             }
         });

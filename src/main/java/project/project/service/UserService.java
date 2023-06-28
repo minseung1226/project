@@ -63,6 +63,32 @@ public class UserService {
 
     }
 
+    public Boolean checkRoomRegistrationEligibility(Long userId){
+        Optional<User> findUserOptional = userRepository.findById(userId);
+        if(findUserOptional.isEmpty()){
+
+        }
+        User findUser = findUserOptional.get();
+        if(validateAddress(findUser.getAddress())&&
+        StringUtils.hasText(findUser.getName())&&
+        StringUtils.hasText(findUser.getPhone())){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    private Boolean validateAddress(Address address){
+        if(address==null|| address.getPostcode()==null||
+                (!StringUtils.hasText(address.getAddress()))||
+                (!StringUtils.hasText(address.getDetailAddress()))){
+            return false;
+        }
+        return true;
+    }
+
 
 
 }
