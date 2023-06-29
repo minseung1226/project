@@ -1,5 +1,10 @@
 package project.project;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.LatLng;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -67,5 +72,25 @@ public class InitData {
         inquiryRepository.save(inquiry2);
         inquiryRepository.save(inquiry3);
 
+        GeoApiContext context= new GeoApiContext.Builder().apiKey("AIzaSyB1rQ0RlJKhQcbaUNg7oXtO_dzbeObZ5Oo").build();
+
+        GeocodingResult[] results;
+
+        try{
+            results= GeocodingApi.reverseGeocode(context,new LatLng(room.getLat(),room.getLng())).await();
+
+            if(results.length>0){
+                for (GeocodingResult result : results) {
+                    AddressComponent[] addressComponents = result.addressComponents;
+                    for (AddressComponent addressComponent : addressComponents) {
+                        System.out.println("AddressComponent="+addressComponent);
+                    }
+                    System.out.println("result="+result.toString());
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
