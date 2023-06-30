@@ -67,6 +67,14 @@ public class User extends BaseEntity {
         this.userJoinType = userJoinType;
     }
 
+    public User(String email, String name, String pw, String phone, Address address) {
+        this.email = email;
+        this.name = name;
+        this.pw = pw;
+        this.phone = phone;
+        this.address = address;
+    }
+
     public void changePw(String pw){
         this.pw=pw;
     }

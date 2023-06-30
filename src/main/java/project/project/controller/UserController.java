@@ -147,9 +147,7 @@ public class UserController {
     @ResponseBody
     @GetMapping("/user/registration/check/{userId}")
     public boolean checkRoomRegistration(@PathVariable("userId") Long userId){
-        System.out.println("왔다. userId="+userId);
         Boolean result = userService.checkRoomRegistrationEligibility(userId);
-        System.out.println("왔다. result="+result);
 
         return result;
     }
