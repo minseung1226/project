@@ -9,8 +9,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.domain.Room;
 import project.project.domain.RoomInfo;
+import project.project.dto.room.RoomMapDto;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
@@ -105,5 +108,17 @@ public class RoomController {
 
         redirectAttributes.addAttribute("roomId",roomId);
         return "redirect:/room/detailInfo/{roomId}";
+    }
+
+    @GetMapping("/room/roomList")
+    @ResponseBody
+    public List<RoomMapDto> roomDtoList(double minLat, double minLng, double maxLat, double maxLng){
+        log.info("여기까진 왔고,");
+        List<RoomMapDto> roomMapDtoList = dslRoomRepository.findRoomMapDtoList(minLat, minLng, maxLat, maxLng);
+        log.info("roomSIze={}",roomMapDtoList.size());
+        for (RoomMapDto roomMapDto : roomMapDtoList) {
+            log.info("roomId={}",roomMapDto.getId());
+        }
+        return roomMapDtoList;
     }
 }

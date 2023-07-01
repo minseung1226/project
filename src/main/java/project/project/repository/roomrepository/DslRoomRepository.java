@@ -3,6 +3,7 @@ package project.project.repository.roomrepository;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QList;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ListExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,10 +13,7 @@ import project.project.domain.*;
 import project.project.domain.enum_type.EntityStatus;
 import project.project.dto.photo.PhotoDto;
 import project.project.dto.photo.QPhotoDto;
-import project.project.dto.room.QRoomModifyDto;
-import project.project.dto.room.QRoomSimpleDto;
-import project.project.dto.room.RoomModifyDto;
-import project.project.dto.room.RoomSimpleDto;
+import project.project.dto.room.*;
 import project.project.dto.roominfo.QRoomInfoModifyDto;
 
 import java.util.List;
@@ -111,5 +109,30 @@ public class DslRoomRepository {
 
         return roomModifyDto;
     }
+
+    public List<RoomMapDto> findRoomMapDtoList(Double minLat,Double minLng,Double maxLat,Double maxLng){
+        return queryFactory.select(new QRoomMapDto(room.id,
+                        JPAExpressions.select(photo.img)
+                                .from(photo)
+                                .where(photo.room.eq(room))
+                                .orderBy(photo.id.asc())
+                                .limit(1),
+                        roomInfo.realSize,room.lat,room.lng, room.title, room.roomType))
+                .from(room)
+                .join(room.roomInfo,roomInfo)
+                .join(room.photos,photo)
+                .where(latRange(minLat,maxLat).and(lngRange(minLng,maxLng)))
+                .fetch();
+    }
+
+    private BooleanExpression latRange(Double min,Double max){
+        return room.lat.goe(min).and(room.lat.loe(max));
+    }
+
+    private BooleanExpression lngRange(Double min,Double max){
+        return room.lng.goe(min).and(room.lng.loe(max));
+    }
+
+
 
 }
