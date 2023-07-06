@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import project.project.domain.Photo;
 import project.project.domain.Room;
 import project.project.domain.RoomInfo;
@@ -91,8 +90,7 @@ public class RoomService {
 
 
         room.roomUpdate(roomModifyDto,newImgNames);
-
-
     }
+
 
 }

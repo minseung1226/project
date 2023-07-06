@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.controller.form.room.RoomMapForm;
 import project.project.domain.Room;
-import project.project.domain.RoomInfo;
-import project.project.dto.room.RoomMapDto;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
@@ -22,9 +21,9 @@ import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.RoomService;
-import retrofit2.http.Path;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -112,13 +111,24 @@ public class RoomController {
 
     @GetMapping("/room/roomList")
     @ResponseBody
-    public List<RoomMapDto> roomDtoList(double minLat, double minLng, double maxLat, double maxLng){
-        log.info("여기까진 왔고,");
-        List<RoomMapDto> roomMapDtoList = dslRoomRepository.findRoomMapDtoList(minLat, minLng, maxLat, maxLng);
-        log.info("roomSIze={}",roomMapDtoList.size());
-        for (RoomMapDto roomMapDto : roomMapDtoList) {
-            log.info("roomId={}",roomMapDto.getId());
+    public List<RoomMapForm> roomDtoList(double minLat, double minLng, double maxLat, double maxLng){
+
+        log.info("minLat={},maxLat={}",minLat,maxLat);
+        log.info("minLng={},maxLng={}",minLng,maxLng);
+        List<Room> roomList = roomRepository.findByPosition(minLng, minLat, maxLng, maxLat);
+        List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
+                        room.getId(),
+                        room.getPhotos().get(0).getImg(),
+                        room.getRoomInfo().getRealSize(),
+                        room.getLat(),
+                        room.getLng(),
+                        room.getTitle(),
+                        room.getRoomType()))
+                .collect(Collectors.toList());
+        log.info("roomForm.size={}",roomMapForms.size());
+        for (RoomMapForm roomMapForm : roomMapForms) {
+            log.info("roomMapForm={}",roomMapForm);
         }
-        return roomMapDtoList;
+        return roomMapForms;
     }
 }

@@ -1,10 +1,10 @@
-package project.project.dto.room;
+package project.project.controller.form.room;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import project.project.domain.enum_type.RoomType;
+
 @Data
-public class RoomMapDto {
+public class RoomMapForm {
     private Long id;
     private String img;
     private Double realSize;
@@ -13,8 +13,7 @@ public class RoomMapDto {
     private String title;
     private RoomType roomType;
 
-    @QueryProjection
-    public RoomMapDto(Long id, String img, Double realSize, Double lat, Double lng, String title, RoomType roomType) {
+    public RoomMapForm(Long id, String img, Double realSize, Double lat, Double lng, String title, RoomType roomType) {
         this.id = id;
         this.img = img;
         this.realSize = realSize;

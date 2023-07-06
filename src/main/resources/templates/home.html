@@ -26,7 +26,8 @@
                 <div class="row p-2 bg-secondary justify-content-center">
                     <div class="col-2"></div>
                     <div class="col-6">
-                        <input class="form-control me-2" id="search" type="search" placeholder="지역,지하철명" aria-label="Search">
+                        <input class="form-control me-2" id="search" type="search" placeholder="지역,지하철명"
+                               aria-label="Search">
                     </div>
                     <div class="col-4">
                         <button id="search_btn" class="btn btn-dark " type="button" onclick="search()">Search</button>
@@ -36,19 +37,20 @@
 
                     <div class="col-6">
                         <div class="btn-group">
-                            <button type="button" class="btn btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 상세검색
                             </button>
                             <div class="dropdown-menu">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            안녕
-                                        </div>
-                                        <div class="col-8">
-                                            <div>메롱</div>
-                                            <div>병신</div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        안녕
                                     </div>
+                                    <div class="col-8">
+                                        <div>메롱</div>
+                                        <div>병신</div>
+                                    </div>
+                                </div>
                             </div>
                             <hr>
 
@@ -73,21 +75,50 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services,clusterer"></script>
 <script th:inline="javascript">
 
 
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+            center: new kakao.maps.LatLng(37.484661, 126.783171), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };
 
     // 지도를 생성합니다
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
+
+
+    // 마커를 생성합니다
+    var marker1 = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(37.484661, 126.783171)
+    });
+    var marker2 = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(37.484635, 126.783521)
+    });
+    var marker3 = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(37.484800, 126.783727)
+    });
+
+    let markers={marker1,marker2,marker3};
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+/*    marker1.setMap(map);
+    marker2.setMap(map);
+    marker3.setMap(map);*/
+
+        let clusterer = new kakao.maps.MarkerClusterer({
+            map: map,
+            averageCenter: true,
+            minLevel: 2/*,
+        minClusterSize: 1*/
+        })
+
+    clusterer.addMakers(markers);
+
     // 지도 이동이 완료되면 호출되는 이벤트 리스너 등록
-    kakao.maps.event.addListener(map, 'idle', function() {
+    kakao.maps.event.addListener(map, 'idle', function () {
         // 현재 지도의 경계 영역 정보 가져오기
         var bounds = map.getBounds();
         var swLatLng = bounds.getSouthWest(); // 서남쪽 좌표 (좌하단)
@@ -109,25 +140,42 @@
         // 예를 들어 AJAX 요청을 사용하여 해당 영역의 매물 정보를 가져올 수 있습니다.
 
         $.ajax({
-            type:'get',
-            url:'/room/roomList',
-            data:{
-                minLat:swLat,
-                minLng:swLng,
-                maxLat:neLat,
-                maxLng:neLng
+            type: 'get',
+            url: '/room/roomList',
+            data: {
+                minLat: swLat,
+                minLng: swLng,
+                maxLat: neLat,
+                maxLng: neLng
             }
-        }).done(function (data){
-            alert("여기도 왔어");
-           for(let i=0;i<data.length;i++){
-               console.log(data.id);
-           }
-        }).fail(function (err){
+        }).done(function (data) {
+
+            /*let clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 10,
+                minClusterSize: 1
+            })
+
+
+            var markers = [];
+            for (let i = 0; i < data.length; i++) {
+                let marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(data[i].lat, data[i].lng);
+                })
+
+                marker.propertyId = data[i].id;
+
+                markers.push(marker);
+            }
+
+            clusterer.addMarkers(markers);*/
+        }).fail(function (err) {
             alert(err);
         });
     });
 
-    function search(){
+    function search() {
         // 장소 검색 객체를 생성합니다
         var ps = new kakao.maps.services.Places();
 
@@ -135,7 +183,7 @@
         ps.keywordSearch($('#search').val(), placesSearchCB);
 
         // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-        function placesSearchCB (data, status, pagination) {
+        function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해

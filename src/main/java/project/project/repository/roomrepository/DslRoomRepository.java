@@ -110,28 +110,6 @@ public class DslRoomRepository {
         return roomModifyDto;
     }
 
-    public List<RoomMapDto> findRoomMapDtoList(Double minLat,Double minLng,Double maxLat,Double maxLng){
-        return queryFactory.select(new QRoomMapDto(room.id,
-                        JPAExpressions.select(photo.img)
-                                .from(photo)
-                                .where(photo.room.eq(room))
-                                .orderBy(photo.id.asc())
-                                .limit(1),
-                        roomInfo.realSize,room.lat,room.lng, room.title, room.roomType))
-                .from(room)
-                .join(room.roomInfo,roomInfo)
-                .join(room.photos,photo)
-                .where(latRange(minLat,maxLat).and(lngRange(minLng,maxLng)))
-                .fetch();
-    }
-
-    private BooleanExpression latRange(Double min,Double max){
-        return room.lat.goe(min).and(room.lat.loe(max));
-    }
-
-    private BooleanExpression lngRange(Double min,Double max){
-        return room.lng.goe(min).and(room.lng.loe(max));
-    }
 
 
 
