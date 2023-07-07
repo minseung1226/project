@@ -13,7 +13,13 @@ public class RoomMapForm {
     private String title;
     private RoomType roomType;
 
-    public RoomMapForm(Long id, String img, Double realSize, Double lat, Double lng, String title, RoomType roomType) {
+    private Integer deposit;
+    private Integer monthlyRent;
+    private Double maintenance;
+
+
+
+    public RoomMapForm(Long id, String img, Double realSize, Double lat, Double lng, String title, RoomType roomType, Integer deposit, Integer monthlyRent, Double maintenance) {
         this.id = id;
         this.img = img;
         this.realSize = realSize;
@@ -21,5 +27,8 @@ public class RoomMapForm {
         this.lng = lng;
         this.title = title;
         this.roomType = roomType;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+        this.maintenance = maintenance;
     }
 }

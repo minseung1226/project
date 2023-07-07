@@ -123,7 +123,10 @@ public class RoomController {
                         room.getLat(),
                         room.getLng(),
                         room.getTitle(),
-                        room.getRoomType()))
+                        room.getRoomType(),
+                        room.getDeposit(),
+                        room.getMonthlyRent(),
+                        room.getMaintenance()))
                 .collect(Collectors.toList());
         log.info("roomForm.size={}",roomMapForms.size());
         for (RoomMapForm roomMapForm : roomMapForms) {

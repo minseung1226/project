@@ -62,7 +62,7 @@ public class InitData {
                 12312, "부천로 57번길 50", "201호", "심곡동", 23.12312, 30.123123, 500, 40, 5.0, LocalDate.now(), maintenanceItems
                 , null, "부천역 10분거리 복층형 원룸", "오세요 오세요 오세요");
 
-        Room room = Room.makeRoom(roomDto, roomInfo, new String[]{"59281079-6389-445a-9296-82c3d0a54443.jpg", "8b961600-b9d3-4880-9ddd-c63c3e4e964f.png", "8c4e9d51-d09d-47ab-a3cd-4a2f0d737366.jpg", "7a3daca6-e95b-42e0-a9c3-48e856fcf31c.png"}, user);
+        Room room = Room.makeRoom(roomDto, roomInfo, new String[]{"project1.jpg", "project2.jpg", "project3.jpg", "project4.jpg"}, user);
         roomRepository.save(room);
 
         //WishList 저장
