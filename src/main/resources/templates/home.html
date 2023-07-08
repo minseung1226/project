@@ -95,6 +95,35 @@
         crossorigin="anonymous"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services,clusterer"></script>
 <script th:inline="javascript">
+    function createRoomHtml(data){
+        let html=`<div class="row">`
+        for(let i=0;i<data.length;i++){
+            html +=`
+    <div class="col-4 p-1">
+      <a class="a-card" href="/room/detail/`+data[i].id+`" style="display: inline">
+        <div class="card">
+          <img src="/images/`+data[i].img+`" class="card-img-top" alt="..." width="100%" height="150px">
+          <div class="card-body p-1 m-0">
+            <p class="m-0"><h5 class="fw-bold">월세`+data[i].deposit+`/`+data[i].monthlyRent+`</h5></p>
+            <p class="m-0">신축급 월세</p>
+            <p class="m-0" style="font-size: 13px">`+data[i].roomType+`|`+`관리비`+data[i].maintenance+`</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  `;
+            if(i%3==2){
+                html+=`</div><div class="row">`
+            }
+            if(i==data.length-1){
+                html+=`</div>`;
+            }
+        }
+
+        let container=document.querySelector(`.container-fluid.room-list`);
+        container.innerHTML=html;
+    };
+
     function roomCall(map){
         var bounds = map.getBounds();
         var swLatLng = bounds.getSouthWest(); // 서남쪽 좌표 (좌하단)
@@ -140,7 +169,7 @@
             });
 
 
-
+            createRoomHtml(data);
 
 
 
