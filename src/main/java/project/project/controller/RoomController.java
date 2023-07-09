@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.controller.form.room.RoomDetailForm;
 import project.project.controller.form.room.RoomMapForm;
 import project.project.domain.Room;
 import project.project.dto.room.RoomModifyDto;
@@ -21,6 +22,7 @@ import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.RoomService;
+import retrofit2.http.Path;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,18 +66,18 @@ public class RoomController {
         List<RoomSimpleDto> rooms = dslRoomRepository.findRoomDtos(userId);
         model.addAttribute("roomDtos",rooms);
 
-        return "room/management";
+        return "room/management/management";
     }
 
-    @GetMapping("/room/detailInfo/{roomId}")
+    @GetMapping("/room/management/detailInfo/{roomId}")
     public String roomDetailInfo(@PathVariable("roomId")Long roomId,Model model){
 
         RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
         model.addAttribute("roomModifyDto",roomDto);
-        return "room/detail_info";
+        return "room/management/detail_info";
     }
 
-    @PostMapping("/room/delete/{roomId}")
+    @PostMapping("/room/management/delete/{roomId}")
     public String deleteRoom(@PathVariable("roomId")Long roomId,Long userId,RedirectAttributes redirectAttributes){
         roomService.roomDelete(roomId);
         redirectAttributes.addAttribute("userId",userId);
@@ -83,14 +85,14 @@ public class RoomController {
         return "redirect:/room/management/{userId}";
     }
 
-    @GetMapping("/room/modify/{roomId}")
+    @GetMapping("/room/management/modify/{roomId}")
     public String modifyRoom(@PathVariable("roomId")Long roomId,Long userId,Model model){
         RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
 
         model.addAttribute("roomModifyDto",roomDto  );
         model.addAttribute("roomInfoModifyDto",roomDto.getRoomInfoModifyDto());
 
-        return "room/modify";
+        return "room/management/modify";
     }
 
     @PostMapping("/room/modify/{roomId}")
@@ -111,10 +113,8 @@ public class RoomController {
 
     @GetMapping("/room/roomList")
     @ResponseBody
-    public List<RoomMapForm> roomDtoList(double minLat, double minLng, double maxLat, double maxLng){
+    public List<RoomMapForm> roomFormList(double minLat, double minLng, double maxLat, double maxLng){
 
-        log.info("minLat={},maxLat={}",minLat,maxLat);
-        log.info("minLng={},maxLng={}",minLng,maxLng);
         List<Room> roomList = roomRepository.findByPosition(minLng, minLat, maxLng, maxLat);
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
                         room.getId(),
@@ -128,10 +128,17 @@ public class RoomController {
                         room.getMonthlyRent(),
                         room.getMaintenance()))
                 .collect(Collectors.toList());
-        log.info("roomForm.size={}",roomMapForms.size());
-        for (RoomMapForm roomMapForm : roomMapForms) {
-            log.info("roomMapForm={}",roomMapForm);
-        }
+
         return roomMapForms;
     }
+
+    @GetMapping("/room/detail/{roomId}")
+    public String roomDetail(@PathVariable("roomId")Long roomId,Model model){
+        Room room = roomRepository.fetchFindById(roomId);
+        RoomDetailForm roomDetailForm = new RoomDetailForm(room);
+        model.addAttribute("roomDetailForm",roomDetailForm);
+        log.info("room={}",roomDetailForm);
+        return "room/detail_view";
+    }
+
 }

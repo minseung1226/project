@@ -12,7 +12,7 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
     @Query("select r from Room r where r.user.id=:userId")
     List<Room> findRooms(@Param("userId")Long userId);
 
-    @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.id=:roomId")
+    @Query("select r from Room r join fetch r.user join fetch r.roomInfo join fetch r.photos where r.id=:roomId")
     Room fetchFindById(@Param("roomId") Long roomId);
 
     @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.lng>=:minLng and " +

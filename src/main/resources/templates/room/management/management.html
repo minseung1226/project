@@ -34,7 +34,7 @@
                 <th class="col-1">금액</th>
             </tr>
             <th:block th:each="room:${roomDtos}">
-            <tr th:onclick="|location.href='@{/room/detailInfo/{id}(id=${room.id})}'|" style="cursor:pointer">
+            <tr th:onclick="|location.href='@{/room/management/detailInfo/{id}(id=${room.id})}'|" style="cursor:pointer">
 
                     <td th:text="${room.roomNumber}"></td>
                     <td th:text="${room.address}"></td>
@@ -54,7 +54,7 @@
 </body>
 <script>
     function modify(roomId){
-        location.href="/room/modify/"+roomId;
+        location.href="/room/management/modify/"+roomId;
     }
 </script>
 </html>

@@ -15,6 +15,13 @@
         background-color: black;
     }
 
+    .container-fluid.room-list {
+        overflow-y: auto;
+        max-height: 850px; /* 스크롤이 표시될 최대 높이 */
+    }
+
+
+
 </style>
 </head>
 <body>
@@ -24,7 +31,7 @@
 <div th:if="${session.user==null}">
     <div th:replace="templates/header :: header_modal"></div>
 </div>
-<div class="container-fluid" style="height:900px">
+<div class="container-fluid main" style="height:890px">
     <div class="row" style="height: 100%">
         <div class="col-8 fluid" style="padding: 0">
             <div id="map" style="width:100%;height:100%; padding: 0"></div>
@@ -70,20 +77,7 @@
                     </div>
                 </div>
                 <div class="container-fluid room-list">
-                    <div class="row">
-                        <div class="col-4 p-1">
-                            <a class="a-card" href="/room/d" style="display: inline" >
-                                <div class="card" >
-                                    <img src="/images/project1.jpg" class="card-img-top" alt="..." width="100%">
-                                    <div class="card-body p-1 m-0">
-                                        <p class="m-0"><h5 class=" fw-bold">월세 100/40</h5></p>
-                                        <p class="m-0">신축급 월세</p>
-                                        <p class="m-0" style="font-size: 13px">아파트|방 1개|6층|관리비 2만원</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -98,6 +92,7 @@
     function createRoomHtml(data){
         let html=`<div class="row">`
         for(let i=0;i<data.length;i++){
+            let title=data[i].title.toString().substring(0,10)+"...";
             html +=`
     <div class="col-4 p-1">
       <a class="a-card" href="/room/detail/`+data[i].id+`" style="display: inline">
@@ -105,8 +100,8 @@
           <img src="/images/`+data[i].img+`" class="card-img-top" alt="..." width="100%" height="150px">
           <div class="card-body p-1 m-0">
             <p class="m-0"><h5 class="fw-bold">월세`+data[i].deposit+`/`+data[i].monthlyRent+`</h5></p>
-            <p class="m-0">신축급 월세</p>
-            <p class="m-0" style="font-size: 13px">`+data[i].roomType+`|`+`관리비`+data[i].maintenance+`</p>
+            <p class="m-0">`+title+`</p>
+            <p class="m-0" style="font-size: 13px">`+data[i].roomType+` | `+`관리비`+data[i].maintenance+`만원</p>
           </div>
         </div>
       </a>

@@ -230,7 +230,7 @@
     $(document).ready(function (){
         $("#modifyBtn").click(function (event){
             event.preventDefault();
-            $("#myForm").attr("action","/room/modify/"+[[${roomModifyDto.id}]]);
+            $("#myForm").attr("action","/room/management/modify/"+[[${roomModifyDto.id}]]);
             $("#myForm").attr("method","get")
             $("#myForm").submit();
         })
@@ -247,7 +247,7 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $("#myForm").attr("action","/room/delete/"+[[${roomModifyDto.id}]]);
+                    $("#myForm").attr("action","/room/management/delete/"+[[${roomModifyDto.id}]]);
                     $("#myForm").attr("method","post");
                     $("#myForm").submit();
                 }
