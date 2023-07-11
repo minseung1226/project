@@ -9,12 +9,24 @@
     <style>
         .sidebar {
             position: fixed;
-            top: 0;
-            right: 0;
-            width: 250px; /* 사이드바의 너비 */
-            height: 100vh; /* 사이드바의 높이 */
-            background-color: #f8f9fa; /* 사이드바의 배경색 */
-            /* 추가적인 스타일링을 적용할 수 있습니다. */
+            top: 28%;
+            right: 15%;
+            background-color: white;
+            width: 250px;
+        }
+
+        .s-content{
+
+            padding:3px
+        }
+
+        .table-title{
+            margin-top:100px;
+        }
+
+        .table-text{
+            padding:5px;
+            font-size:18px;
         }
     </style>
 </head>
@@ -23,10 +35,11 @@
 <div th:if="${session.user==null}">
     <div th:replace="templates/header :: header_modal"></div>
 </div>
-<div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:25%;padding-left: 25%">
+<div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:30%;padding-left: 30%; padding-bottom: 300px;">
 
+    <div class="container bg-white">
+        <div class="p-1"><h3  th:class="fw-bold" th:text="${roomDetailForm.title}"></h3></div>
 
-    <div class="container bg-white border">
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <th:block th:each="image:${roomDetailForm.images}">
@@ -47,14 +60,256 @@
             </button>
         </div>
 
+        <div class="sidebar border">
+            <div class="text-center s-content bg-secondary bg-opacity-10 border" th:text="'매물번호 :'+${roomDetailForm.roomNumber}"></div>
+            <div class="text-center s-content border">
+                <h4 class="fw-bold"
+                    th:text="'월세'+${roomDetailForm.deposit}+'/'+${roomDetailForm.monthlyRent}"></h4>
+            </div>
+            <div class="p-1 fw-bold s-content border">
+                등록자 : <span th:text="${roomDetailForm.registrantName}"></span>
+                <span th:text="'('+${roomDetailForm.registrant}+')'"></span>
+
+            </div>
+
+            <div class="text-center s-content border">
+                <button class="btn btn-dark">문의하기</button>
+                <button class="btn btn-dark">찜 하기</button>
+            </div>
+        </div>
 
 
+        <h4 class="fw-bold table-title">거래정보</h4>
 
+        <div class="container">
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    거래 방식
+                </div>
+                <div class="col-9 table-text"
+                     th:text="'월세 '+${roomDetailForm.deposit}+'만원/'+${roomDetailForm.monthlyRent}+'만원'">
+
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    관리비
+                </div>
+                <div class="col-9 table-text" th:text="${roomDetailForm.maintenance}+'만원'">
+
+                </div>
+            </div>
+
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    관리비 포함 항목
+                </div>
+                <div class="col-9 table-text">
+                    <th:block th:each="item:${roomDetailForm.maintenanceItem}">
+                        <span th:text="${item}"></span>
+                        <span th:if="${itemStat.last==false}">,</span>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    입주 가능일
+                </div>
+                <div class="col-9 table-text" th:text="${#temporals.createToday()>roomDetailForm.moveInDate?
+                '즉시 입주 가능':#temporals.format(roomDetailForm.moveInDate,'yyyy년 MM월 dd일 ')+'이후 입주 가능'}">
+
+                </div>
+            </div>
+        </div>
+
+        <h4 class="fw-bold table-title">방 정보</h4>
+        <div class="container">
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    건물 유형
+                </div>
+                <div class="col-9 table-text"
+                     th:text="${roomDetailForm.houseType}">
+                </div>
+            </div>
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                     방 유형
+                </div>
+                <div class="col-9 table-text"
+                     th:text="${roomDetailForm.roomType}">
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    해당층/전체층
+                </div>
+                <div class="col-9 table-text"
+                     th:text="${roomDetailForm.floor}+'층/'+${roomDetailForm.entireFloor}+'층'">
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    전용/공급 면적
+                </div>
+                <div class="col-9 table-text">
+                    <span th:text="${roomDetailForm.realSize}+'m'"></span><sup>2</sup>
+                    <span th:text="'/'+${roomDetailForm.supplySize}+'m'"></span><sup>2</sup>
+
+                    <span th:text="'('+${#numbers.formatInteger(roomDetailForm.realSize*0.3025,1)}+'평/'+${#numbers.formatInteger(roomDetailForm.supplySize*0.3025,1)}+'평)'"></span>
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    주실 방향
+                </div>
+                <div class="col-9 table-text" th:text="${roomDetailForm.bearing}+'향'">
+
+                </div>
+            </div>
+
+            <div class="row border-top border-bottom">
+                <div class="col-3 table-text fw-bold">
+                    옵션
+                </div>
+                <div class="col-9 table-text">
+                    <th:block th:each="option:${roomDetailForm.options}">
+                        <span th:text="${option}"></span>
+                        <span th:if="${optionStat.last==false}">,</span>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row border-top border-bottom">
+            <div class="col-3 table-text fw-bold">
+                주차
+            </div>
+            <div class="col-9 table-text" th:text="${roomDetailForm.parking?'가능':'불가능'}">
+
+            </div>
+        </div>
+        <div class="row border-top border-bottom">
+            <div class="col-3 table-text fw-bold">
+                애완동물
+            </div>
+            <div class="col-9 table-text" th:text="${roomDetailForm.animal?'가능':'불가능'}">
+
+            </div>
+        </div>
+
+
+        <h4 class="fw-bold table-title">상세 내용</h4>
+
+        <div class="border p-2" th:text="${roomDetailForm.content}" style="height: 250px; overflow: auto">
+
+        </div>
+
+
+        <h4 class="fw-bold table-title">위치</h4>
+        <div id="container" class="view_map">
+            <div id="mapWrapper" style="width:100%;height:300px;position:relative;">
+                <div id="map" style="width:100%;height:100%"></div> <!-- 지도를 표시할 div 입니다 -->
+                <input type="button" id="btnRoadview" onclick="toggleMap(false)" title="로드뷰 보기" value="로드뷰">
+            </div>
+            <div id="rvWrapper" style="width:100%;height:300px;position:absolute;top:0;left:0;">
+                <div id="roadview" style="height:100%"></div> <!-- 로드뷰를 표시할 div 입니다 -->
+                <input type="button" id="btnMap" onclick="toggleMap(true)" title="지도 보기" value="지도">
+            </div>
+        </div>
+
+        <div style="height: 300px;"></div>
     </div>
 </div>
 </body>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script th:inline="javascript">
 
+    let lat=[[${roomDetailForm.lat}]];
+    let lng=[[${roomDetailForm.lng}]]
+    /*var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+            level: 1 // 지도의 확대 레벨
+        };
+
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    let marker=new kakao.maps.Marker({
+        position:new kakao.maps.LatLng(lat,lng)
+    })
+    marker.setMap(map);
+*/    var container = document.getElementById('container'), // 지도와 로드뷰를 감싸고 있는 div 입니다
+        mapWrapper = document.getElementById('mapWrapper'), // 지도를 감싸고 있는 div 입니다
+        btnRoadview = document.getElementById('btnRoadview'), // 지도 위의 로드뷰 버튼, 클릭하면 지도는 감춰지고 로드뷰가 보입니다
+        btnMap = document.getElementById('btnMap'), // 로드뷰 위의 지도 버튼, 클릭하면 로드뷰는 감춰지고 지도가 보입니다
+        rvContainer = document.getElementById('roadview'), // 로드뷰를 표시할 div 입니다
+        mapContainer = document.getElementById('map'); // 지도를 표시할 div 입니다
+
+    // 지도와 로드뷰 위에 마커로 표시할 특정 장소의 좌표입니다
+    var placePosition = new kakao.maps.LatLng(lat, lng);
+
+    // 지도 옵션입니다
+    var mapOption = {
+        center: placePosition, // 지도의 중심좌표
+        level: 1 // 지도의 확대 레벨
+    };
+
+    // 지도를 표시할 div와 지도 옵션으로 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 로드뷰 객체를 생성합니다
+    var roadview = new kakao.maps.Roadview(rvContainer);
+
+    // 로드뷰의 위치를 특정 장소를 포함하는 파노라마 ID로 설정합니다
+    // 로드뷰의 파노라마 ID는 Wizard를 사용하면 쉽게 얻을수 있습니다
+    roadview.setPanoId(1050215190, placePosition);
+
+    // 특정 장소가 잘보이도록 로드뷰의 적절한 시점(ViewPoint)을 설정합니다
+    // Wizard를 사용하면 적절한 로드뷰 시점(ViewPoint)값을 쉽게 확인할 수 있습니다
+    roadview.setViewpoint({
+        pan: 321,
+        tilt: 0,
+        zoom: 0
+    });
+
+    // 지도 중심을 표시할 마커를 생성하고 특정 장소 위에 표시합니다
+    var mapMarker = new kakao.maps.Marker({
+        position: placePosition,
+        map: map
+    });
+
+    // 로드뷰 초기화가 완료되면
+    kakao.maps.event.addListener(roadview, 'init', function() {
+
+        // 로드뷰에 특정 장소를 표시할 마커를 생성하고 로드뷰 위에 표시합니다
+        var rvMarker = new kakao.maps.Marker({
+            position: placePosition,
+            map: roadview
+        });
+    });
+
+    // 지도와 로드뷰를 감싸고 있는 div의 class를 변경하여 지도를 숨기거나 보이게 하는 함수입니다
+    function toggleMap(active) {
+        if (active) {
+
+            // 지도가 보이도록 지도와 로드뷰를 감싸고 있는 div의 class를 변경합니다
+            container.className = "view_map"
+        } else {
+
+            // 지도가 숨겨지도록 지도와 로드뷰를 감싸고 있는 div의 class를 변경합니다
+            container.className = "view_roadview"
+        }
+    }
+
+</script>
 </html>

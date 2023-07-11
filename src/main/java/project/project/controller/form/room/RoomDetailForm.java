@@ -4,6 +4,8 @@ import lombok.Data;
 import project.project.domain.Room;
 import project.project.domain.enum_type.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,9 @@ import java.util.stream.Collectors;
 public class RoomDetailForm {
     private long roomId;
     private long userId;
+    private String registrantName;
+
+    private String registrant;
     private int postcode;
     private String address;
     private String detailAddress;
@@ -36,10 +41,14 @@ public class RoomDetailForm {
     private double realSize;
     private double supplySize;
 
+    private LocalDate moveInDate;
+
 
     public RoomDetailForm(Room room) {
         this.roomId = room.getId();
         this.userId = room.getUser().getId();
+        this.registrantName=room.getUser().getName();
+        this.registrant=room.getRegistrant();
         this.postcode = room.getAddress().getPostcode();
         this.address = room.getAddress().getAddress();
         this.detailAddress = room.getAddress().getDetailAddress();
@@ -64,5 +73,6 @@ public class RoomDetailForm {
         this.entireFloor = room.getRoomInfo().getEntireFloor();
         this.realSize = room.getRoomInfo().getRealSize();
         this.supplySize = room.getRoomInfo().getSupplySize();
+        this.moveInDate=room.getMoveInDate();
     }
 }
