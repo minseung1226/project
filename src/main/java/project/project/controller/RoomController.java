@@ -142,10 +142,17 @@ public class RoomController {
     }
 
     @ResponseBody
-    @PostMapping("/inquiry")
+    @PostMapping("/inquiry/save")
     public String inquiry(Long roomId,Long userId){
 
         return roomService.inquiry(roomId,userId);
+    }
+    @ResponseBody
+    @PostMapping("/wishlist/save")
+    public String wishlist(Long roomId,Long userId){
+        roomService.wishlistSave(roomId,userId);
+
+        return "success";
     }
 
 }

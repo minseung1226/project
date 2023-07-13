@@ -3,6 +3,7 @@ package project.project.service;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
@@ -16,6 +17,7 @@ import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.file.UploadFile;
 import project.project.repository.InquiryRepository;
+import project.project.repository.WishlistRepository;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.repository.UserRepository;
@@ -31,11 +33,11 @@ import java.util.stream.Collectors;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
-
     private final InquiryRepository inquiryRepository;
+    private final WishlistRepository wishlistRepository;
 
     private final DslRoomRepository dslRoomRepository;
-    private final DefaultMessageService messageService;
+    private DefaultMessageService messageService = NurigoApp.INSTANCE.initialize("NCSDPSCNG9CQLBVW","NOT2VRY1CMXTDP6T24N0YDYOMJMPCEGG","https://api.coolsms.co.kr");
     private final EntityManager em;
 
     @Transactional
@@ -123,6 +125,15 @@ public class RoomService {
     */
 
         return "success";
+    }
+    @Transactional
+    public void wishlistSave(Long roomId,Long userId){
+        Room room = roomRepository.findById(roomId).get();
+        User user = userRepository.findById(userId).get();
+
+        Wishlist wishlist = new Wishlist(user, room);
+
+        wishlistRepository.save(wishlist);
     }
 
 

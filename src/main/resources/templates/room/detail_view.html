@@ -251,59 +251,96 @@
     })
     marker.setMap(map);
 
-    $("#inquiryBtn").click(function (){
-        Swal.fire({
-            title: '임대인에게 회원님의 <br>전화번호가 노출됩니다.<br> 문의하시겠습니까?',
-            icon: null,
-            showCancelButton: true,
-            confirmButtonText: '확인',
-            confirmButtonColor: `#000`,
-            cancelButtonText:'취소',
+    function loginConfirm(){
+        if([[${session.user}]]==null){
+            $('#loginButton').click();
+        }
+    }
 
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type:'POST',
-                    url:"/inquiry",
-                    data:{
-                        roomId:[[${roomDetailForm.roomId}]],
-                        userId:[[${session.user}]]
-                    },
+    $("#wishlistBtn").click(function (){
+        if([[${session.user}]]==null){
+            $('#loginButton').click();
+        }
+        else{
+            $.ajax({
+                type:'POST',
+                url:"/wishlist/save",
+                data:{
+                    roomId:[[${roomDetailForm.roomId}]],
+                    userId:[[${session.user}]]
+                },
+
+            }).done(function (data){
+                Swal.fire({
+                    title: '찜 완료',
+                    icon: null,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#000`,
 
                 })
-                    .done(function (data){
-                        if(data=='success'){
-                            Swal.fire({
-                                title: '문의 완료',
-                                icon: null,
-                                confirmButtonText: '확인',
-                                confirmButtonColor: `#000`,
+            })
+        }
+    })
 
-                            })
-                        }else if(data=='phone_number_missing'){
-                            Swal.fire({
-                                title: '죄송합니다. <br>마이페이지에서 고객님의 전화번호를 저장해주세요.',
-                                icon: null,
-                                showCancelButton: true,
-                                confirmButtonText: '마이페이지 이동',
-                                confirmButtonColor: `#000`,
-                                cancelButtonText:'취소',
+    $("#inquiryBtn").click(function (){
+        if([[${session.user}]]==null){
+            $('#loginButton').click();
+        }
+        else{
+            Swal.fire({
+                title: '임대인에게 회원님의 <br>전화번호가 노출됩니다.<br> 문의하시겠습니까?',
+                icon: null,
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                confirmButtonColor: `#000`,
+                cancelButtonText:'취소',
 
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.href = "/mypage/account";
-                                }
-                            });
-                        }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:'POST',
+                        url:"/inquiry/save",
+                        data:{
+                            roomId:[[${roomDetailForm.roomId}]],
+                            userId:[[${session.user}]]
+                        },
+
                     })
-                    .fail(function (err){
-                        alert(err);
-                    })
-            }
-            else{
-                return;
-            }
-        });
+                        .done(function (data){
+                            if(data=='success'){
+                                Swal.fire({
+                                    title: '문의 완료',
+                                    icon: null,
+                                    confirmButtonText: '확인',
+                                    confirmButtonColor: `#000`,
+
+                                })
+                            }else if(data=='phone_number_missing'){
+                                Swal.fire({
+                                    title: '죄송합니다. <br>마이페이지에서 고객님의 전화번호를 저장해주세요.',
+                                    icon: null,
+                                    showCancelButton: true,
+                                    confirmButtonText: '마이페이지 이동',
+                                    confirmButtonColor: `#000`,
+                                    cancelButtonText:'취소',
+
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.href = "/mypage/account";
+                                    }
+                                });
+                            }
+                        })
+                        .fail(function (err){
+                            alert(err);
+                        })
+                }
+                else{
+                    return;
+                }
+            });
+        }
+
     })
 
 </script>
