@@ -3,16 +3,19 @@ package project.project.service;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.project.domain.Photo;
-import project.project.domain.Room;
-import project.project.domain.RoomInfo;
-import project.project.domain.User;
+import org.springframework.util.StringUtils;
+import project.project.domain.*;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.file.UploadFile;
+import project.project.repository.InquiryRepository;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.repository.UserRepository;
@@ -29,7 +32,10 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
 
+    private final InquiryRepository inquiryRepository;
+
     private final DslRoomRepository dslRoomRepository;
+    private final DefaultMessageService messageService;
     private final EntityManager em;
 
     @Transactional
@@ -91,6 +97,34 @@ public class RoomService {
 
         room.roomUpdate(roomModifyDto,newImgNames);
     }
+
+    @Transactional
+    public String inquiry(Long roomId,Long userId){
+        User user = userRepository.findById(userId).get();
+        Room room = roomRepository.fetchFindById(roomId);
+
+
+        if(!StringUtils.hasText(user.getPhone())){
+            return "phone_number_missing";
+        }
+
+        Inquiry inquiry = new Inquiry(user, room);
+
+        inquiryRepository.save(inquiry);
+
+    /*    Message message=new Message();
+        message.setFrom(user.getPhone());
+        message.setTo(room.getUser().getPhone());
+        message.setText("매물번호 : "+room.getRoomNumber()+
+                        " 주소 : "+room.getAddress().getAddress()+room.getAddress().getDetailAddress()+
+                        " 해당 매물 문의 드립니다.");
+
+        SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
+    */
+
+        return "success";
+    }
+
 
 
 }

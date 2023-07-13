@@ -141,4 +141,11 @@ public class RoomController {
         return "room/detail_view";
     }
 
+    @ResponseBody
+    @PostMapping("/inquiry")
+    public String inquiry(Long roomId,Long userId){
+
+        return roomService.inquiry(roomId,userId);
+    }
+
 }
