@@ -21,6 +21,7 @@ import project.project.dto.room.RoomRegistrationDto;
 import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
+import project.project.search.RoomSearch;
 import project.project.service.RoomService;
 import retrofit2.http.Path;
 
@@ -113,7 +114,7 @@ public class RoomController {
 
     @GetMapping("/room/roomList")
     @ResponseBody
-    public List<RoomMapForm> roomFormList(double minLat, double minLng, double maxLat, double maxLng){
+    public List<RoomMapForm> roomFormList(RoomSearch roomSearch){
 
         List<Room> roomList = roomRepository.findByPosition(minLng, minLat, maxLng, maxLat);
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
