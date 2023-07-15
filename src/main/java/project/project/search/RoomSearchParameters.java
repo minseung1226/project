@@ -3,7 +3,7 @@ package project.project.search;
 import lombok.Data;
 
 @Data
-public class RoomSearch {
+public class RoomSearchParameters {
     private Integer minDeposit;
     private Integer maxDeposit;
     private Integer minMonthlyRent;

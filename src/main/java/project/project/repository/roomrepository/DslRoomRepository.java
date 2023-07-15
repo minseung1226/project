@@ -15,6 +15,7 @@ import project.project.dto.photo.PhotoDto;
 import project.project.dto.photo.QPhotoDto;
 import project.project.dto.room.*;
 import project.project.dto.roominfo.QRoomInfoModifyDto;
+import project.project.search.RoomSearchParameters;
 
 import java.util.List;
 
@@ -111,6 +112,47 @@ public class DslRoomRepository {
     }
 
 
+    public List<Room> roomSearch(RoomSearchParameters roomSearchParameters){
+        return queryFactory.selectFrom(room)
+                .join(room.roomInfo,roomInfo).fetchJoin()
+                .join(room.photos,photo).fetchJoin()
+                .where(createDepositRangeCondition(roomSearchParameters.getMinDeposit(),roomSearchParameters.getMaxDeposit()),
+                        createMonthlyRentRangeCondition(roomSearchParameters.getMinMonthlyRent(),roomSearchParameters.getMaxMonthlyRent()),
+                        createRealSizeRangeCondition(roomSearchParameters.getMinRealSize(),roomSearchParameters.getMaxRealSize()),
+                        createCoordinatesRangeCondition(roomSearchParameters.getMinLat(),roomSearchParameters.getMaxLat(),
+                                                        roomSearchParameters.getMinLng(),roomSearchParameters.getMaxLng()))
+                .fetch();
+    }
+
+    private BooleanExpression createDepositRangeCondition(Integer minDeposit,Integer maxDeposit){
+        BooleanExpression be;
+
+        be=minDeposit==null?null:room.deposit.goe(minDeposit);
+        return maxDeposit==null?be:be.and(room.deposit.loe(maxDeposit));
+    }
+
+    private BooleanExpression createMonthlyRentRangeCondition(Integer minMonthlyRent,Integer maxMonthlyRent){
+        BooleanExpression be;
+
+        be=minMonthlyRent==null?null:room.monthlyRent.goe(minMonthlyRent);
+
+        return maxMonthlyRent==null?be:be.and(room.monthlyRent.loe(maxMonthlyRent));
+    }
+
+    private BooleanExpression createRealSizeRangeCondition(Integer minRealSize,Integer maxRealSize){
+
+        BooleanExpression be;
+
+        be=minRealSize==null?null:roomInfo.realSize.goe((double)minRealSize/0.3025);
+        return maxRealSize==null?be:roomInfo.realSize.loe((double)maxRealSize/0.3025);
+    }
+
+    private BooleanExpression createCoordinatesRangeCondition(Double minLat,Double maxLat,
+                                                              Double minLng,Double maxLng){
+        System.out.println("lat="+minLat+","+maxLat);
+        System.out.println("lng="+minLng+","+maxLng);
+        return room.lat.goe(minLat).and(room.lat.loe(maxLat).and(room.lng.goe(minLng).and(room.lng.loe(maxLng))));
+    }
 
 
 }

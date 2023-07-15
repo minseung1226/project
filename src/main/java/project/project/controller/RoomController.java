@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.project.controller.form.room.RoomDetailForm;
 import project.project.controller.form.room.RoomMapForm;
@@ -21,9 +18,8 @@ import project.project.dto.room.RoomRegistrationDto;
 import project.project.dto.room.RoomSimpleDto;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
-import project.project.search.RoomSearch;
+import project.project.search.RoomSearchParameters;
 import project.project.service.RoomService;
-import retrofit2.http.Path;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,9 +110,11 @@ public class RoomController {
 
     @GetMapping("/room/roomList")
     @ResponseBody
-    public List<RoomMapForm> roomFormList(RoomSearch roomSearch){
+    public List<RoomMapForm> roomFormList(RoomSearchParameters roomSearch){
+        List<Room> roomList = dslRoomRepository.roomSearch(roomSearch);
 
-        List<Room> roomList = roomRepository.findByPosition(minLng, minLat, maxLng, maxLat);
+        log.info("roomSearch={}",roomSearch);
+
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
                         room.getId(),
                         room.getPhotos().get(0).getImg(),
@@ -130,9 +128,13 @@ public class RoomController {
                         room.getMaintenance()))
                 .collect(Collectors.toList());
 
+        log.info("roomSize={}",roomMapForms.size());
+        for (RoomMapForm roomMapForm : roomMapForms) {
+            log.info("roomMapForm={}",roomMapForm);
+        }
+
         return roomMapForms;
     }
-
     @GetMapping("/room/detail/{roomId}")
     public String roomDetail(@PathVariable("roomId")Long roomId,Model model){
         Room room = roomRepository.fetchFindById(roomId);
