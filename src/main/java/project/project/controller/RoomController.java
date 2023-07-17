@@ -113,8 +113,6 @@ public class RoomController {
     public List<RoomMapForm> roomFormList(RoomSearchParameters roomSearch){
         List<Room> roomList = dslRoomRepository.roomSearch(roomSearch);
 
-        log.info("roomSearch={}",roomSearch);
-
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
                         room.getId(),
                         room.getPhotos().get(0).getImg(),
@@ -127,11 +125,6 @@ public class RoomController {
                         room.getMonthlyRent(),
                         room.getMaintenance()))
                 .collect(Collectors.toList());
-
-        log.info("roomSize={}",roomMapForms.size());
-        for (RoomMapForm roomMapForm : roomMapForms) {
-            log.info("roomMapForm={}",roomMapForm);
-        }
 
         return roomMapForms;
     }

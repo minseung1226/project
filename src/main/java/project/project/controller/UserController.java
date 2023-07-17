@@ -1,6 +1,7 @@
 package project.project.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.service.DefaultMessageService;
@@ -11,38 +12,43 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import project.project.controller.form.room.RoomMapForm;
+import project.project.controller.form.room.RoomWishlistForm;
 import project.project.controller.form.user.UserJoinForm;
 import project.project.controller.form.user.UserLoginForm;
 import project.project.controller.form.user.UserModifyForm;
+import project.project.domain.Room;
 import project.project.domain.User;
+import project.project.domain.Wishlist;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
+import project.project.repository.WishlistRepository;
+import project.project.repository.roomrepository.RoomRepository;
 import project.project.service.KakaoService;
 import project.project.service.UserService;
 import retrofit2.http.Path;
 
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor()
 public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
     private final UserRepository userRepository;
 
-    private final DefaultMessageService messageService;
+    private final DefaultMessageService messageService=NurigoApp.INSTANCE.initialize("NCSDPSCNG9CQLBVW","NOT2VRY1CMXTDP6T24N0YDYOMJMPCEGG","https://api.coolsms.co.kr");
+
+    private final WishlistRepository wishlistRepository;
 
 
-    public UserController(UserService userService, KakaoService kakaoService, UserRepository userRepository) {
-        this.userService = userService;
-        this.kakaoService = kakaoService;
-        this.userRepository = userRepository;
-        this.messageService= NurigoApp.INSTANCE.initialize("NCSDPSCNG9CQLBVW","NOT2VRY1CMXTDP6T24N0YDYOMJMPCEGG","https://api.coolsms.co.kr");
-    }
 
 
     //회원가입
@@ -87,10 +93,10 @@ public class UserController {
     }
 
     //계정정보 페이지 이동
-    @GetMapping("/mypage/account")
-    public String mypage(HttpSession session, Model model){
-        Object id = session.getAttribute("user");
-        Optional<User> findUser = userRepository.findById((Long) id);
+    @GetMapping("/mypage/account/{userId}")
+    public String mypage(@PathVariable("userId")Long userId, Model model){
+
+        Optional<User> findUser = userRepository.findById(userId);
         User user = findUser.get();
 
         if(user.getAddress()==null) {
@@ -150,6 +156,35 @@ public class UserController {
         Boolean result = userService.checkRoomRegistrationEligibility(userId);
 
         return result;
+    }
+
+    @GetMapping("/mypage/wishlist/{userId}")
+    public String wishlist(@PathVariable("userId")Long userId,Model model){
+
+        List<Wishlist> list = wishlistRepository.findWishlistsByUserId(userId);
+
+        List<RoomWishlistForm> wishlistForms = list.stream().map(wishlist -> new RoomWishlistForm(
+                wishlist.getId(),
+                wishlist.getRoom().getId(),
+                wishlist.getRoom().getPhotos().get(0).getImg(),
+                wishlist.getRoom().getRoomInfo().getRealSize(),
+                wishlist.getRoom().getTitle(),
+                wishlist.getRoom().getRoomType(),
+                wishlist.getRoom().getDeposit(),
+                wishlist.getRoom().getMonthlyRent(),
+                wishlist.getRoom().getMaintenance()
+        )).collect(Collectors.toList());
+
+
+        model.addAttribute("wishlistForms",wishlistForms);
+
+        return "mypage/wishlist";
+    }
+
+    @GetMapping("/mypage/inquiry/{userId}")
+    public String inquiryList(@PathVariable("userId")Long id,Model model){
+
+        return "mypage/inquiry";
     }
 
 

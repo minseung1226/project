@@ -25,10 +25,10 @@
                         <a th:unless="${session.user}==null" class="nav-link active" aria-current="page" href="/logout">로그아웃</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active atag" aria-current="page" href="/mypage/account">마이페이지</a>
+                        <a class="nav-link active atag" aria-current="page" th:href="@{/mypage/account/{userId}(userId=${session.user})}">마이페이지</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active atag" aria-current="page" href="#">찜 목록</a>
+                        <a class="nav-link active atag" aria-current="page" th:href="@{/mypage/wishlist/{userId}(userId=${session.user})}">찜 목록</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active atag" id="registration" aria-current="page" href="/room/registration">방 내놓기</a>

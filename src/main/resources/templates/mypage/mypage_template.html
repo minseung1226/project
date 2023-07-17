@@ -21,15 +21,18 @@
             <ul class="nav nav-tabs justify-content-center mb-2" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link text-dark" id="account" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
-                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><h5 class="fw-bold">계정 변경</h5></button>
+                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"
+                    onclick="callUrl('/mypage/account')"><h5 class="fw-bold">계정 변경</h5></button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link text-dark" id="pickList" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                            type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false"><h5 class="fw-bold">찜 목록</h5></button>
+                    <button class="nav-link text-dark" id="wishlist" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                            type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false"
+                    onclick="callUrl('/mypage/wishlist')"><h5 class="fw-bold">찜 목록</h5></button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link text-dark" id="contactList" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
-                            type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false"><h5 class="fw-bold">문의 목록</h5></button>
+                    <button class="nav-link text-dark" id="inquiryList" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
+                            type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false"
+                    onclick="callUrl('/mypage/inquiry')"><h5 class="fw-bold">문의 목록</h5></button>
                 </li>
 
             </ul>
@@ -46,6 +49,9 @@
         titleTag.addClass(`active`);
     })
 
+    function callUrl(url){
+        location.href=url+'/'+[[${session.user}]];
+    }
 
 
 

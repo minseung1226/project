@@ -18,4 +18,7 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
     @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.lng>=:minLng and " +
             "r.lng<=:maxLng and r.lat>=:minLat and r.lat<=:maxLat")
     List<Room> findByPosition(Double minLng,Double minLat, Double maxLng,Double maxLat );
+
+    @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.user.id=:userId")
+    List<Room> findByUserId(Long userId);
 }
