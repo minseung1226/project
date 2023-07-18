@@ -83,13 +83,14 @@ public class RoomController {
     }
 
     @GetMapping("/room/management/modify/{roomId}")
-    public String modifyRoom(@PathVariable("roomId")Long roomId,Long userId,Model model){
+    public String modifyRoom(@PathVariable("roomId")Long roomId,Long userId,Model model,RedirectAttributes redirectAttributes){
         RoomModifyDto roomDto = dslRoomRepository.findRoomDto(roomId);
 
         model.addAttribute("roomModifyDto",roomDto  );
         model.addAttribute("roomInfoModifyDto",roomDto.getRoomInfoModifyDto());
 
-        return "room/management/modify";
+        redirectAttributes.addAttribute("userId",userId);
+        return "room/management/modify/{userId}";
     }
 
     @PostMapping("/room/modify/{roomId}")

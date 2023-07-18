@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.project.controller.form.room.RoomMapForm;
 import project.project.controller.form.room.RoomWishlistForm;
 import project.project.controller.form.user.UserJoinForm;
@@ -31,9 +32,7 @@ import project.project.service.UserService;
 import retrofit2.http.Path;
 
 import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -129,9 +128,11 @@ public class UserController {
 
     //비밀번호 변경
     @PostMapping("/user/pw_change")
-    public String pw_change(String pw,HttpSession session){
-        userService.pwChange((Long) session.getAttribute("user"),pw);
-        return "redirect:/mypage/account";
+    public String pw_change(String pw, HttpSession session, RedirectAttributes redirectAttributes){
+        Long userId = (Long) session.getAttribute("user");
+        userService.pwChange(userId,pw);
+        redirectAttributes.addAttribute("userId",userId);
+        return "redirect:/mypage/account/{userId}";
     }
 
     @ResponseBody
@@ -141,13 +142,15 @@ public class UserController {
     }
 
     @PostMapping("/user/modify")
-    public String userModify(UserModifyForm form){
+    public String userModify(UserModifyForm form,RedirectAttributes redirectAttributes){
 
         userService.profileModify(form.getId(),form.getName(),form.getTel(),form.getEmail(),
                 form.getPimg(),form.getPostcode(),form.getAddress(),form.getDetailAddress(),
                 form.getExtraAddress());
 
-        return "redirect:/mypage/account";
+        redirectAttributes.addAttribute("userId",form.getId());
+
+        return "redirect:/mypage/account/{userId}";
     }
 
     @ResponseBody
@@ -187,5 +190,17 @@ public class UserController {
         return "mypage/inquiry";
     }
 
+    @PostMapping("/wishlist/delete")
+    public String wishlistDelete(Long[] wishlistIds,Long userId,RedirectAttributes redirectAttributes){
+        log.info("wishlistIds={}",wishlistIds);
+
+        List<Long> list=new ArrayList<>();
+        for (Long wishlistId : wishlistIds) {
+            list.add(wishlistId);
+        }
+        wishlistRepository.bulkDeleteByIds(list);
+        redirectAttributes.addAttribute("userId",userId);
+        return "redirect:/mypage/wishlist/{userId}";
+    }
 
 }
