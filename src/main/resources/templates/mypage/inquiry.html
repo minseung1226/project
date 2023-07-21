@@ -10,12 +10,78 @@
 <body>
 <section>
     <div class="container" th:fragment="content">
-        <div>됐다.</div>
+        <form action="/inquiry/delete" method="post" id="delForm">
+            <input type="hidden" name="userId" th:value="${session.user}">
+            <div class="row p-1 align-items-center">
+                <div class="col-3">
+                    <input class="form-check-input" type="checkbox" value="" id="allCheck" >
+                    <label class="form-check-label" for="allCheck">전체 선택</label>
+                </div>
+                <div class="col-7"></div>
+                <div class="col-2">
+                    <input type="submit" id="delBtn" class="btn btn-outline-dark" value="선택삭제">
+                </div>
+            </div>
+            <div class="container border">
+                <div class="row">
+                    <div class="col-3 mt-1 mb-1" th:each="form:${inquiryForms}">
+                        <div>
+                            <div class="border">
+                                <input class="form-check-input choose" name="inquiryIds" type="checkbox"
+                                       th:id="'inquiry'+${form.inquiryId}" th:value="${form.inquiryId}">
+                            </div>
+                        </div>
+                        <div class="card" th:onclick="|location.href='@{/room/detail/{roomId}(roomId=${form.roomId})}'|"
+                             style="cursor:pointer">
+                            <img th:src="@{/images/{img}(img=${form.img})}" class="card-img-top" alt="..." width="100%"
+                                 height="150px">
+                            <div class="card-body p-1 m-0">
+                                <p class="m-0"><h5 class="fw-bold"
+                                                   th:text="'월세'+${form.deposit}+'/'+${form.monthlyRent}"></h5></p>
+                                <p class="m-0" th:text="${form.title.substring(0,15)+'...'}"></p>
+                                <p class="m-0" style="font-size: 13px"
+                                   th:text="${form.roomType}+'| 관리비'+${form.maintenance}+'만원'"></p>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+            </div>
 
+        </form>
         <script th:inline="javascript">
+            $("#allCheck").click(function (){
+                let chooses = document.getElementsByClassName("choose");
+                if(this.checked){
 
+                    for(let i=0;i<chooses.length;i++){
+                        chooses[i].checked=true;
+                    }
+                }
+                else{
+                    for(let i=0;i<chooses.length;i++){
+                        chooses[i].checked=false;
+                    }
+                }
+            })
+
+            $("#delBtn").click(function (e){
+                e.preventDefault();
+
+                Swal.fire({
+                    title: '삭제 하시겠습니까?',
+                    icon: null,
+                    showCancelButton: false,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#000`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#delForm").submit();
+                    }
+                });
+            })
         </script>
+
     </div>
 
 </section>

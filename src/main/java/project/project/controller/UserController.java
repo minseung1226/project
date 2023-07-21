@@ -13,17 +13,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.project.controller.form.room.RoomInquiryForm;
 import project.project.controller.form.room.RoomMapForm;
 import project.project.controller.form.room.RoomWishlistForm;
 import project.project.controller.form.user.UserJoinForm;
 import project.project.controller.form.user.UserLoginForm;
 import project.project.controller.form.user.UserModifyForm;
+import project.project.domain.Inquiry;
 import project.project.domain.Room;
 import project.project.domain.User;
 import project.project.domain.Wishlist;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.file.UploadFile;
+import project.project.repository.InquiryRepository;
 import project.project.repository.UserRepository;
 import project.project.repository.WishlistRepository;
 import project.project.repository.roomrepository.RoomRepository;
@@ -46,6 +49,7 @@ public class UserController {
     private final DefaultMessageService messageService=NurigoApp.INSTANCE.initialize("NCSDPSCNG9CQLBVW","NOT2VRY1CMXTDP6T24N0YDYOMJMPCEGG","https://api.coolsms.co.kr");
 
     private final WishlistRepository wishlistRepository;
+    private final InquiryRepository inquiryRepository;
 
 
 
@@ -184,23 +188,50 @@ public class UserController {
         return "mypage/wishlist";
     }
 
-    @GetMapping("/mypage/inquiry/{userId}")
-    public String inquiryList(@PathVariable("userId")Long id,Model model){
-
-        return "mypage/inquiry";
-    }
 
     @PostMapping("/wishlist/delete")
     public String wishlistDelete(Long[] wishlistIds,Long userId,RedirectAttributes redirectAttributes){
-        log.info("wishlistIds={}",wishlistIds);
 
-        List<Long> list=new ArrayList<>();
-        for (Long wishlistId : wishlistIds) {
-            list.add(wishlistId);
-        }
+        List<Long> list = Arrays.stream(wishlistIds).collect(Collectors.toList());
+
         wishlistRepository.bulkDeleteByIds(list);
         redirectAttributes.addAttribute("userId",userId);
         return "redirect:/mypage/wishlist/{userId}";
     }
+
+    @GetMapping("/mypage/inquiry/{userId}")
+    public String inquiryList(@PathVariable("userId")Long userId,Model model){
+        List<Inquiry> inquirys = inquiryRepository.findInquirysByUserId(userId);
+        List<RoomInquiryForm> inquiryForms = inquirys.stream().map(inquiry ->
+                new RoomInquiryForm(
+                        inquiry.getId(),
+                        inquiry.getRoom().getId(),
+                        inquiry.getRoom().getPhotos().get(0).getImg(),
+                        inquiry.getRoom().getRoomInfo().getRealSize(),
+                        inquiry.getRoom().getTitle(),
+                        inquiry.getRoom().getRoomType(),
+                        inquiry.getRoom().getDeposit(),
+                        inquiry.getRoom().getMonthlyRent(),
+                        inquiry.getRoom().getMaintenance())
+        ).collect(Collectors.toList());
+        model.addAttribute("inquiryForms",inquiryForms);
+
+
+        return "mypage/inquiry";
+    }
+
+    @PostMapping("/inquiry/delete")
+    public String inquiryDelete(Long[] inquiryIds,Long userId,RedirectAttributes redirectAttributes){
+        List<Long> list = Arrays.stream(inquiryIds).collect(Collectors.toList());
+        inquiryRepository.bulkDeleteByIds(list);
+
+        redirectAttributes.addAttribute("userId",userId);
+
+        return "redirect:/mypage/inquiry/{userId}";
+
+
+    }
+
+
 
 }
