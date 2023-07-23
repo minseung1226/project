@@ -63,6 +63,25 @@
             <input type="hidden" name="userId" th:value="${session.user}">
             <input type="hidden" name="id" th:value="*{id}">
             <h2 class="mb-5">매물 수정</h2>
+
+            <h5>거래 상태</h5>
+            <div th:class="error-class" th:errors="*{registrant}">등록자 오류</div>
+            <table class="table">
+                <tr>
+                    <th class=" col-2">
+                        거래 상태
+                    </th>
+                    <td class="col-10">
+                        <div class="form-check form-check-inline" th:each="value:${T(project.project.domain.enum_type.RoomStatus).values()}">
+                            <input class="form-check-input" type="radio" name="roomStatus" th:value="${value}" th:id="${value}"
+                                   th:checked="${value==roomModifyDto.roomStatus}">
+                            <label class="form-check-label" th:for="${value}" th:text="${value}"></label>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
             <h5>등록자 정보</h5>
             <div th:class="error-class" th:errors="*{registrant}">등록자 오류</div>
             <table class="table">

@@ -77,7 +77,7 @@ public class Room extends BaseEntity {
     private String roomNumber; //매물 번호
 
     @Enumerated(EnumType.STRING)
-    private RoomStatus status=RoomStatus.진행중;
+    private RoomStatus status=RoomStatus.거래중;
 
     private EntityStatus entityStatus=EntityStatus.BASIC;
 

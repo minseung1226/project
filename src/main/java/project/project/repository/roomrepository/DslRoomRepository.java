@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import project.project.domain.*;
 import project.project.domain.enum_type.EntityStatus;
+import project.project.domain.enum_type.RoomStatus;
 import project.project.dto.photo.PhotoDto;
 import project.project.dto.photo.QPhotoDto;
 import project.project.dto.room.*;
@@ -95,7 +96,8 @@ public class DslRoomRepository {
                                 roomInfo.floor,
                                 roomInfo.entireFloor,
                                 roomInfo.realSize,
-                                roomInfo.supplySize)))
+                                roomInfo.supplySize),
+                                room.status))
                 .from(room)
                 .join(room.user, user)
                 .join(room.roomInfo,roomInfo)
@@ -120,7 +122,8 @@ public class DslRoomRepository {
                         createMonthlyRentRangeCondition(roomSearchParameters.getMinMonthlyRent(),roomSearchParameters.getMaxMonthlyRent()),
                         createRealSizeRangeCondition(roomSearchParameters.getMinRealSize(),roomSearchParameters.getMaxRealSize()),
                         createCoordinatesRangeCondition(roomSearchParameters.getMinLat(),roomSearchParameters.getMaxLat(),
-                                                        roomSearchParameters.getMinLng(),roomSearchParameters.getMaxLng()))
+                                                        roomSearchParameters.getMinLng(),roomSearchParameters.getMaxLng()),
+                        room.status.eq(RoomStatus.거래중))
                 .fetch();
     }
 

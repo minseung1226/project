@@ -32,6 +32,7 @@
                 <th class="col-1">문의</th>
                 <th class="col-2">등록일</th>
                 <th class="col-1">금액</th>
+                <th class="col-1">거래상태</th>
             </tr>
             <th:block th:each="room:${roomDtos}">
             <tr th:onclick="|location.href='@{/room/management/detailInfo/{id}(id=${room.id})}'|" style="cursor:pointer">
@@ -42,8 +43,8 @@
                     <td th:text="${room.wishlistCount}"></td>
                     <td th:text="${room.inquiryCount}"></td>
                     <td th:text="${#temporals.format(room.createDate,'yy-MM-dd')}"></td>
-                    <td th:text="${room.deposit}+'/'+${room.monthlyRent}">
-                    </td>
+                    <td th:text="${room.deposit}+'/'+${room.monthlyRent}"></td>
+                    <td th:text="${room.status}"></td>
             </tr>
             </th:block>
         </table>
@@ -53,8 +54,6 @@
 </div>
 </body>
 <script>
-    function modify(roomId){
-        location.href="/room/management/modify/"+roomId;
-    }
+
 </script>
 </html>

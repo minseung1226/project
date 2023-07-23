@@ -90,7 +90,7 @@ public class RoomController {
         model.addAttribute("roomInfoModifyDto",roomDto.getRoomInfoModifyDto());
 
         redirectAttributes.addAttribute("userId",userId);
-        return "room/management/modify/{userId}";
+        return "room/management/modify";
     }
 
     @PostMapping("/room/modify/{roomId}")

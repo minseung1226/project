@@ -12,6 +12,7 @@ import project.project.domain.Room;
 import project.project.domain.converter.EnumListConverter;
 import project.project.domain.enum_type.HouseType;
 import project.project.domain.enum_type.MaintenanceItem;
+import project.project.domain.enum_type.RoomStatus;
 import project.project.domain.enum_type.RoomType;
 import project.project.dto.photo.PhotoDto;
 import project.project.dto.roominfo.RoomInfoModifyDto;
@@ -78,11 +79,13 @@ public class RoomModifyDto{
 
     private String content;
 
+    RoomStatus roomStatus;
+
     private RoomInfoModifyDto roomInfoModifyDto;
 
     @QueryProjection
     public RoomModifyDto(Long id, Long userId,String roomNumber, String registrant, HouseType houseType, RoomType roomType, Integer postcode, String address, String detailAddress, String extraAddress, Double lat, Double lng, Integer deposit, Integer monthlyRent, Double maintenance
-            , LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content,RoomInfoModifyDto roomInfoModifyDto) {
+            , LocalDate moveInDate, List<MaintenanceItem> maintenanceItem, String title, String content,RoomInfoModifyDto roomInfoModifyDto,RoomStatus roomStatus) {
         this.id = id;
         this.userId = userId;
         this.roomNumber=roomNumber;
@@ -103,5 +106,6 @@ public class RoomModifyDto{
         this.title = title;
         this.content = content;
         this.roomInfoModifyDto=roomInfoModifyDto;
+        this.roomStatus=roomStatus;
     }
 }
