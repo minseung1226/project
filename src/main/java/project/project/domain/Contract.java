@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
 import project.project.domain.baseentity.BaseEntity;
+import project.project.domain.converter.StringListConverter;
 import project.project.domain.embeded.Address;
 
 import java.time.LocalDate;
@@ -52,7 +53,21 @@ public class Contract extends BaseEntity {
     private String monthlyRentType ;//월세 선불인지 후불인지의 여부
     private Integer  contractPeriod; //계약기간
 
-    private List<String> specialAgreement;
+    @Convert(converter = StringListConverter.class)
+    private List<String> specialAgreement; //특약사항
+
+    private String lessorName; //임대인 이름
+    private String lessorPhone; //임대인 전화번호
+    private String lessorAddress; // 임대인 주소
+    private String lessorResidentNumber; //임대인 주민번호
+
+    private String tenantName; //임대인 이름
+    private String tenantPhone; //임대인 전화번호
+    private String tenantAddress; // 임대인 주소
+    private String tenantResidentNumber; //임대인 주민번호
+
+
+
 
 
 }

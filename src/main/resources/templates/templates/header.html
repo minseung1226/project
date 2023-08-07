@@ -38,6 +38,10 @@
                         <a class="nav-link active atag" aria-current="page" th:href="@{/room/management/{userId} (userId=${session.user})}">매물 관리</a>
                     </li>
 
+                    <li class="nav-item" th:if="${session.user!=null}">
+                        <a class="nav-link active atag" aria-current="page" th:href="@{/contract/{userId} (userId=${session.user})}">계약서 관리</a>
+                    </li>
+
                 </ul>
 
             </div>

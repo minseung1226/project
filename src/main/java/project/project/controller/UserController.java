@@ -25,6 +25,7 @@ import project.project.domain.User;
 import project.project.domain.Wishlist;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
+import project.project.dto.contract.ContractDto;
 import project.project.file.UploadFile;
 import project.project.repository.InquiryRepository;
 import project.project.repository.UserRepository;
@@ -232,6 +233,19 @@ public class UserController {
 
     }
 
+
+    @GetMapping("/contract/{userId}")
+    public String contractList(@PathVariable("userId") Long userId,Model model){
+
+        return "contract/management";
+    }
+
+    @GetMapping("/contract/form")
+    public String contractForm(Model model){
+        model.addAttribute("contractDto",new ContractDto());
+
+        return "contract/form";
+    }
 
 
 }
