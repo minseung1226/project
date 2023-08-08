@@ -46,6 +46,7 @@ public class Contract extends BaseEntity {
     private Integer finalMoney; // 잔금
     private Integer monthlyRent; // 월세
 
+    private LocalDate midPaymentDate; // 중도금 지급일
     private LocalDate finalMoneyDate; // 잔금일
     private LocalDate moveInDate;  //입주일
     private LocalDate contractDate; //계약일

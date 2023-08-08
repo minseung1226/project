@@ -32,6 +32,8 @@ public class ContractDto {
     private Integer monthlyRent; // 월세
 
     private LocalDate finalMoneyDate; // 잔금일
+
+    private LocalDate midPaymentDate; // 중도금 지급일
     private LocalDate moveInDate;  //입주일
     private LocalDate contractDate; //계약일
     private Integer monthlyRentDate; //월세 지급일
@@ -54,7 +56,16 @@ public class ContractDto {
     }
 
     @QueryProjection
-    public ContractDto(Long id, Long userId, String roomAddress, String designation, String landRightsRatio, Double landSize, String structureType, String purpose, Double buildingSize, String rentalArea, Double roomSize, Integer deposit, Integer earnestMoney, Integer installmentPayment, Integer finalMoney, Integer monthlyRent, LocalDate finalMoneyDate, LocalDate moveInDate, LocalDate contractDate, Integer monthlyRentDate, String monthlyRentType, Integer contractPeriod, List<String> specialAgreement, String lessorName, String lessorPhone, String lessorAddress, String lessorResidentNumber, String tenantName, String tenantPhone, String tenantAddress, String tenantResidentNumber) {
+    public ContractDto(Long id, Long userId, String roomAddress, String designation,
+                       String landRightsRatio, Double landSize, String structureType,
+                       String purpose, Double buildingSize, String rentalArea, Double roomSize,
+                       Integer deposit, Integer earnestMoney, Integer installmentPayment,
+                       Integer finalMoney, Integer monthlyRent, LocalDate finalMoneyDate,
+                       LocalDate midPaymentDate, LocalDate moveInDate, LocalDate contractDate,
+                       Integer monthlyRentDate, String monthlyRentType, Integer contractPeriod,
+                       List<String> specialAgreement, String lessorName, String lessorPhone,
+                       String lessorAddress, String lessorResidentNumber, String tenantName,
+                       String tenantPhone, String tenantAddress, String tenantResidentNumber) {
         this.id = id;
         this.userId = userId;
         this.roomAddress = roomAddress;
@@ -72,6 +83,7 @@ public class ContractDto {
         this.finalMoney = finalMoney;
         this.monthlyRent = monthlyRent;
         this.finalMoneyDate = finalMoneyDate;
+        this.midPaymentDate = midPaymentDate;
         this.moveInDate = moveInDate;
         this.contractDate = contractDate;
         this.monthlyRentDate = monthlyRentDate;

@@ -9,6 +9,10 @@
 
     <style>
 
+        .money {
+            flex-direction: row-reverse;
+        }
+
         .table {
             border-top: 2px solid;
             border-top-color: black;
@@ -18,29 +22,10 @@
             background-color: rgba(128, 128, 128, 0.1);
         }
 
-        .form-check-input:checked {
-            background-color: black;
+        .border-right {
+            border-right: 1px solid rgba(0, 0, 0, 0.11);
         }
 
-        .custom-file {
-            height: 150px;
-            border: 1px solid black;
-            margin: 10px;
-
-            position: relative;
-        }
-
-        .delete-button {
-            display: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
-        .error-class {
-            border-color: #dc3543;
-            color: #dc3543;
-        }
 
     </style>
 </head>
@@ -51,14 +36,126 @@
 </div>
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
     <div class="container bg-white border">
+        <form th:object="${contractDto}" action="/contract/save">
+            <input type="hidden" name="userId" th:value="${session.user}">
+            <h2 class="mb-5">계약서 작성</h2>
 
-        <input type="hidden" name="userId" th:value="${session.user}">
-        <h2 class="mb-5">계약서 작성</h2>
+            <h5>부동산 정보</h5>
+            <table class="table">
+                <tr class="row">
+                    <th class="col-2">주소</th>
+                    <td class="col-10" colspan="6">
+                        <input class="form-control" th:field="*{roomAddress}">
+                    </td>
+                </tr>
 
-        <h5>부동산 정보</h5>
-        <table class="table">
+                <tr class="row">
+                    <th class="col-1 border-right" >토지</th>
+                    <th class="col-1">지목</th>
 
-        </table>
+                    <td class="col-3">
+                        <input class="form-control" th:field="*{designation}">
+                    </td>
+
+                    <th class="col-2">대지권 비율</th>
+                    <td class="col-2">
+                        <input class="form-control" th:field="*{landRightsRatio}">
+                    </td>
+
+                    <th class="col-1">면적</th>
+                    <td class="col-2">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{landSize}">
+                            <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-1 border-right">건물</th>
+                    <th class="col-1">구조</th>
+                    <td class="col-3">
+                        <input class="form-control" th:field="*{structureType}">
+                    </td>
+
+                    <th class="col-2">용도</th>
+                    <td class="col-2">
+                        <input class="form-control" th:field="*{purpose}">
+                    </td>
+
+                    <th class="col-1">면적</th>
+                    <td class="col-2">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{buildingSize}">
+                            <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-2">임대할 부분</th>
+                    <td class="col-7" colspan="4">
+                        <input class="form-control" th:field="*{rentalArea}">
+                    </td>
+
+                    <th class="col-1">면적</th>
+                    <td class="col-2">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{roomSize}">
+                            <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <h5>계약 금액</h5>
+            <table class="table">
+                <tr class="row">
+                    <th class="col-2">보증금</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control money" th:field="*{deposit}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <th class="col-2">계약금</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{earnestMoney}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-2">중도금</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{installmentPayment}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <th class="col-2">중도금 지급일</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{midPaymentDate}" >
+                    </td>
+                </tr>
+
+                <tr class="row">
+
+                </tr>
+            </table>
+
+        </form>
     </div>
 </div>
 </body>
@@ -68,6 +165,22 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script th:inline="javascript">
+/*    function flatpickrCall(input){
+        flatpickr(input, {
+            "locale": "ko",
+            onClose: function(selectedDates, dateStr, instance) {
+                // 선택된 날짜를 targetInput의 값으로 설정합니다.
+                $("#selectDate").val(dateStr);
+            }
+        })
+    }*/
 
+    let date1 = flatpickr(document.getElementById("midPaymentDate"), {
+        "locale": "ko",
+        onClose: function(selectedDates, dateStr, instance) {
+            // 선택된 날짜를 targetInput의 값으로 설정합니다.
+            $("#midPaymentDate").val(dateStr);
+        }
+    })
 </script>
 </html>
