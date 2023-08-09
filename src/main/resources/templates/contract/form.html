@@ -146,15 +146,155 @@
 
                     <th class="col-2">중도금 지급일</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{midPaymentDate}" >
+                        <input class="form-control" th:field="*{midPaymentDate}" placeholder="날짜를 선택하세요." >
                     </td>
                 </tr>
 
                 <tr class="row">
+                    <th class="col-2">잔금</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{finalMoney}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </td>
+                    <th class="col-2">잔금 지급일</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{finalMoneyDate}" placeholder="날짜를 선택하세요">
+                    </td>
+                </tr>
 
+                <tr class="row">
+                    <th class="col-2">차임(월세)</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{monthlyRent}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <th class="col-2">월세 지급일</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <select class="form-select" th:field="*{monthlyRentDate}" aria-label="Default select example">
+                                <option value="" selected>날짜를 선택해주세요.</option>
+                                <option th:each="num :${#numbers.sequence(1,31)}" th:value="${num}" th:text="${num}+'일'">
+                                </option>
+                            </select>
+
+                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option1" autocomplete="off" value="선불">
+                            <label class="btn btn-outline-dark m-1" for="option1">선불</label>
+
+                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option2" autocomplete="off" value="후불">
+                            <label class="btn btn-outline-dark m-1" for="option2">후불</label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-2">계약기간</th>
+                    <td class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" th:field="*{contractPeriod}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">개월</span>
+                            </div>
+                        </div>
+                    </td>
+                    <th class="col-2">계약일
+                    </th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{contractDate}" placeholder="날짜를 선택해주세요.">
+                    </td>
                 </tr>
             </table>
 
+            <h5>특약 사항</h5>
+            <table class="table">
+                <tr>
+                    <td>
+                        <input class="form-control" th:field="*{specialAgreement}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" th:field="*{specialAgreement}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" th:field="*{specialAgreement}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-outline-dark" id="specialAgreementAddBtn">특약사항 추가</button>
+                    </td>
+                </tr>
+            </table>
+
+
+            <h5>임대인 정보
+            </h5>
+
+            <table class="table">
+                <tr class="row">
+                    <th class="col-2">임대인 주소</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{lessorAddress}">
+                    </td>
+                    <th class="col-2">주민번호</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{lessorResidentNumber}">
+                    </td>
+                </tr>
+                <tr class="row">
+                    <th class="col-2">전화번호</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{lessorPhone}">
+                    </td>
+                    <th class="col-2">이름</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{lessorName}">
+                    </td>
+                </tr>
+            </table>
+
+            <h5>임차인 정보
+            </h5>
+
+            <table class="table">
+                <tr class="row">
+                    <th class="col-2">임차인 주소</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{tenantAddress}">
+                    </td>
+                    <th class="col-2">주민번호</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{tenantResidentNumber}">
+                    </td>
+                </tr>
+                <tr class="row">
+                    <th class="col-2">전화번호</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{tenantPhone}">
+                    </td>
+                    <th class="col-2">이름</th>
+                    <td class="col-4">
+                        <input class="form-control" th:field="*{tenantName}">
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn btn-outline-dark btn-lg" value="계약서 저장">
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -165,15 +305,12 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script th:inline="javascript">
-/*    function flatpickrCall(input){
-        flatpickr(input, {
-            "locale": "ko",
-            onClose: function(selectedDates, dateStr, instance) {
-                // 선택된 날짜를 targetInput의 값으로 설정합니다.
-                $("#selectDate").val(dateStr);
-            }
-        })
-    }*/
+    $("#specialAgreementAddBtn").click(function (e){
+        e.preventDefault();
+        var newRow="<tr><td><input class='form-control' name='specialAgreement'></td></tr>"
+
+        $(newRow).insertBefore($(this).closest("tr"));
+    })
 
     let date1 = flatpickr(document.getElementById("midPaymentDate"), {
         "locale": "ko",
@@ -182,5 +319,24 @@
             $("#midPaymentDate").val(dateStr);
         }
     })
+
+    let date2 = flatpickr(document.getElementById("finalMoneyDate"), {
+        "locale": "ko",
+        onClose: function(selectedDates, dateStr, instance) {
+            // 선택된 날짜를 targetInput의 값으로 설정합니다.
+            $("#finalMoneyDate").val(dateStr);
+        }
+    })
+
+    let date3 = flatpickr(document.getElementById("contractDate"), {
+        "locale": "ko",
+        onClose: function(selectedDates, dateStr, instance) {
+            // 선택된 날짜를 targetInput의 값으로 설정합니다.
+            $("#contractDate").val(dateStr);
+        }
+    })
+
+
+
 </script>
 </html>
