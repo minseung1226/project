@@ -30,7 +30,9 @@ import project.project.file.UploadFile;
 import project.project.repository.InquiryRepository;
 import project.project.repository.UserRepository;
 import project.project.repository.WishlistRepository;
+import project.project.repository.contractrepository.ContractRepository;
 import project.project.repository.roomrepository.RoomRepository;
+import project.project.service.ContractService;
 import project.project.service.KakaoService;
 import project.project.service.UserService;
 import retrofit2.http.Path;
@@ -53,6 +55,7 @@ public class UserController {
     private final InquiryRepository inquiryRepository;
 
 
+    private final ContractService contractService;
 
 
     //회원가입
@@ -237,6 +240,8 @@ public class UserController {
     @GetMapping("/contract/{userId}")
     public String contractList(@PathVariable("userId") Long userId,Model model){
 
+        List<ContractDto> contractDtos = contractService.findContractDtosByUserId(userId);
+        model.addAttribute("contractDtos",contractDtos);
         return "contract/management";
     }
 
@@ -245,6 +250,27 @@ public class UserController {
         model.addAttribute("contractDto",new ContractDto());
 
         return "contract/form";
+    }
+
+    @PostMapping("/contract/save")
+    public String contractSave(ContractDto contractDto,RedirectAttributes redirectAttributes){
+
+        log.info("contractDto={}",contractDto);
+
+        Long contractId = contractService.contractSave(contractDto);
+
+        redirectAttributes.addAttribute("contractId",contractId);
+
+
+        return "/contract/detail/{contractId}";
+    }
+
+    @GetMapping("/contract/detail/{contractId}")
+    public String contractDetail(@PathVariable("contractId")Long contractId,Model model){
+        ContractDto contractDto = contractService.findContractDtoById(contractId);
+        model.addAttribute("contractDto",contractDto);
+
+        return "contract/detail";
     }
 
 

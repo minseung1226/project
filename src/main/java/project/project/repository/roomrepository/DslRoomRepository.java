@@ -152,8 +152,7 @@ public class DslRoomRepository {
 
     private BooleanExpression createCoordinatesRangeCondition(Double minLat,Double maxLat,
                                                               Double minLng,Double maxLng){
-        System.out.println("lat="+minLat+","+maxLat);
-        System.out.println("lng="+minLng+","+maxLng);
+
         return room.lat.goe(minLat).and(room.lat.loe(maxLat).and(room.lng.goe(minLng).and(room.lng.loe(maxLng))));
     }
 

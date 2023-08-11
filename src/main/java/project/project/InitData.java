@@ -17,12 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import project.project.domain.*;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.*;
+import project.project.dto.contract.ContractDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.repository.InquiryRepository;
 import project.project.repository.UserRepository;
 import project.project.repository.WishlistRepository;
+import project.project.repository.contractrepository.ContractRepository;
 import project.project.repository.roomrepository.RoomRepository;
+import project.project.service.ContractService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ public class InitData {
     private final UserRepository userRepository;
     private final InquiryRepository inquiryRepository;
     private final WishlistRepository wishlistRepository;
+    private final ContractRepository contractRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
@@ -83,6 +87,23 @@ public class InitData {
         for(int i=0;i<users.length;i++){
             users[i]=new User("user"+i,"이름"+i,"123","010-5564-541"+i,new Address(12312, "부천로 57번길 50", "201호", "심곡동"+i));
             userRepository.save(users[i]);
+        }
+
+        for(int i=0;i<10;i++){
+            List<String> list=new ArrayList<>();
+            for(int j=0;j<i+3;j++){
+                list.add("특약사항"+j);
+            }
+            ContractDto contractDto = new ContractDto(null, null, "부천로 57번길 50" + i, "지목" + i, "대지권비율" + i, 20.01 + i, "단독주택" + i,
+                    "주택" + i, 20.02 + i, i + "호", 20.03 + i, 5000000 + i, 500000 + i, null, 4500000, 400000 + i, LocalDate.now(),
+                    LocalDate.now(), LocalDate.now(), LocalDate.now(), 10 + i, "선불", 20 + i, list, "임대인" + i,
+                    "010-5564-541" + i, "안창로 69번가길 11-" + i, "971226-191262" + i,
+                    "임차인" + i, "010-5517-541" + i, "중앙대로 626 " + i, "960118-191263" + i);
+
+            Random random = new Random();
+            int num = random.nextInt(5);
+            Contract contract = new Contract(contractDto, users[num]);
+            contractRepository.save(contract    );
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

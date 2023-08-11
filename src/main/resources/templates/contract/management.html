@@ -25,11 +25,32 @@
         <div class="d-flex justify-content-between">
             <h3 class="fw-bold mt-3 mb-3">계약서 관리</h3>
             <div class="d-flex align-items-end">
-                <button type="button" class="btn btn-dark" onclick="location.href='/contract/form'">계약서 작성</button>
+                <button type="button" class="btn btn-dark mb-1" onclick="location.href='/contract/form'">계약서 작성</button>
             </div>
         </div>
         <table class="table table-bordered table-hover" style="border-top: 2px solid black">
+            <tr>
+                <th class="col-3">매물 소재지</th>
+                <th class="col-1">임대인</th>
+                <th class="col-1">임차인</th>
+                <th class="col-2">보증금</th>
+                <th class="col-2">월세</th>
+                <th class="col-2">등록일</th>
+                <th class="col-1">계약기간</th>
 
+            </tr>
+            <th:block th:each="contractDto:${contractDtos}">
+                <tr th:onclick="|location.href='@{/contract/detail/{contractId}(contractId=${contractDto.id}}'|" style="cursor:pointer">
+
+                    <td th:text="${contractDto.roomAddress}"></td>
+                    <td th:text="${contractDto.lessorName}"></td>
+                    <td th:text="${contractDto.tenantName}"></td>
+                    <td th:text="${#numbers.formatInteger(contractDto.deposit,3,'COMMA')}+'원'"></td>
+                    <td th:text="${#numbers.formatInteger(contractDto.monthlyRent,3,'COMMA')}+'원'"></td>
+                    <td th:text="${#temporals.format(contractDto.contractDate,'yy-MM-dd')}"></td>
+                    <td th:text="${contractDto.contractPeriod}+'개월'"></td>
+                </tr>
+            </th:block>
         </table>
     </div>
 
