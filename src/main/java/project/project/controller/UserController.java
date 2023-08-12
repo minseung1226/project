@@ -1,6 +1,7 @@
 package project.project.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
@@ -26,6 +27,7 @@ import project.project.domain.Wishlist;
 import project.project.domain.embeded.Address;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.dto.contract.ContractDto;
+import project.project.dto.contract.SimpleContractDto;
 import project.project.file.UploadFile;
 import project.project.repository.InquiryRepository;
 import project.project.repository.UserRepository;
@@ -240,7 +242,7 @@ public class UserController {
     @GetMapping("/contract/{userId}")
     public String contractList(@PathVariable("userId") Long userId,Model model){
 
-        List<ContractDto> contractDtos = contractService.findContractDtosByUserId(userId);
+        List<SimpleContractDto> contractDtos = contractService.findSimpleContractDtosByUserId(userId);
         model.addAttribute("contractDtos",contractDtos);
         return "contract/management";
     }
@@ -253,9 +255,11 @@ public class UserController {
     }
 
     @PostMapping("/contract/save")
-    public String contractSave(ContractDto contractDto,RedirectAttributes redirectAttributes){
+    public String contractSave(@Valid ContractDto contractDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
-        log.info("contractDto={}",contractDto);
+        if(bindingResult.hasErrors()){
+            return "/contract/form";
+        }
 
         Long contractId = contractService.contractSave(contractDto);
 

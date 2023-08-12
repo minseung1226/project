@@ -26,6 +26,11 @@
             border-right: 1px solid rgba(0, 0, 0, 0.11);
         }
 
+        .error-class {
+            border-color: #dc3543;
+            color: #dc3543;
+        }
+
 
     </style>
 </head>
@@ -43,18 +48,20 @@
             <h5>부동산 정보</h5>
             <table class="table">
                 <tr class="row">
-                    <th class="col-2">주소</th>
+                    <th class="col-2">주소*</th>
                     <td class="col-10" colspan="6">
-                        <input class="form-control" th:field="*{roomAddress}">
+                        <input class="form-control" th:field="*{roomAddress}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{roomAddress}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
                     <th class="col-1 border-right" >토지</th>
-                    <th class="col-1">지목</th>
+                    <th class="col-1">지목*</th>
 
                     <td class="col-3">
-                        <input class="form-control" th:field="*{designation}">
+                        <input class="form-control" th:field="*{designation}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{designation}"></div>
                     </td>
 
                     <th class="col-2">대지권 비율</th>
@@ -62,48 +69,54 @@
                         <input class="form-control" th:field="*{landRightsRatio}">
                     </td>
 
-                    <th class="col-1">면적</th>
+                    <th class="col-1">면적*</th>
                     <td class="col-2">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{landSize}">
+                            <input class="form-control" th:field="*{landSize}" th:errorclass="error-class">
                             <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
                         </div>
+                        <div class="error-class" th:errors="*{landSize}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
                     <th class="col-1 border-right">건물</th>
-                    <th class="col-1">구조</th>
+                    <th class="col-1">구조*</th>
                     <td class="col-3">
-                        <input class="form-control" th:field="*{structureType}">
+                        <input class="form-control" th:field="*{structureType}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{structureType}"></div>
                     </td>
 
-                    <th class="col-2">용도</th>
+                    <th class="col-2">용도*</th>
                     <td class="col-2">
-                        <input class="form-control" th:field="*{purpose}">
+                        <input class="form-control" th:field="*{purpose}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{purpose}"></div>
                     </td>
 
-                    <th class="col-1">면적</th>
+                    <th class="col-1">면적*</th>
                     <td class="col-2">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{buildingSize}">
+                            <input class="form-control" th:field="*{buildingSize}" th:errorclass="error-class">
                             <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
                         </div>
+                        <div class="error-class" th:errors="*{buildingSize}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
-                    <th class="col-2">임대할 부분</th>
+                    <th class="col-2">임대할 부분*</th>
                     <td class="col-7" colspan="4">
-                        <input class="form-control" th:field="*{rentalArea}">
+                        <input class="form-control" th:field="*{rentalArea}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{rentalArea}"></div>
                     </td>
 
-                    <th class="col-1">면적</th>
+                    <th class="col-1">면적*</th>
                     <td class="col-2">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{roomSize}">
+                            <input class="form-control" th:field="*{roomSize}" th:errorclass="error-class">
                             <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
                         </div>
+                        <div class="error-class" th:errors="*{roomSize}"></div>
                     </td>
                 </tr>
             </table>
@@ -112,24 +125,26 @@
             <h5>계약 금액</h5>
             <table class="table">
                 <tr class="row">
-                    <th class="col-2">보증금</th>
+                    <th class="col-2">보증금*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control money" th:field="*{deposit}">
+                            <input class="form-control money" th:field="*{deposit}" th:errorclass="error-class">
                             <div class="input-group-append">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
+                        <div class="error-class" th:errors="*{deposit}"></div>
                     </td>
 
-                    <th class="col-2">계약금</th>
+                    <th class="col-2">계약금*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{earnestMoney}">
+                            <input class="form-control" th:field="*{earnestMoney}" th:errorclass="error-class">
                             <div class="input-group-append">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
+                        <div class="error-class" th:errors="*{earnestMoney}"></div>
                     </td>
                 </tr>
 
@@ -137,11 +152,12 @@
                     <th class="col-2">중도금</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{installmentPayment}">
+                            <input class="form-control" th:field="*{installmentPayment}" >
                             <div class="input-group-append">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
+
                     </td>
 
                     <th class="col-2">중도금 지급일</th>
@@ -151,78 +167,85 @@
                 </tr>
 
                 <tr class="row">
-                    <th class="col-2">잔금</th>
+                    <th class="col-2">잔금*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{finalMoney}">
+                            <input class="form-control" th:field="*{finalMoney}" th:errorclass="error-class">
                             <div class="input-group-append">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
+                        <div class="error-class" th:errors="*{finalMoney}"></div>
                     </td>
-                    <th class="col-2">잔금 지급일</th>
+                    <th class="col-2">잔금 지급일*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{finalMoneyDate}" placeholder="날짜를 선택하세요">
+                        <input class="form-control" th:field="*{finalMoneyDate}" placeholder="날짜를 선택하세요" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{finalMoneyDate}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
-                    <th class="col-2">차임(월세)</th>
+                    <th class="col-2">차임(월세)*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{monthlyRent}">
+                            <input class="form-control" th:field="*{monthlyRent}" th:errorclass="error-class">
                             <div class="input-group-append">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
+                        <div class="error-class" th:errors="*{monthlyRent}"></div>
                     </td>
 
-                    <th class="col-2">월세 지급일</th>
+                    <th class="col-2">월세 지급일*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <select class="form-select" th:field="*{monthlyRentDate}" aria-label="Default select example">
+                            <select class="form-select" th:field="*{monthlyRentDate}" aria-label="Default select example" th:errorclass="error-class">
                                 <option value="" selected>날짜를 선택해주세요.</option>
                                 <option th:each="num :${#numbers.sequence(1,31)}" th:value="${num}" th:text="${num}+'일'">
                                 </option>
                             </select>
 
-                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option1" autocomplete="off" value="선불">
+                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option1" autocomplete="off" value="선불" th:errorclass="error-class">
                             <label class="btn btn-outline-dark m-1" for="option1">선불</label>
 
-                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option2" autocomplete="off" value="후불">
+                            <input type="radio" class="btn-check" th:field="*{monthlyRentType}" id="option2" autocomplete="off" value="후불" th:errorclass="error-class">
                             <label class="btn btn-outline-dark m-1" for="option2">후불</label>
                         </div>
+                        <div class="error-class" th:errors="*{monthlyRentDate}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
-                    <th class="col-2">계약기간</th>
+                    <th class="col-2">계약기간*</th>
                     <td class="col-4">
                         <div class="input-group">
-                            <input class="form-control" th:field="*{contractPeriod}">
+                            <input class="form-control" th:field="*{contractPeriod}" th:errorclass="error-class">
                             <div class="input-group-append">
                                 <span class="input-group-text">개월</span>
                             </div>
                         </div>
+                        <div class="error-class" th:errors="*{contractPeriod}"></div>
                     </td>
-                    <th class="col-2">계약일
+                    <th class="col-2">계약일*
                     </th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{contractDate}" placeholder="날짜를 선택해주세요.">
+                        <input class="form-control" th:field="*{contractDate}" th:errorclass="error-class" placeholder="날짜를 선택해주세요.">
+                        <div class="error-class" th:errors="*{contractDate}"></div>
                     </td>
                 </tr>
 
                 <tr class="row">
                     <td class="col-6" colspan="2"></td>
 
-                    <th class="col-2">입주일</th>
+                    <th class="col-2">입주일*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{moveInDate}" placeholder="날짜를 선택해주세요">
+                        <input class="form-control" th:field="*{moveInDate}" th:errorclass="error-class" placeholder="날짜를 선택해주세요">
+                        <div class="error-class" th:errors="*{moveInDate}"></div>
                     </td>
                 </tr>
             </table>
 
-            <h5>특약 사항</h5>
+            <h5>특약 사항*</h5>
             <table class="table">
                 <tr th:each="value:*{specialAgreement}">
                     <td>
@@ -237,28 +260,32 @@
             </table>
 
 
-            <h5>임대인 정보
+            <h5>임대인 정보*
             </h5>
 
             <table class="table">
                 <tr class="row">
-                    <th class="col-2">임대인 주소</th>
+                    <th class="col-2">임대인 주소*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{lessorAddress}">
+                        <input class="form-control" th:field="*{lessorAddress}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{lessorAddress}"></div>
                     </td>
-                    <th class="col-2">주민번호</th>
+                    <th class="col-2">주민번호*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{lessorResidentNumber}">
+                        <input class="form-control" th:field="*{lessorResidentNumber}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{lessorResidentNumber}"></div>
                     </td>
                 </tr>
                 <tr class="row">
-                    <th class="col-2">전화번호</th>
+                    <th class="col-2">전화번호*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{lessorPhone}">
+                        <input class="form-control" th:field="*{lessorPhone}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{lessorPhone}"></div>
                     </td>
-                    <th class="col-2">이름</th>
+                    <th class="col-2">이름*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{lessorName}">
+                        <input class="form-control" th:field="*{lessorName}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{lessorName}"></div>
                     </td>
                 </tr>
             </table>
@@ -268,23 +295,27 @@
 
             <table class="table">
                 <tr class="row">
-                    <th class="col-2">임차인 주소</th>
+                    <th class="col-2">임차인 주소*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{tenantAddress}">
+                        <input class="form-control" th:field="*{tenantAddress}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{tenantAddress}"></div>
                     </td>
-                    <th class="col-2">주민번호</th>
+                    <th class="col-2">주민번호*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{tenantResidentNumber}">
+                        <input class="form-control" th:field="*{tenantResidentNumber}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{tenantResidentNumber}"></div>
                     </td>
                 </tr>
                 <tr class="row">
-                    <th class="col-2">전화번호</th>
+                    <th class="col-2">전화번호*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{tenantPhone}">
+                        <input class="form-control" th:field="*{tenantPhone}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{tenantPhone}"></div>
                     </td>
-                    <th class="col-2">이름</th>
+                    <th class="col-2">이름*</th>
                     <td class="col-4">
-                        <input class="form-control" th:field="*{tenantName}">
+                        <input class="form-control" th:field="*{tenantName}" th:errorclass="error-class">
+                        <div class="error-class" th:errors="*{tenantName}"></div>
                     </td>
                 </tr>
             </table>

@@ -7,6 +7,8 @@ import project.project.domain.QContract;
 import project.project.domain.QUser;
 import project.project.dto.contract.ContractDto;
 import project.project.dto.contract.QContractDto;
+import project.project.dto.contract.QSimpleContractDto;
+import project.project.dto.contract.SimpleContractDto;
 
 import java.util.List;
 
@@ -65,42 +67,18 @@ public class DslContractRepository {
     }
 
 
-    public List<ContractDto> findContractDtosByUserId(Long userId){
+    public List<SimpleContractDto> findSimpleContractDtosByUserId(Long userId){
 
         return queryFactory.select(
-                new QContractDto(
+                new QSimpleContractDto(
                         contract.id,
-                        contract.user.id,
                         contract.roomAddress,
-                        contract.designation,
-                        contract.landRightsRatio,
-                        contract.landSize,
-                        contract.structureType,
-                        contract.purpose,
-                        contract.buildingSize,
-                        contract.rentalArea,
-                        contract.roomSize,
-                        contract.deposit,
-                        contract.earnestMoney,
-                        contract.installmentPayment,
-                        contract.finalMoney,
-                        contract.monthlyRent,
-                        contract.finalMoneyDate,
-                        contract.midPaymentDate,
-                        contract.moveInDate,
-                        contract.contractDate,
-                        contract.monthlyRentDate,
-                        contract.monthlyRentType,
-                        contract.contractPeriod,
-                        contract.specialAgreement,
                         contract.lessorName,
-                        contract.lessorPhone,
-                        contract.lessorAddress,
-                        contract.lessorResidentNumber,
                         contract.tenantName,
-                        contract.tenantPhone,
-                        contract.tenantAddress,
-                        contract.tenantResidentNumber
+                        contract.deposit,
+                        contract.monthlyRent,
+                        contract.contractDate,
+                        contract.contractPeriod
                 ))
                 .from(contract).join(contract.user, QUser.user)
                 .where(contract.user.id.eq(userId))

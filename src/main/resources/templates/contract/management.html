@@ -40,7 +40,7 @@
 
             </tr>
             <th:block th:each="contractDto:${contractDtos}">
-                <tr th:onclick="|location.href='@{/contract/detail/{contractId}(contractId=${contractDto.id}}'|" style="cursor:pointer">
+                <tr th:onclick="|location.href='@{/contract/detail/{contractId}(contractId=${contractDto.id})}'|" style="cursor:pointer">
 
                     <td th:text="${contractDto.roomAddress}"></td>
                     <td th:text="${contractDto.lessorName}"></td>

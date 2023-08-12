@@ -44,6 +44,8 @@ public class DslRoomRepository {
         QInquiry inquiry = QInquiry.inquiry;
         QWishlist wishlist = QWishlist.wishlist;
 
+
+
         return queryFactory
                 .select(new QRoomSimpleDto(
                         room.id,

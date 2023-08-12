@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>홈앤룸</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+
+        h5{
+            margin-top: 60px;
+        }
+
+        .table {
+            border-top: 2px solid;
+            border-top-color: black;
+        }
+
+        .table th {
+            background-color: rgba(128, 128, 128, 0.1);
+        }
+
+        .border-right {
+            border-right: 1px solid rgba(0, 0, 0, 0.11);
+        }
+
+
+    </style>
+</head>
+<body>
+<header th:replace="templates/header :: header_template"></header>
+<div th:if="${session.user==null}">
+    <div th:replace="templates/header :: header_modal"></div>
+</div>
+<div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
+    <div class="container bg-white border" th:object="${contractDto}">
+        <h2 class="mb-5">계약서 작성</h2>
+
+        <h5>부동산 정보</h5>
+        <table class="table">
+            <tr class="row">
+                <th class="col-2">주소</th>
+                <td class="col-10" colspan="6">
+                    <span class="text" th:text="*{roomAddress}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-1 border-right">토지</th>
+                <th class="col-1">지목</th>
+
+                <td class="col-3">
+                    <span class="text" th:text="*{designation}"></span>
+                </td>
+
+                <th class="col-2">대지권 비율</th>
+                <td class="col-2">
+                    <span class="text" th:if="*{landRightsRatio}" th:text="*{landRightsRatio}"></span>
+                </td>
+
+                <th class="col-1">면적</th>
+                <td class="col-2">
+                    <div class="input-group">
+                        <span class="text" th:text="*{landSize}"></span>
+                        <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-1 border-right">건물</th>
+                <th class="col-1">구조</th>
+                <td class="col-3">
+                    <span class="text" th:text="*{structureType}"></span>
+                </td>
+
+                <th class="col-2">용도</th>
+                <td class="col-2">
+                    <span class="text" th:text="*{purpose}"></span>
+                </td>
+
+                <th class="col-1">면적</th>
+                <td class="col-2">
+                    <div class="input-group">
+                        <span class="text" th:text="*{buildingSize}"></span>
+                        <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-2">임대할 부분</th>
+                <td class="col-7" colspan="4">
+                    <span class="text" th:text="*{rentalArea}"></span>
+                </td>
+
+                <th class="col-1">면적</th>
+                <td class="col-2">
+                    <div class="input-group">
+                        <span class="text" th:text="*{roomSize}"></span>
+                        <span class="d-flex align-items-center vertical-center">m<sup>2</sup></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+        <h5>계약 금액</h5>
+        <table class="table">
+            <tr class="row">
+                <th class="col-2">보증금</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#numbers.formatInteger(deposit,3,'COMMA')+'원'}"></span>
+                </td>
+
+                <th class="col-2">계약금</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#numbers.formatInteger(earnestMoney,3,'COMMA')+'원'}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-2">중도금</th>
+                <td class="col-4">
+                    <span class="text" th:if="*{installmentPayment}" th:text="*{#numbers.formatInteger(installmentPayment,3,'COMMA')+'원'}"></span>
+                </td>
+
+                <th class="col-2">중도금 지급일</th>
+                <td class="col-4">
+                    <span class="text" th:if="*{midPaymentDate}" th:text="*{#temporals.format(midPaymentDate,'yyyy년 MM월 dd일')}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-2">잔금</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#numbers.formatInteger(finalMoney,3,'COMMA')+'원'}"></span>
+                </td>
+                <th class="col-2">잔금 지급일</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#temporals.format(finalMoneyDate,'yyyy년 MM월 dd일')}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-2">차임(월세)</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#numbers.formatInteger(monthlyRent,3,'COMMA')+'원'}"></span>
+                </td>
+
+                <th class="col-2">월세 지급일</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{monthlyRentDate+'일 '}"></span>
+                    <span class="text" th:text="*{monthlyRentType}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-2">계약기간</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{contractPeriod+'개월'}"></span>
+                </td>
+                <th class="col-2">계약일
+                </th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#temporals.format(contractDate,'yyyy년MM월dd일')}"></span>
+                </td>
+            </tr>
+
+            <tr class="row">
+                <td class="col-6" colspan="2"></td>
+
+                <th class="col-2">입주일</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{#temporals.format(moveInDate,'yyyy년MM월dd일')}"></span>
+                </td>
+            </tr>
+        </table>
+
+        <h5>특약 사항</h5>
+        <hr>
+        <ul>
+            <li th:each="text:*{specialAgreement}" th:text="${text}"></li>
+        </ul>
+
+        <h5>임대인 정보
+        </h5>
+
+        <table class="table">
+            <tr class="row">
+                <th class="col-2">임대인 주소</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{lessorAddress}"></span>
+                </td>
+                <th class="col-2">주민번호</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{lessorResidentNumber}"></span>
+                </td>
+            </tr>
+            <tr class="row">
+                <th class="col-2">전화번호</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{lessorPhone}"></span>
+                </td>
+                <th class="col-2">이름</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{lessorName}"></span>
+                </td>
+            </tr>
+        </table>
+
+        <h5>임차인 정보
+        </h5>
+
+        <table class="table">
+            <tr class="row">
+                <th class="col-2">임차인 주소</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{tenantAddress}"></span>
+                </td>
+                <th class="col-2">주민번호</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{tenantResidentNumber}"></span>
+                </td>
+            </tr>
+            <tr class="row">
+                <th class="col-2">전화번호</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{tenantPhone}"></span>
+                </td>
+                <th class="col-2">이름</th>
+                <td class="col-4">
+                    <span class="text" th:text="*{tenantName}"></span>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aad77ce5fb25c098c085b83a13dbad40&libraries=services"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+<script th:inline="javascript">
+</script>
+</html>

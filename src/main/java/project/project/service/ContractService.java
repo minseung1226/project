@@ -7,6 +7,7 @@ import org.w3c.dom.stylesheets.LinkStyle;
 import project.project.domain.Contract;
 import project.project.domain.User;
 import project.project.dto.contract.ContractDto;
+import project.project.dto.contract.SimpleContractDto;
 import project.project.repository.contractrepository.ContractRepository;
 import project.project.repository.UserRepository;
 import project.project.repository.contractrepository.DslContractRepository;
@@ -25,10 +26,12 @@ public class ContractService {
 
     @Transactional
     public Long contractSave(ContractDto contractDto){
+
         User user = userRepository.findById(contractDto.getUserId()).get();
         Contract contract = new Contract(contractDto, user);
 
         contractRepository.save(contract);
+        
         return contract.getId();
     }
 
@@ -36,8 +39,8 @@ public class ContractService {
         return dslContractRepository.findContractDtoById(contractId);
     }
 
-    public List<ContractDto> findContractDtosByUserId(Long userId){
-        return dslContractRepository.findContractDtosByUserId(userId);
+    public List<SimpleContractDto> findSimpleContractDtosByUserId(Long userId){
+        return dslContractRepository.findSimpleContractDtosByUserId(userId);
     }
 
 }

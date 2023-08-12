@@ -2,6 +2,8 @@ package project.project.dto.contract;
 
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.Convert;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import project.project.domain.converter.StringListConverter;
 
@@ -13,43 +15,66 @@ public class ContractDto {
 
     private Long id;
     private Long userId;
+
+    @NotBlank
     private String roomAddress;
+    @NotBlank
     private String designation; // 지목
+
     private String landRightsRatio; // 대지권 비율
+    @NotNull
     private Double landSize; // 토지면적
-
+    @NotBlank
     private String structureType ;// 건물 구조
+    @NotBlank
     private String purpose; // 용도
+    @NotNull
     private Double buildingSize; // 건물 면적
-
+    @NotBlank
     private String rentalArea; // 임대할 부분
+    @NotNull
     private Double roomSize; // 임대 면적
-
+    @NotNull
     private Integer deposit; // 보증금
+    @NotNull
     private Integer earnestMoney; // 계약금
+    @NotNull
     private Integer installmentPayment; // 중도금
+    @NotNull
     private Integer finalMoney; // 잔금
+    @NotNull
     private Integer monthlyRent; // 월세
-
+    @NotNull
     private LocalDate finalMoneyDate; // 잔금일
 
     private LocalDate midPaymentDate; // 중도금 지급일
+    @NotNull
     private LocalDate moveInDate;  //입주일
+    @NotNull
     private LocalDate contractDate; //계약일
+    @NotNull
     private Integer monthlyRentDate; //월세 지급일
+    @NotBlank
     private String monthlyRentType ;//월세 선불인지 후불인지의 여부
+    @NotNull
     private Integer  contractPeriod; //계약기간
 
     private List<String> specialAgreement; //특약사항
-
+    @NotBlank
     private String lessorName; //임대인 이름
+    @NotBlank
     private String lessorPhone; //임대인 전화번호
+    @NotBlank
     private String lessorAddress; // 임대인 주소
+    @NotBlank
     private String lessorResidentNumber; //임대인 주민번호
-
+    @NotBlank
     private String tenantName; //임대인 이름
+    @NotBlank
     private String tenantPhone; //임대인 전화번호
+    @NotBlank
     private String tenantAddress; // 임대인 주소
+    @NotBlank
     private String tenantResidentNumber; //임대인
 
     public ContractDto() {
