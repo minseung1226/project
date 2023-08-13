@@ -38,7 +38,6 @@ public class ContractDto {
     private Integer deposit; // 보증금
     @NotNull
     private Integer earnestMoney; // 계약금
-    @NotNull
     private Integer installmentPayment; // 중도금
     @NotNull
     private Integer finalMoney; // 잔금

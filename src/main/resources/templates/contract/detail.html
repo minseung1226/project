@@ -9,7 +9,7 @@
 
     <style>
 
-        h5{
+        h5 {
             margin-top: 60px;
         }
 
@@ -36,9 +36,24 @@
 </div>
 <div class="container-fluid bg-secondary bg-opacity-10" style="padding-top: 50px;padding-right:20%;padding-left: 20%">
     <div class="container bg-white border" th:object="${contractDto}">
-        <h2 class="mb-5">계약서 작성</h2>
+        <form id="myForm" action="#">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-5">계약서 작성</h2>
+                <div class="mb-2">
+                    <input type="button" class="btn btn-dark btn-lg" id="downloadBtn" value="PDF 다운">
+                </div>
+            </div>
 
-        <h5>부동산 정보</h5>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="m-2">부동산 정보</h5>
+                <div class="mb-2">
+                    <input type="submit" class="btn btn-dark btn-lg me-2" id="modifyBtn" value="수정">
+                    <input type="submit" class="btn btn-dark btn-lg" id="delBtn" value="삭제">
+
+                </div>
+            </div>
+        </form>
         <table class="table">
             <tr class="row">
                 <th class="col-2">주소</th>
@@ -124,12 +139,14 @@
             <tr class="row">
                 <th class="col-2">중도금</th>
                 <td class="col-4">
-                    <span class="text" th:if="*{installmentPayment}" th:text="*{#numbers.formatInteger(installmentPayment,3,'COMMA')+'원'}"></span>
+                    <span class="text" th:if="*{installmentPayment}"
+                          th:text="*{#numbers.formatInteger(installmentPayment,3,'COMMA')+'원'}"></span>
                 </td>
 
                 <th class="col-2">중도금 지급일</th>
                 <td class="col-4">
-                    <span class="text" th:if="*{midPaymentDate}" th:text="*{#temporals.format(midPaymentDate,'yyyy년 MM월 dd일')}"></span>
+                    <span class="text" th:if="*{midPaymentDate}"
+                          th:text="*{#temporals.format(midPaymentDate,'yyyy년 MM월 dd일')}"></span>
                 </td>
             </tr>
 
@@ -246,5 +263,40 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script th:inline="javascript">
+    $(document).ready(function (){
+        $("#modifyBtn").click(function (event){
+            event.preventDefault();
+            $("#myForm").attr("action","/contract/modify/"+[[${contractDto.id}]]);
+            $("#myForm").attr("method","get")
+            $("#myForm").submit();
+        })
+        $("#downloadBtn").click(function (event){
+            event.preventDefault();
+            $("#myForm").attr("action","/contract/download/"+[[${contractDto.id}]]);
+            $("#myForm").attr("method","post")
+            $("#myForm").submit();
+        })
+
+        $("#delBtn").click(function (event){
+            event.preventDefault();
+
+            Swal.fire({
+                title: '계약서를 삭제하시겠습니까?',
+                icon: null,
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                confirmButtonColor: `#000`,
+                cancelButtonText:'취소',
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#myForm").attr("action","/contract/delete/"+[[${contractDto.id}]]);
+                    $("#myForm").attr("method","post");
+                    $("#myForm").submit();
+                }
+            });
+
+        })
+    })
 </script>
 </html>

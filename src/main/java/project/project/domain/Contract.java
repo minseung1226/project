@@ -103,4 +103,37 @@ public class Contract extends BaseEntity {
         this.tenantAddress = contractDto.getTenantAddress();
         this.tenantResidentNumber = contractDto.getTenantResidentNumber();
     }
+
+    public void update(ContractDto contractDto){
+        this.roomAddress = contractDto.getRoomAddress();
+        this.designation = contractDto.getDesignation();
+        this.landRightsRatio = contractDto.getLandRightsRatio();
+        this.landSize = contractDto.getLandSize();
+        this.structureType = contractDto.getStructureType();
+        this.purpose = contractDto.getPurpose();
+        this.buildingSize = contractDto.getBuildingSize();
+        this.rentalArea = contractDto.getRentalArea();
+        this.roomSize = contractDto.getRoomSize();
+        this.deposit = contractDto.getDeposit();
+        this.earnestMoney = contractDto.getEarnestMoney();
+        this.installmentPayment = contractDto.getInstallmentPayment();
+        this.finalMoney = contractDto.getFinalMoney();
+        this.monthlyRent = contractDto.getMonthlyRent();
+        this.midPaymentDate = contractDto.getMidPaymentDate();
+        this.finalMoneyDate = contractDto.getFinalMoneyDate();
+        this.moveInDate = contractDto.getMoveInDate();
+        this.contractDate = contractDto.getContractDate();
+        this.monthlyRentDate = contractDto.getMonthlyRentDate();
+        this.monthlyRentType = contractDto.getMonthlyRentType();
+        this.contractPeriod = contractDto.getContractPeriod();
+        this.specialAgreement = contractDto.getSpecialAgreement();
+        this.lessorName = contractDto.getLessorName();
+        this.lessorPhone = contractDto.getLessorPhone();
+        this.lessorAddress = contractDto.getLessorAddress();
+        this.lessorResidentNumber = contractDto.getLessorResidentNumber();
+        this.tenantName = contractDto.getTenantName();
+        this.tenantPhone = contractDto.getTenantPhone();
+        this.tenantAddress = contractDto.getTenantAddress();
+        this.tenantResidentNumber = contractDto.getTenantResidentNumber();
+    }
 }

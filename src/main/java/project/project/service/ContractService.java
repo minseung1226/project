@@ -43,4 +43,16 @@ public class ContractService {
         return dslContractRepository.findSimpleContractDtosByUserId(userId);
     }
 
+    @Transactional
+    public void modifyContract(ContractDto contractDto){
+        Contract contract = contractRepository.findById(contractDto.getId()).get();
+        contract.update(contractDto);
+    }
+
+    @Transactional
+    public void deleteContract(Long contractId){
+        Contract contract = contractRepository.findById(contractId).get();
+        contractRepository.delete(contract);
+    }
+
 }

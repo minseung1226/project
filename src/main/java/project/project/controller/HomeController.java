@@ -19,13 +19,6 @@ public class HomeController {
         return "home";
     }
 
-    @PostMapping("/test")
-    public String nuhome(List<MultipartFile> img){
-        for (MultipartFile multipartFile : img) {
-            System.out.println("img="+multipartFile.getOriginalFilename());
-        }
-        return "redirect:/";
-    }
 
 
 }

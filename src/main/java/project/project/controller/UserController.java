@@ -10,7 +10,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -57,7 +59,15 @@ public class UserController {
     private final InquiryRepository inquiryRepository;
 
 
-    private final ContractService contractService;
+
+
+
+    @GetMapping("/")
+    public String home(String search)
+    {
+        if(!StringUtils.hasText(search)) search="서울역";
+        return "home";
+    }
 
 
     //회원가입
@@ -239,43 +249,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/contract/{userId}")
-    public String contractList(@PathVariable("userId") Long userId,Model model){
-
-        List<SimpleContractDto> contractDtos = contractService.findSimpleContractDtosByUserId(userId);
-        model.addAttribute("contractDtos",contractDtos);
-        return "contract/management";
-    }
-
-    @GetMapping("/contract/form")
-    public String contractForm(Model model){
-        model.addAttribute("contractDto",new ContractDto());
-
-        return "contract/form";
-    }
-
-    @PostMapping("/contract/save")
-    public String contractSave(@Valid ContractDto contractDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-
-        if(bindingResult.hasErrors()){
-            return "/contract/form";
-        }
-
-        Long contractId = contractService.contractSave(contractDto);
-
-        redirectAttributes.addAttribute("contractId",contractId);
-
-
-        return "/contract/detail/{contractId}";
-    }
-
-    @GetMapping("/contract/detail/{contractId}")
-    public String contractDetail(@PathVariable("contractId")Long contractId,Model model){
-        ContractDto contractDto = contractService.findContractDtoById(contractId);
-        model.addAttribute("contractDto",contractDto);
-
-        return "contract/detail";
-    }
 
 
 }
