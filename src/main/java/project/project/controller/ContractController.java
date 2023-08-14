@@ -103,11 +103,12 @@ public class ContractController {
 
 
     @PostMapping("/contract/download/{contractId}")
-    public void downloadContract(@PathVariable("contractId")Long contractId){
+    public void downloadContract(@PathVariable("contractId")Long contractId,HttpServletResponse response) throws DocumentException, IOException {
         ContractDto contractDto = contractService.findContractDtoById(contractId);
 
         String html = templateEngine.process("/contract/contract", getContext(contractDto));
 
+        generatePdf(html,response);
     }
 
     private Context getContext(ContractDto contractDto) {

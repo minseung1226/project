@@ -42,6 +42,7 @@ public class ContractDto {
     @NotNull
     private Integer finalMoney; // 잔금
     @NotNull
+
     private Integer monthlyRent; // 월세
     @NotNull
     private LocalDate finalMoneyDate; // 잔금일
@@ -53,6 +54,7 @@ public class ContractDto {
     private LocalDate contractDate; //계약일
     @NotNull
     private Integer monthlyRentDate; //월세 지급일
+
     @NotBlank
     private String monthlyRentType ;//월세 선불인지 후불인지의 여부
     @NotNull

@@ -65,6 +65,7 @@ public class UserController {
     @GetMapping("/")
     public String home(String search)
     {
+
         if(!StringUtils.hasText(search)) search="서울역";
         return "home";
     }
