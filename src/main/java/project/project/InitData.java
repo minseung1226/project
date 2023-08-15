@@ -97,8 +97,8 @@ public class InitData {
             ContractDto contractDto = new ContractDto(null, null, "부천로 57번길 50" + i, "지목" + i, "대지권비율" + i, 20.01 + i, "단독주택" + i,
                     "주택" + i, 20.02 + i, i + "호", 20.03 + i, 5000000 + i, 500000 + i, null, 4500000, 400000 + i, LocalDate.now(),
                     LocalDate.now(), LocalDate.now(), LocalDate.now(), 10 + i, "선불", 20 + i, list, "임대인" + i,
-                    "010-5564-541" + i, "안창로 69번가길 11-" + i, "971226-191262" + i,
-                    "임차인" + i, "0105517541" + i, "중앙대로 626 " + i, "960118-191263" + i);
+                    "0105564541" + i, "안창로 69번가길 11-" + i, "971226191262" + i,
+                    "임차인" + i, "0105517541" + i, "중앙대로 626 " + i, "960118191263" + i);
 
             Random random = new Random();
             int num = random.nextInt(5);

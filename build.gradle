@@ -45,8 +45,15 @@ dependencies {
 	//지오코딩 api
 	implementation 'com.google.maps:google-maps-services:0.15.0'
 
-	//flying saucer pdf 변환라이브러리
+	/*//flying saucer pdf 변환라이브러리
 	implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf', version: '9.0.6'
+*/
+	// https://mvnrepository.com/artifact/com.itextpdf/itext7-core
+	implementation group: 'com.itextpdf', name: 'itext7-core', version: '7.0.4', ext: 'pom'
+
+	// https://mvnrepository.com/artifact/com.itextpdf/html2pdf
+	implementation group: 'com.itextpdf', name: 'html2pdf', version: '3.0.3'
+
 }
 
 

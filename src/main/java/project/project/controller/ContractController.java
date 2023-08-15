@@ -1,8 +1,16 @@
 package project.project.controller;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.IElement;
+
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -17,12 +25,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
-import org.xhtmlrenderer.pdf.ITextRenderer;
+import project.project.controller.form.contract.ContractForm;
+import project.project.domain.Contract;
 import project.project.dto.contract.ContractDto;
 import project.project.dto.contract.SimpleContractDto;
+import project.project.repository.contractrepository.ContractRepository;
 import project.project.service.ContractService;
+import retrofit2.http.Path;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,6 +42,8 @@ import java.util.List;
 public class ContractController {
 
     private final ContractService contractService;
+
+    private final ContractRepository contractRepository;
 
     private final SpringTemplateEngine templateEngine;
 
@@ -103,34 +117,55 @@ public class ContractController {
 
 
     @PostMapping("/contract/download/{contractId}")
-    public void downloadContract(@PathVariable("contractId")Long contractId,HttpServletResponse response) throws DocumentException, IOException {
-        ContractDto contractDto = contractService.findContractDtoById(contractId);
+    public void downloadContract(@PathVariable("contractId")Long contractId,HttpServletResponse response) throws IOException {
+        Contract contract = contractRepository.findById(contractId).get();
+        ContractForm contractForm = new ContractForm(contract);
+        contractForm.initializeKoreanFields();
 
-        String html = templateEngine.process("/contract/contract", getContext(contractDto));
+        String html = templateEngine.process("/contract/contract", getContext(contractForm));
 
-        generatePdf(html,response);
+        generatePdf(html);
     }
 
-    private Context getContext(ContractDto contractDto) {
+    private Context getContext(ContractForm contractForm) {
         Context context = new Context();
-        context.setVariable("contractDto",contractDto);
+        context.setVariable("contractForm",contractForm);
         return context;
     }
 
-    private void generatePdf(String html, HttpServletResponse response)throws IOException, DocumentException{
-        Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+    private void generatePdf(String html) throws IOException {
+        String font="font/malgun.ttf";
+        String path="C:\\intellij\\pdf\\saple.pdf";
 
-        document.open();
+        ConverterProperties properties = new ConverterProperties();
+        properties.setBaseUri("C:/intellij/project/src/main/resources/templates/contract/");
+        DefaultFontProvider fontProvider = new DefaultFontProvider(false, false, false);
+        FontProgram fontProgram = FontProgramFactory.createFont(font);
+        fontProvider.addFont(fontProgram);
+        properties.setFontProvider(fontProvider);
 
-        ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(html);
-        renderer.layout();
-        renderer.createPDF(writer.getDirectContent().getInternalBuffer());
+        List<IElement> elements= HtmlConverter.convertToElements(html,properties);
+        PdfDocument pdf = new PdfDocument(new PdfWriter(path));
+        Document document = new Document(pdf);
+
+        document.setMargins(50,0,50,0);
+        for (IElement element : elements) {
+            document.add((IBlockElement) element);
+        }
+
         document.close();
 
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition","attachment; filename=\"example.pdf\"");
+
+    }
+
+    @GetMapping("/contract/test/{contractId}")
+    public String test(@PathVariable("contractId")Long id,Model model){
+        Contract contract = contractRepository.findById(id).get();
+        ContractForm contractForm = new ContractForm(contract);
+        contractForm.initializeKoreanFields();
+        model.addAttribute("contractForm",contractForm  );
+
+        return "contract/contract";
 
 
     }

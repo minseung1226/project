@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
     <title>contract</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"/>
 <style>
     td[colspan="1"], th[colspan="1"] {
         width: 10%;
@@ -12,12 +12,20 @@
     td[colspan="2"], th[colspan="2"] {
         width: 20%;
     }
+
+    @font-face {
+        font-family: 'Nanum Gothic';
+        src: url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&amp;display=swap');
+    }
+    body {
+        font-family: 'Nanum Gothic', sans-serif;
+    }
 </style>
 </head>
 <body>
     <h1 class="fw-bold" style="margin: 50px; text-align: center">부 동 산 임 대 차 계 약 서</h1>
 
-    <div class="container border" style="margin-left: 20%; margin-right: 20%; padding:0px" th:object="${contractDto}">
+    <div class="container border" style="margin-left: 20%; margin-right: 20%; padding:0px" th:object="${contractForm}">
         <div class="border">
             임대인과 임차인 쌍방은 아래 표시 부동산에 관하여 다음 계약내용과 같이 임대차 계약을 체결한다.
         </div>
@@ -91,19 +99,19 @@
             <tr>
                 <th>보증금</th>
                 <td colspan="2" style="border-right: none">
-                    금 <span class="data=text" id="depositKo"></span>
+                    금 <span class="data=text" th:text="*{depositKo}"></span>
                 </td>
                 <td colspan="4" style="border-left: none">
-                    원정 ( <span class="data-text" th:text="${#numbers.formatInteger(*{deposit},3,'COMMA')}"></span> )
+                    원정 ( <span class="data-text" th:text="*{#numbers.formatInteger(deposit,3,'COMMA')}"></span> )
                 </td>
             </tr>
             <tr>
                 <th colspan="1">계약금</th>
                 <td colsapn="2" style="border-right: none">
-                    금 <span class="data-text" id="earnestMoney"></span>
+                    금 <span class="data-text" th:text="*{earnestMoneyKo}"></span>
                 </td>
                 <td colspan="2" style="border-left: none">
-                    <span class="data-text" th:text="${#numbers.formatInteger(*{earnestMoney,3,'COMMA'})}"></span>
+                    <span class="data-text" th:text="*{#numbers.formatInteger(earnestMoney,3,'COMMA')}"></span>
                     원정은 계약시에 지불하고 영수함.
                 </td>
                 <td colspan="1">영수인</td>
@@ -113,12 +121,12 @@
                 <th:block th:if="*{installmentPayment}">
                 <th colspan="1">중도금</th>
                 <td colsapn="2" style="border-right: none">
-                    금 <span class="data-text" id="installmentPaymentKo"></span>
+                    금 <span class="data-text" th:text="*{installmentPaymentKo}"></span>
                 </td>
                 <td colspan="4" style="border-left: none">
-                    <span class="data-text" th:text="${#numbers.formatInteger(*{installmentPayment},3,'COMMA')}"></span>
+                    <span class="data-text" th:text="*{#numbers.formatInteger(installmentPayment,3,'COMMA')}"></span>
                     원정
-                    <span class="data-text" th:text="${#temporals.format(*{midPaymentDate},'yyyy년 MM월 dd일')}"></span>
+                    <span class="data-text" th:text="*{#temporals.format(midPaymentDate,'yyyy년 MM월 dd일')}"></span>
                           에 지불하며
                 </td>
                 </th:block>
@@ -127,22 +135,22 @@
             <tr>
                 <th colspan="1">잔금</th>
                 <td colsapn="2" style="border-right: none">
-                    금 <span class="data-text" id="finalMoneyKo"></span>
+                    금 <span class="data-text" th:text="*{finalMoneyKo}"></span>
                 </td>
                 <td colspan="4" style="border-left: none">
-                    <span class="data-text" th:text="${#numbers.formatInteger(*{finalMoney,3,'COMMA'})}"></span>
+                    <span class="data-text" th:text="${#numbers.formatInteger(contractForm.finalMoney,3,'COMMA')}"></span>
                     원정
-                    <span class="data-text" th:text="${#temporals.format(*{finalMoneyDate},'yyyy년 MM월 dd일')}"></span>
+                    <span class="data-text" th:text="*{#temporals.format(finalMoneyDate,'yyyy년 MM월 dd일')}"></span>
                     에 지불한다.
                 </td>
             </tr>
 
             <th colspan="1">차임</th>
-            <td colsapn="2" style="border-right: none">/
-                금 <span class="data-text" id="monethlyRentKo"></span>
+            <td colsapn="2" style="border-right: none">
+                금 <span class="data-text" th:text="*{monthlyRentKo}"></span>
             </td>
             <td colspan="4" style="border-left: none">
-                <span class="data-text" th:text="${#numbers.formatInteger(*{monthlyRent},3,'COMMA')}"></span>
+                <span class="data-text" th:text="*{#numbers.formatInteger(monthlyRent,3,'COMMA')}"></span>
                 원정은 매월 <span class="data-text" th:text="*{monthlyRentDate}"></span>일에
                           <span class="data-text" th:text="*{monthlyRentType}"></span>로 지급한다.
             </td>
@@ -154,9 +162,9 @@
             </div>
             <div class="col">
                 임대인은 위 부동산을 임대차 목적으로 사용 할 수 있는 상태로 하여
-                <span class="data-text" th:text="${#temporals.format(*{moveInDate},'yyyy년 MM월 dd일')}"></span>
+                <span class="data-text" th:text="*{#temporals.format(moveInDate,'yyyy년 MM월 dd일')}"></span>
                 까지 임차인에게 인도하며,
-                임대차 기간은 인도일로부터 <span class="data-text" th:text="${#dates.mon}"></span> 까지로 한다.
+                임대차 기간은 인도일로부터 <span class="data-text" th:text="*{contractEndDate}"></span> 까지로 한다.
             </div>
         </div>
         <div class="row mb-1">
@@ -209,8 +217,7 @@
         <div class="border">
             <div>[특약사항]</div>
             <ul style="margin-bottom: 100px">
-                <li class="data-text">메롱</li>
-                <li>기타 사항은 주택 임대차 보호법 및 부동산 관련 법규에 따른다.</li>
+                <li class="data-text" th:each="data:*{specialAgreement}" th:text="${data}"></li>
             </ul>
 
             본 계약을 증명하기 위하여 계약 당사자가 이의없음을 확인하고 각자 서명,날인 한다.
@@ -220,22 +227,22 @@
                 <th rowspan="2" colspan="1" class="text-center">임대인</th>
                 <th colspan="1">주소</th>
                 <td>
-                    <div colspan="8" class="data-text">주소입니다.</div>
+                    <div colspan="8" class="data-text" th:text="*{lessorAddress}"></div>
                 </td>
             </tr>
             <tr>
                 <th colspan="1">주민번호</th>
                 <td colspan="2">
-                    <div class="data-text"></div>
+                    <div class="data-text" th:text="|*{lessorResidentNumber.substring(0,6)}-*{lessorResidentNumber.substring(6,13)}|"></div>
                 </td>
                 <th colspan="1">전 화</th>
                 <td colspan="2">
-                    <div class="data-text"></div>
+                    <div class="data-text" th:text="|*{lessorPhone.substring(0,3)}-*{lessorPhone.substring(3,7)}-*{lessorPhone.substring(7,11)}|"></div>
                 </td>
                 <th colspan="1">이름</th>
                 <td colspan="2">
                     <div class="d-flex justify-content-between">
-                        <span class="data-text align-self-start">이름</span>
+                        <span class="data-text align-self-start" th:text="*{lessorName}"></span>
                         <span class="align-self-end">(인)</span>
                     </div>
                 </td>
@@ -245,22 +252,22 @@
                 <th rowspan="2" colspan="1" class="text-center">임차인</th>
                 <th colspan="1">주소</th>
                 <td>
-                    <div colspan="8" class="data-text">주소입니다.</div>
+                    <div colspan="8" class="data-text" th:text="*{tenantAddress}"></div>
                 </td>
             </tr>
             <tr>
                 <th colspan="1">주민번호</th>
                 <td colspan="2">
-                    <div class="data-text"></div>
+                    <div class="data-text" th:text="|*{tenantResidentNumber.substring(0,6)}-*{tenantResidentNumber.substring(6,13)}|"></div>
                 </td>
                 <th colspan="1">전 화</th>
                 <td colspan="2">
-                    <div class="data-text"></div>
+                    <div class="data-text" th:text="|*{tenantPhone.substring(0,3)}-*{tenantPhone.substring(3,7)}-*{tenantPhone.substring(7,11)}|"></div>
                 </td>
                 <th colspan="1">이름</th>
                 <td colspan="2">
                     <div class="d-flex justify-content-between">
-                        <span class="data-text align-self-start">이름</span>
+                        <span class="data-text align-self-start" th:text="*{tenantName}"></span>
                         <span class="align-self-end">(인)</span>
                     </div>
                 </td>
