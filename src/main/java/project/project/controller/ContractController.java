@@ -11,6 +11,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ import project.project.repository.contractrepository.ContractRepository;
 import project.project.service.ContractService;
 import retrofit2.http.Path;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +126,17 @@ public class ContractController {
 
         String html = templateEngine.process("/contract/contract", getContext(contractForm));
 
-        generatePdf(html);
+        byte[] pdfBytes = generatePdf(html);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition","attachment; filename=\"sample.pdf\"");
+        response.setContentLength(pdfBytes.length);
+
+
+        try(ServletOutputStream out = response.getOutputStream()){
+            out.write(pdfBytes);
+            out.flush();
+        }
     }
 
     private Context getContext(ContractForm contractForm) {
@@ -133,19 +145,20 @@ public class ContractController {
         return context;
     }
 
-    private void generatePdf(String html) throws IOException {
+    private byte[] generatePdf(String html) throws IOException {
         String font="font/malgun.ttf";
-        String path="C:\\intellij\\pdf\\saple.pdf";
 
         ConverterProperties properties = new ConverterProperties();
-        properties.setBaseUri("C:/intellij/project/src/main/resources/templates/contract/");
+
         DefaultFontProvider fontProvider = new DefaultFontProvider(false, false, false);
         FontProgram fontProgram = FontProgramFactory.createFont(font);
         fontProvider.addFont(fontProgram);
         properties.setFontProvider(fontProvider);
 
         List<IElement> elements= HtmlConverter.convertToElements(html,properties);
-        PdfDocument pdf = new PdfDocument(new PdfWriter(path));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfDocument pdf = new PdfDocument(new PdfWriter(outputStream));
         Document document = new Document(pdf);
 
         document.setMargins(50,0,50,0);
@@ -155,10 +168,11 @@ public class ContractController {
 
         document.close();
 
+        return outputStream.toByteArray()   ;
 
     }
 
-    @GetMapping("/contract/test/{contractId}")
+/*    @GetMapping("/contract/test/{contractId}")
     public String test(@PathVariable("contractId")Long id,Model model){
         Contract contract = contractRepository.findById(id).get();
         ContractForm contractForm = new ContractForm(contract);
@@ -168,7 +182,7 @@ public class ContractController {
         return "contract/contract";
 
 
-    }
+    }*/
 
 
 }

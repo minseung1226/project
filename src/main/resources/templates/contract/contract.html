@@ -9,6 +9,13 @@
 
      <style>
 
+         .right-non-border{
+             border-right: none;
+         }
+         .left-non-border{
+             border-left: none;
+         }
+
          .p{
              padding: 1px;
          }
@@ -30,19 +37,14 @@
          }
 
 
-/*    td[colspan="1"], th[colspan="1"] {
-        width: 10%;
-    }
-    td[colspan="2"], th[colspan="2"] {
-        width: 20%;
-    }*/
+
 
 
 
 </style>
 </head>
 <body>
-    <h1 class="fw-bold" style="margin: 50px; text-align: center">부 동 산 임 대 차 계 약 서</h1>
+    <h1 class="fw-bold" style="margin-bottom: 50px; text-align: center">부 동 산 임 대 차 계 약 서</h1>
 
     <div class="container border" style="margin-left: 20%; margin-right: 20%; padding:0px" th:object="${contractForm}">
         <div class="border p">
@@ -116,20 +118,20 @@
 
         <table class="table table-bordered">
             <tr>
-                <th>보증금</th>
-                <td colspan="1" style="border-right: none">
+                <th colspan="1">보증금</th>
+                <td colspan="2" class="right-non-border">
                     금 <span class="data=text" th:text="*{depositKo}"></span>
                 </td>
-                <td colspan="5" style="border-left: none">
-                    원정 ( <span class="data-text" th:text="*{#numbers.formatInteger(deposit,3,'COMMA')}"></span> )
+                <td colspan="4" class="left-non-border">
+                    원정 ( <span class="data-text" th:text="*{#numbers.formatInteger(deposit,3,'COMMA')+'￦'}"></span> )
                 </td>
             </tr>
             <tr>
                 <th colspan="1">계약금</th>
-                <td colsapn="2" style="border-right: none">
+                <td colspan="2" class="right-non-border">
                     금 <span class="data-text" th:text="*{earnestMoneyKo}"></span>
                 </td>
-                <td colspan="2" style="border-left: none">
+                <td colspan="2" class="left-non-border">
                     <span class="data-text" th:text="*{#numbers.formatInteger(earnestMoney,3,'COMMA')}"></span>
                     원정은 계약시에 지불하고 영수함.
                 </td>
@@ -139,10 +141,10 @@
             <tr>
                 <th:block th:if="*{installmentPayment}">
                 <th colspan="1">중도금</th>
-                <td colsapn="2" >
+                <td colspan="2" class="left-non-border">
                     금 <span class="data-text" th:text="*{installmentPaymentKo}"></span>
                 </td>
-                <td colspan="4" >
+                <td colspan="4" class="right-non-border">
                     <span class="data-text" th:text="*{#numbers.formatInteger(installmentPayment,3,'COMMA')}"></span>
                     원정
                     <span class="data-text" th:text="*{#temporals.format(midPaymentDate,'yyyy년 MM월 dd일')}"></span>
@@ -153,10 +155,10 @@
 
             <tr>
                 <th colspan="1">잔금</th>
-                <td colsapn="2" >
+                <td colspan="2" class="right-non-border">
                     금 <span class="data-text" th:text="*{finalMoneyKo}"></span>
                 </td>
-                <td colspan="4" >
+                <td colspan="4" class="left-non-border">
                     <span class="data-text" th:text="${#numbers.formatInteger(contractForm.finalMoney,3,'COMMA')}"></span>
                     원정
                     <span class="data-text" th:text="*{#temporals.format(finalMoneyDate,'yyyy년 MM월 dd일')}"></span>
@@ -165,17 +167,17 @@
             </tr>
 
             <th colspan="1">차임</th>
-            <td colsapn="2" >
+            <td colspan="2" class="right-non-border">
                 금 <span class="data-text" th:text="*{monthlyRentKo}"></span>
             </td>
-            <td colspan="4" >
+            <td colspan="4" class="left-non-border">
                 <span class="data-text" th:text="*{#numbers.formatInteger(monthlyRent,3,'COMMA')}"></span>
                 원정은 매월 <span class="data-text" th:text="*{monthlyRentDate}"></span>일에
                           <span class="data-text" th:text="*{monthlyRentType}"></span>로 지급한다.
             </td>
         </table>
 
-        <div class="row p">
+        <div class="row p" >
             <div class="col-1">
                 제2조
             </div>
@@ -221,7 +223,7 @@
                 임대인은 계약금의 배액을 상환하고, 임차인은 계약금을 포기하고 이 계약을 해제할 수 있다.
             </div>
         </div>
-        <div class="row p">
+        <div class="row p" style="margin-bottom: 100px">
             <div class="col-1">
                 제7조
             </div>
@@ -233,7 +235,7 @@
             </div>
         </div>
 
-        <div class="border">
+        <div class="border" >
             <div>[특약사항]</div>
             <ul style="margin-bottom: 100px">
                 <li class="data-text" th:each="data:*{specialAgreement}" th:text="${data}"></li>
@@ -247,8 +249,8 @@
             <tr>
                 <th rowspan="2" colspan="1" class="text-center">임대인</th>
                 <th colspan="1">주소</th>
-                <td>
-                    <div colspan="8" class="data-text" th:text="*{lessorAddress}"></div>
+                <td colspan="9">
+                    <div  class="data-text" th:text="*{lessorAddress}"></div>
                 </td>
             </tr>
             <tr>
@@ -272,8 +274,8 @@
             <tr>
                 <th rowspan="2" colspan="1" class="text-center">임차인</th>
                 <th colspan="1">주소</th>
-                <td>
-                    <div colspan="1" class="data-text" th:text="*{tenantAddress}"></div>
+                <td colspan="9">
+                    <div  class="data-text" th:text="*{tenantAddress}"></div>
                 </td>
             </tr>
             <tr>
