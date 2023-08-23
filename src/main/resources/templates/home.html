@@ -32,6 +32,32 @@
             text-align: center;
         }
 
+        .ui-widget.ui-widget-content{
+            border:none;
+            height:7px;
+        }
+
+        .ui-slider .ui-slider-handle{
+            border-radius: 50%;
+            background: black;
+            border:none;
+        }
+        .ui-slider-horizontal .ui-slider-range{
+            background: black;
+        }
+
+/*        .ui-slider span:before{
+            content: '100$';
+            position: absolute;
+            left:50%;
+            transform:translateX(-50%);
+            width:50px;
+            top:-30px;
+            color: black;
+            font-size: 15px;
+            text-align: center;
+        }*/
+
     </style>
 </head>
 <body>
@@ -83,51 +109,47 @@
                                             <h6 class="fw-bold">보증금</h6>
                                             <div class="row mb-3">
                                                 <div class="col">
-                                                    <input type="text" name="minDeposit" id="minDeposit"
-                                                           class="form-control">
+                                                    <p>
+                                                        <input type="text" id="deposit-text" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                    </p>
+                                                    <div id="deposit-slider-range"></div>
+                                                    <input type="hidden" id="minDeposit" name="minDeposit">
+                                                    <input type="hidden" id="maxDeposit" name="maxDeposit">
                                                 </div>
-                                                <div class="col-1">~</div>
-                                                <div class="col">
-                                                    <input type="text" name="maxDeposit" id="maxDeposit"
-                                                           class="form-control">
-                                                </div>
-
                                             </div>
                                             <h6 class="fw-bold">월세</h6>
                                             <div class="row mb-3">
-                                                <div class="col">
-                                                    <input type="text" id="minMonthlyRent" name="minMonthlyRent"
-                                                           class="form-control">
-                                                </div>
-                                                <div class="col-1">~</div>
-                                                <div class="col">
-                                                    <input type="text" id="maxMonthlyRent" name="maxMonthlyRent"
-                                                           class="form-control">
-                                                </div>
 
+                                                <div class="col">
+                                                    <p>
+                                                        <input type="text" id="monthlyRent-text" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                    </p>
+                                                    <div id="monthlyRent-slider-range"></div>
+                                                    <input type="hidden" id="minMonthlyRent" name="minMonthlyRent">
+                                                    <input type="hidden" id="maxMonthlyRent" name="maxMonthlyRent">
+
+                                                </div>
                                             </div>
                                             <h6 class="fw-bold">전용면적(평수로입력)</h6>
                                             <div class="row mb-3">
                                                 <div class="col">
-                                                    <input type="text" id="minRealSize" name="minRealSize"
-                                                           class="form-control">
+                                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck1" autocomplete="off" value="10">
+                                                        <label class="btn btn-outline-dark" for="btncheck1">10평 이하</label>
+
+                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck2" autocomplete="off" value="20">
+                                                        <label class="btn btn-outline-dark" for="btncheck2">10평대</label>
+
+                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck3" autocomplete="off" value="30">
+                                                        <label class="btn btn-outline-dark" for="btncheck3">20평대 </label>
+
+                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck4" autocomplete="off" value="40">
+                                                        <label class="btn btn-outline-dark" for="btncheck4">30평대</label>
+                                                    </div>
                                                 </div>
-                                                <div class="col-1">~</div>
-                                                <div class="col">
-                                                    <input type="text" id="maxRealSize" name="maxRealSize"
-                                                           class="form-control">
-                                                </div>
+
                                             </div>
 
-                                            <div class="row mb-3">
-                                                <p>
-                                                    <label for="amount">Price range:</label>
-                                                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                                                </p>
-
-                                                <div id="slider-range"></div>
-
-                                            </div>
                                         </div>
                                     </form>
                                     <div class="modal-footer">
@@ -159,18 +181,53 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script th:inline="javascript">
+    function formatAmount(amount){
+        let result="";
+        if(amount/10000>=1){
+            result=Math.floor(amount/10000) +"억";
+        }
+        if(amount%10000>0){
+            result+=amount%10000+"만원";
+        }
+
+        return result;
+    }
     $( function() {
-        $( "#slider-range" ).slider({
+        $( "#deposit-slider-range" ).slider({
             range: true,
-            min: 0,
-            max: 1000,
-            values: [ 75, 300 ],
+            min: 100,
+            max: 20000,
+            values: [ 100, 20000 ],
             step:100,
             slide: function( event, ui ) {
-                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                $("#minDeposit").val(ui.values[0]);
+                $("#maxDeposit").val(ui.values[1]);
+                let min =formatAmount(ui.values[0]);
+                let max=formatAmount(ui.values[1]);
+                $( "#deposit-text" ).val(min + " ~ " +max  );
             }
         });
-        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+        $( "#deposit-text" ).val(formatAmount($( "#deposit-slider-range" ).slider( "values", 0 )) +" ~ " + formatAmount($( "#deposit-slider-range" ).slider( "values", 1 )) );
+
+    } );
+
+    $( function() {
+        $( "#monthlyRent-slider-range" ).slider({
+            range: true,
+            min: 10,
+            max: 200,
+            values: [ 10, 200 ],
+            step:10,
+            slide: function( event, ui ) {
+                $("#minMonthlyRent").val(ui.values[0]);
+                $("#maxMonthlyRent").val(ui.values[1]);
+                let min =formatAmount(ui.values[0]);
+                let max=formatAmount(ui.values[1]);
+                $( "#monthlyRent-text" ).val(min + " ~ " +max  );
+            }
+        });
+        $( "#monthlyRent-text" ).val(formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 0 )) +" ~ " + formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 1 )) );
+
     } );
 
 
@@ -208,8 +265,7 @@
 
     function formValidate(form){
         if(numberValidate(form.get("minDeposit"))&&numberValidate(form.get("maxDeposit"))&&
-            numberValidate(form.get("minMonthlyRent"))&&numberValidate(form.get("maxMonthlyRent"))&&
-            numberValidate(form.get("minRealSize"))&&numberValidate(form.get("maxRealSize"))){
+            numberValidate(form.get("minMonthlyRent"))&&numberValidate(form.get("maxMonthlyRent"))){
             return true;
         }
         return false;
@@ -257,6 +313,23 @@
             return;
         }
 
+
+
+        // 전용면적 값 생성
+        let buttons=document.querySelectorAll('.realSizeBtn:checked');
+
+        if(buttons.length>0){
+            let values=[];
+
+            buttons.forEach(function (btn){
+                values.push(parseInt(btn.value));
+                values.push(parseInt(btn.value-10));
+            });
+
+            formData.append("minRealSize",Math.min.apply(null,values));
+            formData.append("maxRealSize",Math.max.apply(null,values));
+
+        }
 
 
 

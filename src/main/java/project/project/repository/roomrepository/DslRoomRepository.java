@@ -149,7 +149,7 @@ public class DslRoomRepository {
         BooleanExpression be;
 
         be=minRealSize==null?null:roomInfo.realSize.goe((double)minRealSize/0.3025);
-        return maxRealSize==null?be:roomInfo.realSize.loe((double)maxRealSize/0.3025);
+        return maxRealSize==null?be:be.and(roomInfo.realSize.loe((double)maxRealSize/0.3025));
     }
 
     private BooleanExpression createCoordinatesRangeCondition(Double minLat,Double maxLat,

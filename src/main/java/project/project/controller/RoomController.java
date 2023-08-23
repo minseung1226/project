@@ -112,6 +112,7 @@ public class RoomController {
     @GetMapping("/room/roomList")
     @ResponseBody
     public List<RoomMapForm> roomFormList(RoomSearchParameters roomSearch){
+        log.info("roomSearch={}",roomSearch);
         List<Room> roomList = dslRoomRepository.roomSearch(roomSearch);
 
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
