@@ -424,8 +424,14 @@
       $("#maxDeposit").val("");
       $("#minMonthlyRent").val("");
       $("#maxMonthlyRent").val("");
-      $("#minRealSize").val("");
-      $("#maxRealSize").val("");
+
+        var buttons = document.querySelectorAll('.realSizeBtn');
+
+        // 모든 버튼의 checked 속성 해제
+        buttons.forEach(function(button) {
+            button.checked = false;
+        });
+
       roomCall(map);
     })
 

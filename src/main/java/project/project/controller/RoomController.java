@@ -135,7 +135,7 @@ public class RoomController {
         Room room = roomRepository.fetchFindById(roomId);
         RoomDetailForm roomDetailForm = new RoomDetailForm(room);
         model.addAttribute("roomDetailForm",roomDetailForm);
-        log.info("room={}",roomDetailForm);
+
         return "room/detail_view";
     }
 

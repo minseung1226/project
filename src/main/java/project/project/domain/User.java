@@ -29,7 +29,6 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
 
-    private String residentNumber;
 
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus=UserStatus.일반;
@@ -55,14 +54,13 @@ public class User extends BaseEntity {
         this.userJoinType = userJoinType;
     }
 
-    public User(String email, String name, String pw, String birth, String phone, Address address, String residentNumber, UserStatus userStatus, UserJoinType userJoinType) {
+    public User(String email, String name, String pw, String birth, String phone, Address address, UserStatus userStatus, UserJoinType userJoinType) {
         this.email = email;
         this.name = name;
         this.pw = pw;
         this.birth = birth;
         this.phone = phone;
         this.address = address;
-        this.residentNumber = residentNumber;
         this.userStatus = userStatus;
         this.userJoinType = userJoinType;
     }
@@ -82,13 +80,14 @@ public class User extends BaseEntity {
         this.address=address;
     }
 
-    public void modifyUser(String name,String phone,String email,String pimg,Address address){
+    public void modifyUser(String name,String phone,String email,String pimg,Address address,String birth){
         if (StringUtils.hasText(name)) this.name = name;
         if(StringUtils.hasText(phone))this.phone=phone;
         if(StringUtils.hasText(email))this.email=email;
         if(StringUtils.hasText(pimg))this.pimg=pimg;
         if(address!=null)this.address=address;
-    }
+        if(StringUtils.hasText(birth))this.birth=birth;
+   }
 
 
 }

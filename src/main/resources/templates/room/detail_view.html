@@ -28,6 +28,14 @@
             padding:5px;
             font-size:18px;
         }
+        #wishlistBtn{
+            color: red;
+            background-color: white;
+            border: none;
+            font-size: 30px;
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
 </head>
 <body>
@@ -72,10 +80,14 @@
 
             </div>
 
+            <div class="text-center s-content border" >
+                <button id="wishlistBtn" class="btn btn-dark">♥</button>
+            </div>
+
             <div class="text-center s-content border">
                 <button id="inquiryBtn" class="btn btn-dark">문의하기</button>
-                <button id="wishlistBtn" class="btn btn-dark">찜 하기</button>
             </div>
+
         </div>
 
 
@@ -216,16 +228,6 @@
         <h4 class="fw-bold table-title">위치</h4>
 
         <div id="map" style="height: 300px"></div>
-        <!--<div id="container" class="view_map">
-            <div id="mapWrapper" style="width:100%;height:300px;position:relative;">
-                <div id="map" style="width:100%;height:100%"></div> &lt;!&ndash; 지도를 표시할 div 입니다 &ndash;&gt;
-                <input type="button" id="btnRoadview" onclick="toggleMap(false)" title="로드뷰 보기" value="로드뷰">
-            </div>
-            <div id="rvWrapper" style="width:100%;height:300px;position:absolute;top:0;left:0;">
-                <div id="roadview" style="height:100%"></div> &lt;!&ndash; 로드뷰를 표시할 div 입니다 &ndash;&gt;
-                <input type="button" id="btnMap" onclick="toggleMap(true)" title="지도 보기" value="지도">
-            </div>
-        </div>-->
 
         <div style="height: 300px;"></div>
     </div>

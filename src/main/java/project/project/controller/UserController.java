@@ -24,6 +24,7 @@ import project.project.domain.Inquiry;
 import project.project.domain.User;
 import project.project.domain.Wishlist;
 import project.project.domain.embeded.Address;
+import project.project.domain.enum_type.RoomStatus;
 import project.project.domain.enum_type.UserJoinType;
 import project.project.file.UploadFile;
 import project.project.repository.InquiryRepository;
@@ -113,7 +114,12 @@ public class UserController {
         if(user.getAddress()==null) {
             user.changeAddress(new Address(null, null, null, null));
         }
-        model.addAttribute("user", user);
+
+        UserModifyForm userModifyForm = new UserModifyForm(user);
+        model.addAttribute("userModifyForm", userModifyForm);
+
+        log.info("userId={}, userId={}",user.getId(),userModifyForm.getId());
+
         return "mypage/account";
     }
 
@@ -153,12 +159,13 @@ public class UserController {
         return new UrlResource("file:"+ UploadFile.PATH+    pimg);
     }
 
-    @PostMapping("/user/modify")
+    @PostMapping("/user/modify/{userId}")
     public String userModify(UserModifyForm form,RedirectAttributes redirectAttributes){
+        log.info("formId={}",form.getId());
 
-        userService.profileModify(form.getId(),form.getName(),form.getTel(),form.getEmail(),
+        userService.profileModify(form.getId(),form.getName(),form.getPhone(),form.getEmail(),
                 form.getPimg(),form.getPostcode(),form.getAddress(),form.getDetailAddress(),
-                form.getExtraAddress());
+                form.getExtraAddress(),form.getBirthY()+form.getBirthM()+form.getBirthD());
 
         redirectAttributes.addAttribute("userId",form.getId());
 
@@ -176,7 +183,7 @@ public class UserController {
     @GetMapping("/mypage/wishlist/{userId}")
     public String wishlist(@PathVariable("userId")Long userId,Model model){
 
-        List<Wishlist> list = wishlistRepository.findWishlistsByUserId(userId);
+        List<Wishlist> list = wishlistRepository.findWishlistsByUserId(userId, RoomStatus.거래중);
 
         List<RoomWishlistForm> wishlistForms = list.stream().map(wishlist -> new RoomWishlistForm(
                 wishlist.getId(),
@@ -209,7 +216,7 @@ public class UserController {
 
     @GetMapping("/mypage/inquiry/{userId}")
     public String inquiryList(@PathVariable("userId")Long userId,Model model){
-        List<Inquiry> inquirys = inquiryRepository.findInquirysByUserId(userId);
+        List<Inquiry> inquirys = inquiryRepository.findInquirysByUserId(userId,RoomStatus.거래중);
         List<RoomInquiryForm> inquiryForms = inquirys.stream().map(inquiry ->
                 new RoomInquiryForm(
                         inquiry.getId(),

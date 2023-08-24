@@ -36,8 +36,8 @@ public class RoomInfo extends BaseEntity {
     private String floor;  // 층수
     private String entireFloor; //전체층
 
-    private double realSize;   //전용면적
-    private double supplySize; //공급 면적
+    private Double realSize;   //전용면적
+    private Double supplySize; //공급 면적
 
     protected RoomInfo(RoomInfoRegistrationDto dto) {
         this.bearing=dto.getBearing();

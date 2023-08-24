@@ -41,7 +41,7 @@ public class UserService {
 
     @Transactional
     public void profileModify(Long id,String name, String tel, String email, MultipartFile file,Integer postcode,
-                              String address,String detailAddress,String extraAddress){
+                              String address,String detailAddress,String extraAddress,String birth){
         Optional<User> findUser = userRepository.findById(id);
         if(findUser.isEmpty()){
 
@@ -59,7 +59,7 @@ public class UserService {
             newAddress=new Address(postcode,address,detailAddress,extraAddress);
         }
 
-        user.modifyUser(name,tel,email,pimg,newAddress);
+        user.modifyUser(name,tel,email,pimg,newAddress,birth);
 
     }
 

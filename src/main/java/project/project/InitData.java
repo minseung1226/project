@@ -140,6 +140,16 @@ public class InitData {
                 Room room1 = Room.makeRoom(roomRegistrationDto, roomInfo1, img, users[i]);
 
                 roomRepository.save(room1);
+
+                Random random = new Random();
+                int eachNumber = random.nextInt(3);
+                for(int j=0;j<eachNumber;j++){
+                    int userIndex = random.nextInt(5);
+                    Inquiry inquiry = new Inquiry(users[userIndex], room1);
+                    Wishlist wishlist = new Wishlist(users[userIndex], room1);
+                    inquiryRepository.save(inquiry);
+                    wishlistRepository.save(wishlist);
+                }
             }
         }
     }
