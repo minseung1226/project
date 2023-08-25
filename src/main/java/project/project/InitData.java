@@ -83,16 +83,16 @@ public class InitData {
         inquiryRepository.save(inquiry2);
         inquiryRepository.save(inquiry3);
 
-        User[] users=new User[5];
-        for(int i=0;i<users.length;i++){
-            users[i]=new User("user"+i,"이름"+i,"123","0105564541"+i,new Address(12312, "부천로 57번길 50", "201호", "심곡동"+i));
+        User[] users = new User[5];
+        for (int i = 0; i < users.length; i++) {
+            users[i] = new User("user" + i, "이름" + i, "123", "0105564541" + i, new Address(12312, "부천로 57번길 50", "201호", "심곡동" + i));
             userRepository.save(users[i]);
         }
 
-        for(int i=0;i<10;i++){
-            List<String> list=new ArrayList<>();
-            for(int j=0;j<i+3;j++){
-                list.add("특약사항"+j);
+        for (int i = 0; i < 10; i++) {
+            List<String> list = new ArrayList<>();
+            for (int j = 0; j < i + 3; j++) {
+                list.add("특약사항" + j);
             }
             ContractDto contractDto = new ContractDto(null, null, "부천로 57번길 50" + i, "지목" + i, "대지권비율" + i, 20.01 + i, "단독주택" + i,
                     "주택" + i, 20.02 + i, i + "호", 20.03 + i, 5000000 + i, 500000 + i, null, 4500000, 400000 + i, LocalDate.now(),
@@ -103,12 +103,12 @@ public class InitData {
             Random random = new Random();
             int num = random.nextInt(5);
             Contract contract = new Contract(contractDto, users[num]);
-            contractRepository.save(contract    );
+            contractRepository.save(contract);
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode itemNodes = objectMapper.readTree(getInitStringData()).get("items");
-        if (itemNodes!=null&&itemNodes.isArray()){
+        if (itemNodes != null && itemNodes.isArray()) {
             for (JsonNode itemNode : itemNodes) {
                 RoomInfoRegistrationDto roomInfoRegistrationDto = new RoomInfoRegistrationDto(itemNode.path("전용면적").path("m2").asDouble(),
                         itemNode.path("전용면적").path("m2").asDouble(),
@@ -132,9 +132,9 @@ public class InitData {
                         itemNode.get("manage_cost").asDouble(), LocalDate.now(), randomCreateEnumList(MaintenanceItem.class),
                         null, itemNode.get("title").toString(), "어서오십쇼 여긴 당신의 집입니다.");
 
-                String[] img =new String[4];
-                for(int j=0;j<4;j++){
-                    img[j]="project"+new Random().nextInt(10)+".jpg";
+                String[] img = new String[4];
+                for (int j = 0; j < 4; j++) {
+                    img[j] = "project" + new Random().nextInt(10) + ".jpg";
                 }
 
                 Room room1 = Room.makeRoom(roomRegistrationDto, roomInfo1, img, users[i]);
@@ -142,41 +142,41 @@ public class InitData {
                 roomRepository.save(room1);
 
                 Random random = new Random();
-                int eachNumber = random.nextInt(3);
-                for(int j=0;j<eachNumber;j++){
-                    int userIndex = random.nextInt(5);
-                    Inquiry inquiry = new Inquiry(users[userIndex], room1);
-                    Wishlist wishlist = new Wishlist(users[userIndex], room1);
-                    inquiryRepository.save(inquiry);
-                    wishlistRepository.save(wishlist);
-                }
+
+                int userIndex = random.nextInt(5);
+                Inquiry inquiry = new Inquiry(users[userIndex], room1);
+                Wishlist wishlist = new Wishlist(users[userIndex], room1);
+                inquiryRepository.save(inquiry);
+                wishlistRepository.save(wishlist);
+
             }
         }
     }
 
 
-    private Boolean randomBoolean(){
+    private Boolean randomBoolean() {
         int i = new Random().nextInt(1);
-        return i==0?true:false;
+        return i == 0 ? true : false;
     }
 
-    private <T extends Enum<T>> T randomCreateEnum(Class<T> enumClass){
+    private <T extends Enum<T>> T randomCreateEnum(Class<T> enumClass) {
         T[] enumValues = enumClass.getEnumConstants();
         int i = new Random().nextInt(enumValues.length);
         return enumValues[i];
     }
-    private <T extends Enum<T>> List<T> randomCreateEnumList(Class<T> enumClass){
+
+    private <T extends Enum<T>> List<T> randomCreateEnumList(Class<T> enumClass) {
         T[] enumValues = enumClass.getEnumConstants();
         int i = new Random().nextInt(enumValues.length);
-        List<T> list=new ArrayList<>();
-        for(int j=0;j<=i;j++){
+        List<T> list = new ArrayList<>();
+        for (int j = 0; j <= i; j++) {
             list.add(enumValues[j]);
         }
         return list;
     }
 
-    private String getInitStringData(){
-        String data="{\n" +
+    private String getInitStringData() {
+        String data = "{\n" +
                 "    \"items\": [\n" +
                 "        {\n" +
                 "            \"section_type\": null,\n" +

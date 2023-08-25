@@ -1,5 +1,6 @@
 package project.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +12,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.project.controller.form.room.RoomDetailForm;
 import project.project.controller.form.room.RoomMapForm;
 import project.project.domain.Room;
+import project.project.domain.Wishlist;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
 import project.project.dto.room.RoomRegistrationDto;
 import project.project.dto.room.RoomSimpleDto;
+import project.project.repository.WishlistRepository;
 import project.project.repository.roomrepository.DslRoomRepository;
 import project.project.repository.roomrepository.RoomRepository;
 import project.project.search.RoomSearchParameters;
@@ -32,6 +35,7 @@ public class RoomController {
     private final RoomService roomService;
     private final RoomRepository roomRepository;
     private final DslRoomRepository dslRoomRepository;
+    private final WishlistRepository wishlistRepository;
 
     @GetMapping("/room/registration")
     public String roomRegistrationForm(Model model){
@@ -75,8 +79,9 @@ public class RoomController {
     }
 
     @PostMapping("/room/management/delete/{roomId}")
-    public String deleteRoom(@PathVariable("roomId")Long roomId,Long userId,RedirectAttributes redirectAttributes){
+    public String deleteRoom(@PathVariable("roomId")Long roomId, HttpSession session, RedirectAttributes redirectAttributes){
         roomService.roomDelete(roomId);
+        Object userId = session.getAttribute("user");
         redirectAttributes.addAttribute("userId",userId);
 
         return "redirect:/room/management/{userId}";
@@ -112,7 +117,7 @@ public class RoomController {
     @GetMapping("/room/roomList")
     @ResponseBody
     public List<RoomMapForm> roomFormList(RoomSearchParameters roomSearch){
-        log.info("roomSearch={}",roomSearch);
+
         List<Room> roomList = dslRoomRepository.roomSearch(roomSearch);
 
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
@@ -146,11 +151,19 @@ public class RoomController {
         return roomService.inquiry(roomId,userId);
     }
     @ResponseBody
-    @PostMapping("/wishlist/save")
-    public String wishlist(Long roomId,Long userId){
+    @PostMapping("/wishlist/saveOrDelete")
+    public Boolean wishlist(Long roomId,Long userId,Boolean readOnly){
+        Wishlist findWishlist = wishlistRepository.findByRoomIdAndUserId(userId, roomId);
+        if(readOnly){
+            return findWishlist!=null;
+        }
+        if(findWishlist!=null){
+            wishlistRepository.delete(findWishlist);
+            return false;
+        }
         roomService.wishlistSave(roomId,userId);
 
-        return "success";
+        return true;
     }
 
 }

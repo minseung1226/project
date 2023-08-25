@@ -38,7 +38,7 @@
                         <div class="card-body p-1 m-0">
                             <p class="m-0"><h5 class="fw-bold"
                                                th:text="'월세'+${form.deposit}+'/'+${form.monthlyRent}"></h5></p>
-                            <p class="m-0" th:text="${form.title.substring(0,15)+'...'}"></p>
+                            <p class="m-0" th:text="${form.title.length()>15?form.title.substring(0,15)+'...':form.title}"></p>
                             <p class="m-0" style="font-size: 13px"
                                th:text="${form.roomType}+'| 관리비'+${form.maintenance}+'만원'"></p>
                         </div>

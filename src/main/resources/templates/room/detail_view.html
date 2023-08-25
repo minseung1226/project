@@ -29,12 +29,10 @@
             font-size:18px;
         }
         #wishlistBtn{
-            color: red;
+            color: black;
             background-color: white;
             border: none;
             font-size: 30px;
-            margin: 0px;
-            padding: 0px;
         }
     </style>
 </head>
@@ -81,7 +79,7 @@
             </div>
 
             <div class="text-center s-content border" >
-                <button id="wishlistBtn" class="btn btn-dark">♥</button>
+                <button id="wishlistBtn" class="btn btn-dark">♡</button>
             </div>
 
             <div class="text-center s-content border">
@@ -237,6 +235,43 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <script th:inline="javascript">
+    $(document).ready(function (){
+        if([[${session.user}]]!=null){
+            heartImg(true);
+        }
+    })
+    function heartImg(readOnly){
+        $.ajax({
+            type:'POST',
+            url:"/wishlist/saveOrDelete",
+            data:{
+                roomId:[[${roomDetailForm.roomId}]],
+                userId:[[${session.user}]],
+                readOnly:readOnly
+            },
+
+        }).done(function (data){
+            let btn = $("#wishlistBtn");
+            if(data==true){
+                btn.text("♥");
+                btn.style.fontSize="30px";
+                Swal.fire({
+                    title: '찜 완료',
+                    icon: null,
+                    confirmButtonText: '확인',
+                    confirmButtonColor: `#000`,
+
+                });
+            }
+            else{
+                btn.text("♡");
+                btn.style.fontSize="30px";
+                btn.style.color="black";
+
+            }
+
+        })
+    }
 
     let lat=[[${roomDetailForm.lat}]];
     let lng=[[${roomDetailForm.lng}]]
@@ -264,23 +299,7 @@
             $('#loginButton').click();
         }
         else{
-            $.ajax({
-                type:'POST',
-                url:"/wishlist/save",
-                data:{
-                    roomId:[[${roomDetailForm.roomId}]],
-                    userId:[[${session.user}]]
-                },
-
-            }).done(function (data){
-                Swal.fire({
-                    title: '찜 완료',
-                    icon: null,
-                    confirmButtonText: '확인',
-                    confirmButtonColor: `#000`,
-
-                })
-            })
+            heartImg(false);
         }
     })
 

@@ -13,10 +13,13 @@ import java.util.List;
 public interface WishlistRepository extends JpaRepository<Wishlist,Long> {
 
     @Query("select w from Wishlist w join fetch w.room join fetch w.user where w.user.id=:userId and w.room.status=:roomStatus")
-    public List<Wishlist> findWishlistsByUserId(Long userId, RoomStatus roomStatus);
+    public List<Wishlist> findWishlistsByUserId(@Param("userId") Long userId,@Param("roomStatus") RoomStatus roomStatus);
 
     @Modifying
     @Transactional
     @Query("delete from Wishlist w where w.id in :wishlistIds")
     public void bulkDeleteByIds(@Param("wishlistIds") List<Long> wishlistIds);
+
+    @Query("select w from Wishlist w where w.user.id=:userId and w.room.id=:roomId")
+    Wishlist findByRoomIdAndUserId(@Param("userId") Long userId,@Param("roomId") Long roomId);
 }

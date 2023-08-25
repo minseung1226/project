@@ -52,6 +52,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.itextpdf/html2pdf
 	implementation group: 'com.itextpdf', name: 'html2pdf', version: '3.0.3'
 
+	//스프링 aop
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 }
 
 
