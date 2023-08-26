@@ -161,7 +161,7 @@ public class UserController {
 
     @PostMapping("/user/modify/{userId}")
     public String userModify(UserModifyForm form,RedirectAttributes redirectAttributes){
-        log.info("formId={}",form.getId());
+        log.info("formPhone={}",form.getPhone());
 
         userService.profileModify(form.getId(),form.getName(),form.getPhone(),form.getEmail(),
                 form.getPimg(),form.getPostcode(),form.getAddress(),form.getDetailAddress(),

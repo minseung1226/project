@@ -181,6 +181,29 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script th:inline="javascript">
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.484661, 126.783171), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    var clusterer;
+
+    roomCall(map);
+
+
+    // 지도 이동이 완료되면 호출되는 이벤트 리스너 등록
+    kakao.maps.event.addListener(map, 'idle', function () {
+        // 현재 지도의 경계 영역 정보 가져오기
+        roomCall(map);
+    });
+
+
+
+
     function formatAmount(amount){
         let result="";
         if(amount/10000>=1){
@@ -286,11 +309,15 @@
     }
 
     function roomCall(map) {
+
+
+
         var bounds = map.getBounds();
         var swLatLng = bounds.getSouthWest(); // 서남쪽 좌표 (좌하단)
         var neLatLng = bounds.getNorthEast(); // 동북쪽 좌표 (우상단)
 
         // 서남쪽 좌표의 위도와 경도
+
         var swLat = swLatLng.getLat();
         var swLng = swLatLng.getLng();
 
@@ -333,6 +360,7 @@
 
 
 
+
         // 서버로 위도와 경도를 전달하여 매물 데이터를 요청하거나 처리할 수 있습니다.
         // 예를 들어 AJAX 요청을 사용하여 해당 영역의 매물 정보를 가져올 수 있습니다.
 
@@ -352,13 +380,18 @@
                 maxLng:neLng
             }
         }).done(function (data) {
+            if(clusterer!=null){
+                clusterer.clear();
+            }
+
+
             let markers = $(data).map(function (i, form) {
                 return new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(form.lat, form.lng)
                 })
             });
 
-            let clusterer = new kakao.maps.MarkerClusterer({
+            clusterer = new kakao.maps.MarkerClusterer({
                 map: map,
                 averageCenter: true,
                 minLevel: 1,
@@ -375,23 +408,6 @@
         });
     }
 
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new kakao.maps.LatLng(37.484661, 126.783171), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
-        };
-
-    // 지도를 생성합니다
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    roomCall(map);
-
-
-    // 지도 이동이 완료되면 호출되는 이벤트 리스너 등록
-    kakao.maps.event.addListener(map, 'idle', function () {
-        // 현재 지도의 경계 영역 정보 가져오기
-        roomCall(map);
-    });
 
     function search() {
         // 장소 검색 객체를 생성합니다

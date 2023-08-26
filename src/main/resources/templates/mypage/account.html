@@ -101,7 +101,7 @@
                             </div>
 
                             <div class="col">
-                                <input type="hidden" name="tel">
+                                <input type="hidden" name="phone">
                                 <input type="button" id="send_btn" class="btn btn-dark" value="인증번호 발송">
                             </div>
                         </div>
@@ -275,7 +275,7 @@
 
                         if ($("#valid_number").val() == data) {
                             swal("인증이 완료되었습니다.");
-                            $('[name="tel"]').val(telValues);
+                            $('[name="phone"]').val(telValues);
                             $(`[name="exTel"]`).prop(`disabled`, true);
                             $(`input[name="valid_btn"]`).prop(`disabled`, true);
                             $("#valid_number").prop(`disabled`, true);
