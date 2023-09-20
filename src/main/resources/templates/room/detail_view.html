@@ -255,13 +255,7 @@
             if(data==true){
                 btn.text("♥");
                 btn.style.fontSize="30px";
-                Swal.fire({
-                    title: '찜 완료',
-                    icon: null,
-                    confirmButtonText: '확인',
-                    confirmButtonColor: `#000`,
 
-                });
             }
             else{
                 btn.text("♡");
@@ -347,7 +341,7 @@
 
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "/mypage/account";
+                                        location.href = "/mypage/account/"+[[${session.user}]];
                                     }
                                 });
                             }

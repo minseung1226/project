@@ -17,8 +17,9 @@ public class RoomInfoModifyDto {
     private Bearing bearing; // 주실 방향
 
     @Convert(converter = EnumListConverter.class)
-    private List<Option> options=new ArrayList<>(); // 옵션
+    private List<Option> options; // 옵션
     private boolean animal; // 반려동물
+
     private boolean parking; // 주차 여부
 
     private String floor;  // 층수

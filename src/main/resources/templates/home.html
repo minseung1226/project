@@ -250,7 +250,6 @@
             }
         });
         $( "#monthlyRent-text" ).val(formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 0 )) +" ~ " + formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 1 )) );
-
     } );
 
 
@@ -428,6 +427,8 @@
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
                 map.setBounds(bounds);
+
+                roomCall(map);
             }
         }
     }

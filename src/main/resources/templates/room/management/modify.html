@@ -429,7 +429,7 @@
                     </th>
                     <td class="col-10" colspan="3">
                         <th:block th:each="value:${T(project.project.domain.enum_type.Option).values()}">
-                            <input type="checkbox" class="btn-check" th:id="${value}" th:name="option"
+                            <input type="checkbox" class="btn-check" th:id="${value}" th:name="options"
                                    th:value="${value}" th:checked="${roomInfoModifyDto.options.contains(value)}"
                                    autocomplete="off">
                             <label class="btn btn-outline-dark m-1" th:for="${value}" th:text="${value}"></label>

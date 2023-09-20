@@ -29,6 +29,7 @@ public class RoomInfo extends BaseEntity {
 
     @Convert(converter = EnumListConverter.class)
     @Enumerated(EnumType.STRING)
+    @Column(length = 6000)
     private List<Option> options=new ArrayList<>(); // 옵션
     private boolean animal; // 반려동물
     private boolean parking; // 주차 여부

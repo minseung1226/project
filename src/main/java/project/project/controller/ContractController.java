@@ -36,8 +36,7 @@ import retrofit2.http.Path;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,6 +51,7 @@ public class ContractController {
 
     @GetMapping("/contract/{userId}")
     public String contractList(@PathVariable("userId") Long userId, Model model){
+
 
         List<SimpleContractDto> contractDtos = contractService.findSimpleContractDtosByUserId(userId);
         model.addAttribute("contractDtos",contractDtos);
@@ -128,8 +128,10 @@ public class ContractController {
 
         byte[] pdfBytes = generatePdf(html);
 
+
+        //
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition","attachment; filename=\"sample.pdf\"");
+        response.setHeader("Content-Disposition","attachment; filename=\"계약서.pdf\"");
         response.setContentLength(pdfBytes.length);
 
 
@@ -157,10 +159,15 @@ public class ContractController {
 
         List<IElement> elements= HtmlConverter.convertToElements(html,properties);
 
+        // pdf에 들어갈 내용은 만들었어
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfDocument pdf = new PdfDocument(new PdfWriter(outputStream));
         Document document = new Document(pdf);
+        // 이렇게 pdf 파일을 만듬
 
+
+        //pdf에 생성한 elements들을 잡아넣어
         document.setMargins(50,0,50,0);
         for (IElement element : elements) {
             document.add((IBlockElement) element);
@@ -168,21 +175,12 @@ public class ContractController {
 
         document.close();
 
+        //미안합니다. 설명을 못하겠네요
+        //chatgpt가 다 알려줫는데 byte[]
         return outputStream.toByteArray()   ;
 
     }
 
-/*    @GetMapping("/contract/test/{contractId}")
-    public String test(@PathVariable("contractId")Long id,Model model){
-        Contract contract = contractRepository.findById(id).get();
-        ContractForm contractForm = new ContractForm(contract);
-        contractForm.initializeKoreanFields();
-        model.addAttribute("contractForm",contractForm  );
-
-        return "contract/contract";
-
-
-    }*/
 
 
 }

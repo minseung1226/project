@@ -14,7 +14,7 @@ import project.project.domain.enum_type.UserStatus;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "USERS")
+@Table
 @EqualsAndHashCode()
 public class User extends BaseEntity {
     @Id

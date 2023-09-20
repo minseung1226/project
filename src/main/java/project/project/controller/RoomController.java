@@ -98,20 +98,20 @@ public class RoomController {
         return "room/management/modify";
     }
 
-    @PostMapping("/room/modify/{roomId}")
+    @PostMapping("/room/management/modify/{roomId}")
     public String modify(@PathVariable("roomId")Long roomId,
                          @Valid RoomModifyDto roomModifyDto,BindingResult roomDtoBindingResult,
                          @Valid RoomInfoModifyDto roomInfoModifyDto,BindingResult roomInfoDtoBindingResult,
                          RedirectAttributes redirectAttributes){
         if(roomDtoBindingResult.hasErrors()||roomInfoDtoBindingResult.hasErrors()){
-            return "room/modify";
+            return "room/management/modify";
         }
         roomModifyDto.setRoomInfoModifyDto(roomInfoModifyDto);
 
         roomService.roomUpdate(roomId,roomModifyDto);
 
         redirectAttributes.addAttribute("roomId",roomId);
-        return "redirect:/room/detailInfo/{roomId}";
+        return "redirect:/room/management/detailInfo/{roomId}";
     }
 
     @GetMapping("/room/roomList")

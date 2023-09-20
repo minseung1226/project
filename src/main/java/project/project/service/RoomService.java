@@ -114,7 +114,8 @@ public class RoomService {
 
         inquiryRepository.save(inquiry);
 
-    /*    Message message=new Message();
+/*
+        Message message=new Message();
         message.setFrom(user.getPhone());
         message.setTo(room.getUser().getPhone());
         message.setText("매물번호 : "+room.getRoomNumber()+
@@ -122,7 +123,7 @@ public class RoomService {
                         " 해당 매물 문의 드립니다.");
 
         SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
-    */
+*/
 
         return "success";
     }
