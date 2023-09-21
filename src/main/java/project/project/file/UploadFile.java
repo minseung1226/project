@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 @Getter
 public class UploadFile {
-    public static final String PATH="C:/intellij/project_img/";
+    public static final String PATH="/home/ubuntu/project_img/";
     private String fileName;
     private String storeName;
 
