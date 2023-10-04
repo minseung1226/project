@@ -12,6 +12,7 @@ import project.project.file.UploadFile;
 import project.project.repository.UserRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,6 +38,14 @@ public class UserService {
         if(!findUser.isEmpty()){
             findUser.get().changePw(pw);
         }
+    }
+
+    @Transactional
+    public String generateTemporaryPassword(String tel,String email){
+        User findUser = userRepository.findByPhoneAndEmail(tel, email).get();
+        String pw = UUID.randomUUID().toString().substring(0, 10);
+        findUser.changePw(pw);
+        return pw;
     }
 
     @Transactional

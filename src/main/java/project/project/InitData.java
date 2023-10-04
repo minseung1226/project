@@ -85,7 +85,7 @@ public class InitData {
 
         User[] users = new User[5];
         for (int i = 0; i < users.length; i++) {
-            users[i] = new User("user" + i, "이름" + i, "123", "0105564541" + i, new Address(12312, "부천로 57번길 50", "201호", "심곡동" + i));
+            users[i] = new User("user@" + i, "이름" + i, "123", "0105564541" + i, new Address(12312, "부천로 57번길 50", "201호", "심곡동" + i));
             userRepository.save(users[i]);
         }
 

@@ -55,10 +55,8 @@ public class UserController {
 
 
     @GetMapping("/")
-    public String home(String search)
+    public String home()
     {
-
-        if(!StringUtils.hasText(search)) search="서울역";
         return "home";
     }
 
@@ -127,19 +125,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("/user/send_sms")
     public String sendMessage(String tel){
-        Random random=new Random();
-        String number="";
-        for(int i=0;i<4;i++){
-            number+=random.nextInt(10);
-        }
-        log.info("인증번호= {}"+number);
-        /*Message message=new Message();
-        message.setFrom("01055645417");
-        message.setTo(tel);
-        message.setText("인증번호는 "+number+" 입니다.");
-
-        SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
-*/
+        String number = getNumber();
+        sendSms(tel,"인증번호는 "+number+" 입니다.");
 
         return number;
     }
@@ -247,6 +234,81 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @PostMapping("/find/send_sms_email")
+    public String sendSmsId(String tel){
+        Optional<User> findUser = userRepository.findByPhone(tel);
+
+        if(findUser.isEmpty()){
+            return "0";
+        }
+
+        String number = getNumber();
+        sendSms(tel,"인증번호는 "+number+" 입니다.");
+        return number;
+
+
+    }
+
+    @ResponseBody
+    @PostMapping("/find/email")
+    public void findId(String tel){
+        Optional<User> user = userRepository.findByPhone(tel);
+        String[] email = user.get().getEmail().split("@");
+        String result = email[0].substring(0, email[0].length() - 4) + "****@" + email[1];
+        log.info("email={}, message={}",email[0]+"@"+email[1],result);
+
+        sendSms(tel,
+                "고객님의 이메일은 "
+                        +email[0].substring(0,email[0].length()-4)+"****@"+email[1]
+                +"입니다. "
+                );
+
+    }
+
+    @ResponseBody
+    @PostMapping("/find/send_sms_pw")
+    public String sendSmsPw(String tel,String email){
+        Optional<User> findUser = userRepository.findByPhoneAndEmail(tel, email);
+        if(findUser.isEmpty()) return "0";
+
+        String number = getNumber();
+        sendSms(tel,"인증번호는 "+number+" 입니다.");
+
+        return number;
+    }
+
+    @ResponseBody
+    @PostMapping("/find/pw")
+    public void findPw(String tel,String email){
+        String pw = userService.generateTemporaryPassword(tel, email);
+        log.info("임시비밀번호={}",pw);
+        sendSms(tel,"임시 비밀번호는 "+pw + "입니다.");
+    }
+
+
+
+    private String getNumber(){
+
+        Random random=new Random();
+        String number="";
+        for(int i=0;i<4;i++){
+            number+=random.nextInt(10);
+        }
+        log.info("인증번호= {}"+number);
+
+        return number;
+    }
+
+    private void sendSms(String tel,String message){
+                /*Message message=new Message();
+        message.setFrom("homeAndRoom");
+        message.setTo(tel);
+        message.setText(message);
+
+        SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
+*/
+    }
 
 
 
