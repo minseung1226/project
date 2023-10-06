@@ -1,5 +1,6 @@
 package project.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -96,8 +97,9 @@ public class UserController {
 
     //카카오 로그인
     @GetMapping("/kakao/login")
-    public String kakao_login(String code,HttpSession session){
-        Long id = kakaoService.kakaoLogin(code);
+    public String kakao_login(String code, HttpSession session, HttpServletRequest request){
+
+        Long id = kakaoService.kakaoLogin(code,request.getRequestURL().toString());
         session.setAttribute("user",id);
         return "redirect:/";
     }

@@ -27,15 +27,17 @@ public class KakaoService {
 
     private final String GRANT_TYPE = "authorization_code";
     private final String CLIENT_ID = "e380cd44828b9940dbcefe3517d0fb69";
-    private final String REDIRECT_URI = "http://localhost:7080/kakao/login";
+
     private final String CLIENT_SECRET="TDoc2ffICcdms6XtnHXgtHwKqKRa4lMg";
     private final String TOKEN_URI="https://kauth.kakao.com/oauth/token";
+
+    private final String REDIRECT_URL="http://localhost:7080/kakao/login";
 
 
     private final String INFO_REQUEST="https://kapi.kakao.com/v2/user/me";
 
-    public Long kakaoLogin(String code){
-        String kakaoToken = getKakaoToken(code);
+    public Long kakaoLogin(String code,String redirect_url){
+        String kakaoToken = getKakaoToken(code,redirect_url);
         String userInfo = getUserInfo(new JSONObject(kakaoToken).getString("access_token"));
         JSONObject jsonObject = new JSONObject(userInfo);
         String id = jsonObject.get("id").toString();
@@ -54,7 +56,7 @@ public class KakaoService {
                 fileName= uploadFile.getStoreName();
             }
             User user = new User(kakao_account.has("email") ? kakao_account.getString("email") : null,
-                    kakao_account.has("birthday") ? kakao_account.getString("birthday") : null,
+                    null,
                     fileName.isEmpty()?null:fileName,
                     id,
                     UserJoinType.KAKAO);
@@ -65,7 +67,7 @@ public class KakaoService {
         return findUser.get().getId();
 
     }
-    public String getKakaoToken(String code) {
+    public String getKakaoToken(String code,String redirect_url) {
         RestTemplate restTemplate = new RestTemplate();
 
         //header 설정
@@ -77,7 +79,7 @@ public class KakaoService {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(TOKEN_URI)
                 .queryParam("grant_type", GRANT_TYPE)
                 .queryParam("client_id", CLIENT_ID)
-                .queryParam("redirect_uri", REDIRECT_URI)
+                .queryParam("redirect_uri", REDIRECT_URL)
                 .queryParam("code", code)
                 .queryParam("client_secret", CLIENT_SECRET);
 

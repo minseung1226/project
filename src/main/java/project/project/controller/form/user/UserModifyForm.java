@@ -42,7 +42,7 @@ public class UserModifyForm {
         userJoinType=user.getUserJoinType();
 
 
-        if(user.getBirth()!=null){
+        if(user.getBirth()!=null && !user.getBirth().isEmpty()){
             this.birthY = user.getBirth().substring(0,4);
             this.birthM = user.getBirth().substring(4,6);
             this.birthD = user.getBirth().substring(6,8);

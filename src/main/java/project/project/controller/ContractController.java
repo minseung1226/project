@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.IContext;
@@ -124,14 +125,14 @@ public class ContractController {
         ContractForm contractForm = new ContractForm(contract);
         contractForm.initializeKoreanFields();
 
-        String html = templateEngine.process("/contract/contract", getContext(contractForm));
+        String html = templateEngine.process("contract/contract", getContext(contractForm));
 
         byte[] pdfBytes = generatePdf(html);
 
 
         //
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition","attachment; filename=\"계약서.pdf\"");
+        response.setHeader("Content-Disposition","attachment; filename=\"contract.pdf\"");
         response.setContentLength(pdfBytes.length);
 
 
