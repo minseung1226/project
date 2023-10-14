@@ -127,6 +127,7 @@ public class ContractController {
 
         String html = templateEngine.process("contract/contract", getContext(contractForm));
 
+
         byte[] pdfBytes = generatePdf(html);
 
 

@@ -417,7 +417,6 @@
         Kakao.init('aad77ce5fb25c098c085b83a13dbad40');
 
         function kakaoLogin() {
-
             Kakao.Auth.authorize({
                 redirectUri: `http://`+window.location.host+`/kakao/login`
             })

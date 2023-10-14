@@ -31,7 +31,6 @@ public class KakaoService {
     private final String CLIENT_SECRET="TDoc2ffICcdms6XtnHXgtHwKqKRa4lMg";
     private final String TOKEN_URI="https://kauth.kakao.com/oauth/token";
 
-    private final String REDIRECT_URL="http://localhost:7080/kakao/login";
 
 
     private final String INFO_REQUEST="https://kapi.kakao.com/v2/user/me";
@@ -55,6 +54,7 @@ public class KakaoService {
                 uploadFile.fileUpload();
                 fileName= uploadFile.getStoreName();
             }
+
             User user = new User(kakao_account.has("email") ? kakao_account.getString("email") : null,
                     null,
                     fileName.isEmpty()?null:fileName,
@@ -79,7 +79,7 @@ public class KakaoService {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(TOKEN_URI)
                 .queryParam("grant_type", GRANT_TYPE)
                 .queryParam("client_id", CLIENT_ID)
-                .queryParam("redirect_uri", REDIRECT_URL)
+                .queryParam("redirect_uri", redirect_url)
                 .queryParam("code", code)
                 .queryParam("client_secret", CLIENT_SECRET);
 
