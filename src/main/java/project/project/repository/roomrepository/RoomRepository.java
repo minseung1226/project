@@ -21,4 +21,7 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
 
     @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.user.id=:userId")
     List<Room> findByUserId(Long userId);
+
+    @Query("select r from Room r join fetch r.roomInfo join fetch r.photos where r.user.id in(:userIds)")
+    List<Room> findRoomsByIds(@Param("userIds")Long[] userIds);
 }

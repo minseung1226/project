@@ -115,8 +115,20 @@ public class DslRoomRepository {
         return roomModifyDto;
     }
 
+    public List<RoomLocationDto> roomSearch(RoomSearchParameters roomParameter){
+        return queryFactory.select(new QRoomLocationDto(room.id,room.lat,room.lng))
+                .from(room)
+                .join(room.roomInfo,roomInfo)
+                .where(createDepositRangeCondition(roomParameter.getMinDeposit(),roomParameter.getMaxDeposit()),
+        createMonthlyRentRangeCondition(roomParameter.getMinMonthlyRent(),roomParameter.getMaxMonthlyRent()),
+                createRealSizeRangeCondition(roomParameter.getMinRealSize(),roomParameter.getMaxRealSize()),
+                createCoordinatesRangeCondition(roomParameter.getMinLat(),roomParameter.getMaxLat(),
+                        roomParameter.getMinLng(),roomParameter.getMaxLng())
+                        ,room.status.eq(RoomStatus.거래중))
+                .fetch();
+    }
 
-    public List<Room> roomSearch(RoomSearchParameters roomSearchParameters){
+    public List<Room> roomSearch2(RoomSearchParameters roomSearchParameters){
         return queryFactory.selectFrom(room)
                 .join(room.roomInfo,roomInfo).fetchJoin()
                 .join(room.photos,photo).fetchJoin()

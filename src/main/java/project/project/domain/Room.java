@@ -11,10 +11,7 @@ import project.project.dto.room.RoomRegistrationDto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -85,7 +82,7 @@ public class Room extends BaseEntity {
     private void generateNumber(){
 
         // roomNumber 값 주입
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        /*String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String randomNum="";
 
         Random random = new Random();
@@ -93,7 +90,9 @@ public class Room extends BaseEntity {
             randomNum+=random.nextInt(9 );
         }
 
-        roomNumber=date+randomNum;
+        roomNumber=date+randomNum;*/
+
+        roomNumber= UUID.randomUUID().toString().substring(0,12);
 
     }
 

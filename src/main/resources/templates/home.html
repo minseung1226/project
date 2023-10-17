@@ -7,6 +7,16 @@
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
     <style>
+        .carousel-control-prev {
+            left: 0;
+            padding-right: 60px;
+        }
+
+        .carousel-control-next {
+            right: 0;
+            padding-left: 60px;
+        }
+
         a {
             text-decoration: none; /* 밑줄 제거 */
             color: inherit; /* 링크의 기본 색상 유지 */
@@ -21,42 +31,19 @@
             max-height: 850px; /* 스크롤이 표시될 최대 높이 */
         }
 
-
-
-        #slider-range {
-            width: 80%;
-            margin: 0 auto;
-        }
-        #amount {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .ui-widget.ui-widget-content{
-            border:none;
-            height:7px;
-        }
-
-        .ui-slider .ui-slider-handle{
+        .ui-slider .ui-slider-handle {
             border-radius: 50%;
             background: black;
-            border:none;
+            border: none;
         }
-        .ui-slider-horizontal .ui-slider-range{
+
+        .ui-slider-horizontal .ui-slider-range {
             background: black;
         }
 
-/*        .ui-slider span:before{
-            content: '100$';
-            position: absolute;
-            left:50%;
-            transform:translateX(-50%);
-            width:50px;
-            top:-30px;
-            color: black;
-            font-size: 15px;
-            text-align: center;
-        }*/
+        .col-auto {
+            mar
+        }
 
     </style>
 </head>
@@ -110,7 +97,8 @@
                                             <div class="row mb-3">
                                                 <div class="col">
                                                     <p>
-                                                        <input type="text" id="deposit-text" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                        <input type="text" id="deposit-text" readonly
+                                                               style="border:0; color:#f6931f; font-weight:bold;">
                                                     </p>
                                                     <div id="deposit-slider-range"></div>
                                                     <input type="hidden" id="minDeposit" name="minDeposit">
@@ -122,7 +110,8 @@
 
                                                 <div class="col">
                                                     <p>
-                                                        <input type="text" id="monthlyRent-text" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                        <input type="text" id="monthlyRent-text" readonly
+                                                               style="border:0; color:#f6931f; font-weight:bold;">
                                                     </p>
                                                     <div id="monthlyRent-slider-range"></div>
                                                     <input type="hidden" id="minMonthlyRent" name="minMonthlyRent">
@@ -133,17 +122,24 @@
                                             <h6 class="fw-bold">전용면적(평수로입력)</h6>
                                             <div class="row mb-3">
                                                 <div class="col">
-                                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck1" autocomplete="off" value="10">
-                                                        <label class="btn btn-outline-dark" for="btncheck1">10평 이하</label>
+                                                    <div class="btn-group" role="group"
+                                                         aria-label="Basic checkbox toggle button group">
+                                                        <input type="checkbox" class="btn-check realSizeBtn"
+                                                               id="btncheck1" autocomplete="off" value="10">
+                                                        <label class="btn btn-outline-dark" for="btncheck1">10평
+                                                            이하</label>
 
-                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck2" autocomplete="off" value="20">
+                                                        <input type="checkbox" class="btn-check realSizeBtn"
+                                                               id="btncheck2" autocomplete="off" value="20">
                                                         <label class="btn btn-outline-dark" for="btncheck2">10평대</label>
 
-                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck3" autocomplete="off" value="30">
-                                                        <label class="btn btn-outline-dark" for="btncheck3">20평대 </label>
+                                                        <input type="checkbox" class="btn-check realSizeBtn"
+                                                               id="btncheck3" autocomplete="off" value="30">
+                                                        <label class="btn btn-outline-dark"
+                                                               for="btncheck3">20평대 </label>
 
-                                                        <input type="checkbox" class="btn-check realSizeBtn" id="btncheck4" autocomplete="off" value="40">
+                                                        <input type="checkbox" class="btn-check realSizeBtn"
+                                                               id="btncheck4" autocomplete="off" value="40">
                                                         <label class="btn btn-outline-dark" for="btncheck4">30평대</label>
                                                     </div>
                                                 </div>
@@ -153,9 +149,11 @@
                                         </div>
                                     </form>
                                     <div class="modal-footer">
-                                        <button type="button" id="resetBtn" class="btn btn-outline-dark" data-bs-dismiss="modal">초기화
+                                        <button type="button" id="resetBtn" class="btn btn-outline-dark"
+                                                data-bs-dismiss="modal">초기화
                                         </button>
-                                        <button type="button" id="applyBtn" class="btn btn-outline-dark" data-bs-dismiss="modal">적용
+                                        <button type="button" id="applyBtn" class="btn btn-outline-dark"
+                                                data-bs-dismiss="modal">적용
                                         </button>
                                     </div>
                                 </div>
@@ -165,8 +163,31 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid room-list">
+            <div id="cc" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div class="row ">
+                    <div class="col-auto">
+                        <button id="prev_btn" class="carousel-control-prev" type="button" data-bs-target="#cc"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                    </div>
 
+                    <div class="col m-2">
+                        <div class="container-fluid room-list">
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <button id="next_btn" class="carousel-control-next" type="button" data-bs-target="#cc"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>
@@ -192,6 +213,7 @@
     var map = new kakao.maps.Map(mapContainer, mapOption);
     var clusterer;
 
+
     roomCall(map);
 
 
@@ -202,92 +224,105 @@
     });
 
 
-
-
-    function formatAmount(amount){
-        let result="";
-        if(amount/10000>=1){
-            result=Math.floor(amount/10000) +"억";
+    function formatAmount(amount) {
+        let result = "";
+        if (amount / 10000 >= 1) {
+            result = Math.floor(amount / 10000) + "억";
         }
-        if(amount%10000>0){
-            result+=amount%10000+"만원";
+        if (amount % 10000 > 0) {
+            result += amount % 10000 + "만원";
         }
 
         return result;
     }
-    $( function() {
-        $( "#deposit-slider-range" ).slider({
+
+    $(function () {
+        $("#deposit-slider-range").slider({
             range: true,
             min: 100,
             max: 20000,
-            values: [ 100, 20000 ],
-            step:100,
-            slide: function( event, ui ) {
+            values: [100, 20000],
+            step: 100,
+            slide: function (event, ui) {
                 $("#minDeposit").val(ui.values[0]);
                 $("#maxDeposit").val(ui.values[1]);
-                let min =formatAmount(ui.values[0]);
-                let max=formatAmount(ui.values[1]);
-                $( "#deposit-text" ).val(min + " ~ " +max  );
+                let min = formatAmount(ui.values[0]);
+                let max = formatAmount(ui.values[1]);
+                $("#deposit-text").val(min + " ~ " + max);
             }
         });
-        $( "#deposit-text" ).val(formatAmount($( "#deposit-slider-range" ).slider( "values", 0 )) +" ~ " + formatAmount($( "#deposit-slider-range" ).slider( "values", 1 )) );
+        $("#deposit-text").val(formatAmount($("#deposit-slider-range").slider("values", 0)) + " ~ " + formatAmount($("#deposit-slider-range").slider("values", 1)));
 
-    } );
+    });
 
-    $( function() {
-        $( "#monthlyRent-slider-range" ).slider({
+    $(function () {
+        $("#monthlyRent-slider-range").slider({
             range: true,
             min: 10,
             max: 200,
-            values: [ 10, 200 ],
-            step:10,
-            slide: function( event, ui ) {
+            values: [10, 200],
+            step: 10,
+            slide: function (event, ui) {
                 $("#minMonthlyRent").val(ui.values[0]);
                 $("#maxMonthlyRent").val(ui.values[1]);
-                let min =formatAmount(ui.values[0]);
-                let max=formatAmount(ui.values[1]);
-                $( "#monthlyRent-text" ).val(min + " ~ " +max  );
+                let min = formatAmount(ui.values[0]);
+                let max = formatAmount(ui.values[1]);
+                $("#monthlyRent-text").val(min + " ~ " + max);
             }
         });
-        $( "#monthlyRent-text" ).val(formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 0 )) +" ~ " + formatAmount($( "#monthlyRent-slider-range" ).slider( "values", 1 )) );
-    } );
+        $("#monthlyRent-text").val(formatAmount($("#monthlyRent-slider-range").slider("values", 0)) + " ~ " + formatAmount($("#monthlyRent-slider-range").slider("values", 1)));
+    });
 
 
+    function createRoomHtml(data, page) {
 
+        let max = data.length > page * 9 + 9 ? data.length : page * 9 + 9
+        let ids = [];
 
-    function createRoomHtml(data) {
-        let html = `<div class="row">`
-        for (let i = 0; i < data.length; i++) {
-            let title = data[i].title.toString().substring(0, 10) + "...";
-            html += `
+        for (let i = page * 9; i < max; i++) {
+            ids.push(data[i].id);
+        }
+
+        $.ajax({
+            type: 'get',
+            url: '/room/list',
+            data: {
+                ids: ids
+            }
+        }).done(function (result) {
+            let html = `<div class="row">`
+            for (let i = 0; i < result.length; i++) {
+                let title = result[i].title.toString().substring(0, 10) + "...";
+                html += `
     <div class="col-4 p-1">
-      <a class="a-card" href="/room/detail/` + data[i].id + `" style="display: inline">
+      <a class="a-card" href="/room/detail/` + result[i].id + `" style="display: inline">
         <div class="card">
-          <img src="/images/` + data[i].img + `" class="card-img-top" alt="..." width="100%" height="150px">
+          <img src="/images/` + result[i].img + `" class="card-img-top" alt="..." width="100%" height="150px">
           <div class="card-body p-1 m-0">
-            <p class="m-0"><h5 class="fw-bold">월세` + data[i].deposit + `/` + data[i].monthlyRent + `</h5></p>
+            <p class="m-0"><h5 class="fw-bold">월세` + result[i].deposit + `/` + result[i].monthlyRent + `</h5></p>
             <p class="m-0">` + title + `</p>
-            <p class="m-0" style="font-size: 13px">` + data[i].roomType + ` | ` + `관리비` + data[i].maintenance + `만원</p>
+            <p class="m-0" style="font-size: 13px">` + result[i].roomType + ` | ` + `관리비` + result[i].maintenance + `만원</p>
           </div>
         </div>
       </a>
     </div>
   `;
-            if (i % 3 == 2) {
-                html += `</div><div class="row">`
+                if (i % 3 == 2) {
+                    html += `</div><div class="row">`
+                }
+                if (i == data.length - 1) {
+                    html += `</div>`;
+                }
             }
-            if (i == data.length - 1) {
-                html += `</div>`;
-            }
-        }
 
-        let container = document.querySelector(`.container-fluid.room-list`);
-        container.innerHTML = html;
-    };
+            let container = document.querySelector(`.container-fluid.room-list`);
+            container.innerHTML = html;
+        })
+    }
 
-    function formValidate(form){
-        if(numberValidate(form.get("minDeposit"))&&numberValidate(form.get("maxDeposit"))&&
-            numberValidate(form.get("minMonthlyRent"))&&numberValidate(form.get("maxMonthlyRent"))){
+    function formValidate(form) {
+        if (numberValidate(form.get("minDeposit")) && numberValidate(form.get("maxDeposit")) &&
+            numberValidate(form.get("minMonthlyRent")) && numberValidate(form.get("maxMonthlyRent"))) {
             return true;
         }
         return false;
@@ -297,11 +332,11 @@
     function numberValidate(target) {
         //값이 비어있거나 숫자인경우 true
         const pattern = /^[0-9]*$/;
-        if(!target){
+        if (!target) {
 
             return true;
         }
-        if(pattern.test(target)){
+        if (pattern.test(target)) {
             return true;
         }
         return false;
@@ -340,51 +375,45 @@
         }
 
 
-
         // 전용면적 값 생성
-        let buttons=document.querySelectorAll('.realSizeBtn:checked');
+        let buttons = document.querySelectorAll('.realSizeBtn:checked');
 
-        if(buttons.length>0){
-            let values=[];
+        if (buttons.length > 0) {
+            let values = [];
 
-            buttons.forEach(function (btn){
+            buttons.forEach(function (btn) {
                 values.push(parseInt(btn.value));
-                values.push(parseInt(btn.value-10));
+                values.push(parseInt(btn.value - 10));
             });
 
-            formData.append("minRealSize",Math.min.apply(null,values));
-            formData.append("maxRealSize",Math.max.apply(null,values));
+            formData.append("minRealSize", Math.min.apply(null, values));
+            formData.append("maxRealSize", Math.max.apply(null, values));
 
         }
-
-
-
-
 
         // 서버로 위도와 경도를 전달하여 매물 데이터를 요청하거나 처리할 수 있습니다.
         // 예를 들어 AJAX 요청을 사용하여 해당 영역의 매물 정보를 가져올 수 있습니다.
 
         $.ajax({
             type: 'get',
-            url: '/room/roomList',
+            url: '/room/map_data',
             data: {
-                minDeposit:formData.get("minDeposit"),
-                maxDeposit:formData.get("maxDeposit"),
-                minMonthlyRent:formData.get("minMonthlyRent"),
-                maxMonthlyRent:formData.get("maxMonthlyRent"),
-                minRealSize:formData.get("minRealSize"),
-                maxRealSize:formData.get("maxRealSize"),
-                minLat:swLat,
-                maxLat:neLat,
-                minLng:swLng,
-                maxLng:neLng
+                minDeposit: formData.get("minDeposit"),
+                maxDeposit: formData.get("maxDeposit"),
+                minMonthlyRent: formData.get("minMonthlyRent"),
+                maxMonthlyRent: formData.get("maxMonthlyRent"),
+                minRealSize: formData.get("minRealSize"),
+                maxRealSize: formData.get("maxRealSize"),
+                minLat: swLat,
+                maxLat: neLat,
+                minLng: swLng,
+                maxLng: neLng
             }
         }).done(function (data) {
 
-            if(clusterer!=null){
+            if (clusterer != null) {
                 clusterer.clear();
-            }
-            else{
+            } else {
                 clusterer = new kakao.maps.MarkerClusterer({
                     map: map,
                     averageCenter: true,
@@ -402,14 +431,25 @@
             clusterer.addMarkers(markers);
 
 
+            let page = 0;
 
 
+            createRoomHtml(data,page);
 
+            $("#prev_btn").click(function (){
+                if(page==0) return;
 
+                page-=1;
+                createRoomHtml(data,page)
 
+            })
 
-            createRoomHtml(data);
+            $("#next_btn").click(function (){
+                if(data.length<=page*9+9) return;
 
+                page+=1;
+                createRoomHtml(data,page);
+            });
 
         }).fail(function (err) {
             alert(err);
@@ -442,23 +482,23 @@
         }
     }
 
-    $("#applyBtn").click(function (){
+    $("#applyBtn").click(function () {
         roomCall(map);
     })
-    $("#resetBtn").click(function (){
-      $("#minDeposit").val("");
-      $("#maxDeposit").val("");
-      $("#minMonthlyRent").val("");
-      $("#maxMonthlyRent").val("");
+    $("#resetBtn").click(function () {
+        $("#minDeposit").val("");
+        $("#maxDeposit").val("");
+        $("#minMonthlyRent").val("");
+        $("#maxMonthlyRent").val("");
 
         var buttons = document.querySelectorAll('.realSizeBtn');
 
         // 모든 버튼의 checked 속성 해제
-        buttons.forEach(function(button) {
+        buttons.forEach(function (button) {
             button.checked = false;
         });
 
-      roomCall(map);
+        roomCall(map);
     })
 
 

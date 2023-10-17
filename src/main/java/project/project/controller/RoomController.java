@@ -13,6 +13,7 @@ import project.project.controller.form.room.RoomDetailForm;
 import project.project.controller.form.room.RoomMapForm;
 import project.project.domain.Room;
 import project.project.domain.Wishlist;
+import project.project.dto.room.RoomLocationDto;
 import project.project.dto.room.RoomModifyDto;
 import project.project.dto.roominfo.RoomInfoModifyDto;
 import project.project.dto.roominfo.RoomInfoRegistrationDto;
@@ -114,11 +115,18 @@ public class RoomController {
         return "redirect:/room/management/detailInfo/{roomId}";
     }
 
-    @GetMapping("/room/roomList")
+    @GetMapping("/room/map_data")
     @ResponseBody
-    public List<RoomMapForm> roomFormList(RoomSearchParameters roomSearch){
+    public List<RoomLocationDto> locationDtoList(RoomSearchParameters roomSearch){
+        return dslRoomRepository.roomSearch(roomSearch);
 
-        List<Room> roomList = dslRoomRepository.roomSearch(roomSearch);
+    }
+
+    @GetMapping("/room/list")
+    @ResponseBody
+    public List<RoomMapForm> roomFormList(Long[] ids){
+
+        List<Room> roomList = roomRepository.findRoomsByIds(ids);
 
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
                         room.getId(),
