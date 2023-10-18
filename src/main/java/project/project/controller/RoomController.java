@@ -124,10 +124,12 @@ public class RoomController {
 
     @GetMapping("/room/list")
     @ResponseBody
-    public List<RoomMapForm> roomFormList(Long[] ids){
+    public List<RoomMapForm> roomFormList(@RequestParam(value = "ids") List<Long> ids){
+        log.info("ids={}",ids);
 
         List<Room> roomList = roomRepository.findRoomsByIds(ids);
-
+        log.info("roomlist.size={} ,",roomList.size());
+        log.info("room={}",roomList.toString());
         List<RoomMapForm> roomMapForms = roomList.stream().map(room -> new RoomMapForm(
                         room.getId(),
                         room.getPhotos().get(0).getImg(),

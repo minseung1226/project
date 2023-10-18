@@ -41,9 +41,7 @@
             background: black;
         }
 
-        .col-auto {
-            mar
-        }
+
 
     </style>
 </head>
@@ -163,8 +161,8 @@
                     </div>
                 </div>
             </div>
-            <div id="cc" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                <div class="row ">
+            <div id="cc" class="carousel carousel-dark slide" data-bs-ride="carousel" style="height: 100%">
+                <div class="row " style="height: 100%">
                     <div class="col-auto">
                         <button id="prev_btn" class="carousel-control-prev" type="button" data-bs-target="#cc"
                                 data-bs-slide="prev">
@@ -202,6 +200,7 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script th:inline="javascript">
+    let page=0;
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(37.484661, 126.783171), // 지도의 중심좌표
@@ -275,8 +274,9 @@
 
 
     function createRoomHtml(data, page) {
+        console.log("page="+page);
 
-        let max = data.length > page * 9 + 9 ? data.length : page * 9 + 9
+        let max = data.length < page * 9 + 9 ? data.length : page * 9 + 9
         let ids = [];
 
         for (let i = page * 9; i < max; i++) {
@@ -286,6 +286,8 @@
         $.ajax({
             type: 'get',
             url: '/room/list',
+            contentType: 'application/json',
+            traditional:true,
             data: {
                 ids: ids
             }
@@ -431,30 +433,38 @@
             clusterer.addMarkers(markers);
 
 
-            let page = 0;
+            page=0;
 
 
             createRoomHtml(data,page);
 
             $("#prev_btn").click(function (){
-                if(page==0) return;
-
-                page-=1;
-                createRoomHtml(data,page)
+                if(page==0) {
+                    return;
+                }
+                else{
+                    page-=1;
+                    createRoomHtml(data,page)
+                }
 
             })
 
             $("#next_btn").click(function (){
-                if(data.length<=page*9+9) return;
-
-                page+=1;
-                createRoomHtml(data,page);
+                if(data.length<=page*9+9) {
+                    return;
+                }
+                else{
+                    page+=1;
+                    createRoomHtml(data,page);
+                }
             });
+
 
         }).fail(function (err) {
             alert(err);
         });
     }
+
 
 
     function search() {
