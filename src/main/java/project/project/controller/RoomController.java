@@ -25,6 +25,7 @@ import project.project.repository.roomrepository.RoomRepository;
 import project.project.search.RoomSearchParameters;
 import project.project.service.RoomService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,14 +119,19 @@ public class RoomController {
     @GetMapping("/room/map_data")
     @ResponseBody
     public List<RoomLocationDto> locationDtoList(RoomSearchParameters roomSearch){
-        return dslRoomRepository.roomSearch(roomSearch);
+        List<RoomLocationDto> rooms = dslRoomRepository.roomSearch(roomSearch);
+        log.info("rooms.size={}",rooms.size());
+        return rooms;
 
     }
 
     @GetMapping("/room/list")
     @ResponseBody
-    public List<RoomMapForm> roomFormList(@RequestParam(value = "ids") List<Long> ids){
+    public List<RoomMapForm> roomFormList(@RequestParam(value = "ids",required = false) List<Long> ids){
         log.info("ids={}",ids);
+        if(ids==null){
+            ids=new ArrayList<>();
+        }
 
         List<Room> roomList = roomRepository.findRoomsByIds(ids);
         log.info("roomlist.size={} ,",roomList.size());
